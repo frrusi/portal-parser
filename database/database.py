@@ -5,8 +5,8 @@ from typing import Union
 from sqlalchemy import create_engine, MetaData, select, delete, insert
 from sqlalchemy.sql.functions import coalesce
 
-import models
-from utils.parser_utils import get_auth_code
+from database import models
+from utils.parser_utils import get_auth_code, get_datetime_now
 from utils.security_utils import hash_password
 
 
@@ -109,19 +109,22 @@ class DataBase:
         if str(code := get_auth_code(response, config)) == config.successful_code:
             hashed_password = hash_password(password)
             last_index = self.get_last_index(select(models.Authorized.id))
-            self.insert_query(models.Authorized, last_index, login, hashed_password)
+            date, time = get_datetime_now()
+            self.insert_query(models.Authorized, last_index, login, hashed_password, date, time)
         return code
 
     def get_data(self, subject: str, semester: str):
         subject_id = self.select_query(select(models.Subject.id).where(models.Subject.subject == subject,
                                                                        models.Subject.semester == semester), 2)[0]
 
-        return list(chain.from_iterable(self.select_query(select(models.Marks.lesson_date).where(models.Marks.subject == subject_id,
-                                                                                                 models.Marks.semester == semester,
-                                                                                                 models.Marks.student == '0'), 1)))
+        return list(chain.from_iterable(self.select_query(select(models.Marks.lesson_date).where(
+            models.Marks.subject == subject_id,
+            models.Marks.semester == semester,
+            models.Marks.student == '0'), 1)))
 
     def get_marks(self, subject: str, semester: str):
         subject_id = self.select_query(select(models.Subject.id).where(models.Subject.subject == subject,
                                                                        models.Subject.semester == semester), 2)[0]
-        return list(chain.from_iterable(self.select_query(select(models.Marks.mark).where(models.Marks.subject == subject_id,
-                                                                                          models.Marks.semester == semester), 1)))
+        return list(chain.from_iterable(self.select_query(select(models.Marks.mark).where(
+            models.Marks.subject == subject_id,
+            models.Marks.semester == semester), 1)))
