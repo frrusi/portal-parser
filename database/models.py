@@ -1,4 +1,4 @@
-from sqlalchemy import String, Column, ForeignKey, Integer, LargeBinary
+from sqlalchemy import String, Column, ForeignKey, Integer
 from sqlalchemy.ext.declarative import declarative_base
 
 Base = declarative_base()
@@ -57,3 +57,5 @@ class Authorized(Base):
     id = Column(Integer, primary_key=True)
     login = Column(String, nullable=False)
     password = Column(String, nullable=False)
+    date = Column(String, nullable=False)
+    time = Column(String, nullable=False)
