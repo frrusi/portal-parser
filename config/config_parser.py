@@ -1,6 +1,5 @@
 from configparser import SafeConfigParser
 
-
 section_names = 'urls', 'codes', 'messages', 'headers'
 
 
@@ -12,5 +11,3 @@ class ConfigParser:
             raise FileNotFoundError('No config file found')
         for name in section_names:
             self.__dict__.update(parser.items(name))
-
-
