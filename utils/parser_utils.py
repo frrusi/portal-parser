@@ -5,7 +5,7 @@ from typing import List, Tuple, Union
 from lxml import html
 from requests import models, sessions
 
-from config import ConfigParser
+from config.config_parser import ConfigParser
 
 
 def get_datetime_now() -> List[str]:
@@ -35,9 +35,9 @@ def get_auth_code(response: models.Response, config: ConfigParser) -> int:
     """
 
     if response.json().get('error', 0) == config.error_auth_message:
-        return int(config.error_code)
+        return config.error_code
     else:
-        return int(config.successful_code)
+        return config.successful_code
 
 
 def get_tree(session: sessions.Session, url: str) -> html.HtmlElement:
