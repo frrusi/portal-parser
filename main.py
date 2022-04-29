@@ -1,13 +1,13 @@
-from config import ConfigParser
-from database import DataBase
-from gui import Authorization
-
 from PyQt5 import QtWidgets
+
+from config.config import ConfigParser
+from database.database import DataBase
+from gui.gui import Authorization
 
 
 def main():
     import sys
-    config = ConfigParser("config.ini")
+    config = ConfigParser("config/config.ini")
     database = DataBase('sqlite3.sqlite3')
 
     database.delete_database()
