@@ -5,7 +5,7 @@ from typing import List, Tuple, Union
 from lxml import html
 from requests import models, sessions
 
-from config import ConfigParser
+from config.config import ConfigParser
 
 
 def get_datetime_now() -> List[str]:

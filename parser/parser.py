@@ -5,8 +5,8 @@ import pandas as pd
 import requests
 from sqlalchemy import select
 
-import models
-from database import DataBase
+from database import models
+from database.database import DataBase
 from utils.parser_utils import get_datetime_and_tree, get_tree, check_reset_password_message, life_loop_thread, \
     get_reset_password_message
 from utils.security_utils import get_answer_check_password
