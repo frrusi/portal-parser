@@ -116,12 +116,14 @@ class DataBase:
         subject_id = self.select_query(select(models.Subject.id).where(models.Subject.subject == subject,
                                                                        models.Subject.semester == semester), 2)[0]
 
-        return list(chain.from_iterable(self.select_query(select(models.Marks.lesson_date).where(models.Marks.subject == subject_id,
-                                                                                                 models.Marks.semester == semester,
-                                                                                                 models.Marks.student == '0'), 1)))
+        return list(chain.from_iterable(self.select_query(select(models.Marks.lesson_date).where(
+            models.Marks.subject == subject_id,
+            models.Marks.semester == semester,
+            models.Marks.student == '0'), 1)))
 
     def get_marks(self, subject: str, semester: str):
         subject_id = self.select_query(select(models.Subject.id).where(models.Subject.subject == subject,
                                                                        models.Subject.semester == semester), 2)[0]
-        return list(chain.from_iterable(self.select_query(select(models.Marks.mark).where(models.Marks.subject == subject_id,
-                                                                                          models.Marks.semester == semester), 1)))
+        return list(chain.from_iterable(self.select_query(select(models.Marks.mark).where(
+            models.Marks.subject == subject_id,
+            models.Marks.semester == semester), 1)))

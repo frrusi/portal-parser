@@ -1,16 +1,11 @@
-import window_login
-import window_recovery
-import window_recovery_code
-import window_main
-import window_journal
-
-from parser.parser import Parser
-from database import DataBase
-from utils.parser_utils import get_reset_password_message
-
 from PyQt5 import QtGui, QtCore, QtWidgets
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QTableWidgetItem
+
+from database.database import DataBase
+from gui.windows import window_recovery_code, window_journal, window_login, window_recovery, window_main
+from parser.parser import Parser
+from utils.parser_utils import get_reset_password_message
 
 
 class WindowJournal(QtWidgets.QDialog, window_journal.Ui_journal):
@@ -45,7 +40,7 @@ class WindowJournal(QtWidgets.QDialog, window_journal.Ui_journal):
             self.table.setHorizontalHeaderLabels(['Список группы'] + get_all_date)
 
             self.table.setStyleSheet(
-                'QWidget { background-color: #ffffff; } QHeaderView::section { background-color: #ffffff; }' 
+                'QWidget { background-color: #ffffff; } QHeaderView::section { background-color: #ffffff; }'
                 'QTableWidget QTableCornerButton::section {background-color: #ffffff;}')
             self.table.setStyleSheet('selection-background-color: #ffffe0; selection-color: #000000')
 
@@ -172,10 +167,10 @@ class RecoveryEmail(QtWidgets.QDialog, window_recovery.Ui_Recovery):
             if get_reset_password_message(self.parser.session,
                                           self.parser.config.recovery_url) == self.parser.config.enter_code_message:
                 self.recoverCode.error.setStyleSheet('padding: 10px 10px;'
-                                                  'box-sizing: border-box;'
-                                                  'font-family: \'SESans\',Arial,sans-serif;'
-                                                  'font-size: 16px;'
-                                                  'color: #ea0e0e;')
+                                                     'box-sizing: border-box;'
+                                                     'font-family: \'SESans\',Arial,sans-serif;'
+                                                     'font-size: 16px;'
+                                                     'color: #ea0e0e;')
                 self.recoverCode.error.setAlignment(QtCore.Qt.AlignCenter)
                 self.recoverCode.error.setText(self.parser.config.error_code_message)
             else:
@@ -379,5 +374,3 @@ class Authorization(QtWidgets.QDialog, window_login.Ui_Authorization):
                 self.windowMainShow()
         except Exception as ex:
             print(ex)
-
-
