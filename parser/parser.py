@@ -30,8 +30,7 @@ class Parser(metaclass=ParserMeta):
             if (auth_data := self.database.get_auth_data(login)) is not None:
                 return scrt.get_answer_check_password(auth_data[2], password, self.config)
             else:
-                print("ВВЕДЕНЫ НЕВЕРНЫЕ ДАННЫЕ ИЛИ ИХ НЕТ В БД")
-                return
+                return self.config.error_code
         response = self.session.post(self.config.auth_url, Config.get_auth_data(login, password))
         return self.database.insert_auth_data(response, login, password, self.config)
 
