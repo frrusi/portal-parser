@@ -17,7 +17,7 @@ def main():
     secondary_utils = SecondaryUtils()
     exceptions = Exceptions(config)
 
-    database = DataBase("database.sqlite3", config, parser_utils, security_utils)
+    database = DataBase("database.sqlite3", config, parser_utils, security_utils, exceptions)
     parser = Parser(database, config, exceptions, parser_utils, security_utils, secondary_utils)
 
     # database.delete_database()
@@ -32,7 +32,7 @@ def main():
     parser.get_csrf()
     print(parser.csrf)
 
-    group_name = "П1-19"
+    group_name = "П3-19"
     if database.select_query(select(models.Group), 2) is None:
         parser.get_groups()
 
