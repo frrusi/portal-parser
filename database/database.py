@@ -6,15 +6,17 @@ from sqlalchemy import create_engine, MetaData, select, delete, insert, update
 from sqlalchemy.sql.functions import coalesce
 
 from database import models
-from utils.parser_utils import get_auth_code, get_datetime_now
-from utils.security_utils import hash_password
 
 
 class DataBase:
-    def __init__(self, name):
+    def __init__(self, name, config, parser_utils, security_utils):
         self.name = name
         self.metadata = MetaData()
         self.engine = create_engine(f'sqlite:///{name}')
+
+        self.config = config
+        self.parser_utils = parser_utils
+        self.security_utils = security_utils
 
     def delete_database(self):
         if os.path.exists(self.name):
@@ -110,11 +112,11 @@ class DataBase:
     def get_auth_data(self, login):
         return self.select_query(select(models.Authorized).where(models.Authorized.login == login), 2)
 
-    def insert_auth_data(self, response, login, password, config):
-        if str(code := get_auth_code(response, config)) == config.successful_code:
-            hashed_password = hash_password(password)
+    def insert_auth_data(self, response, login, password):
+        if str(code := self.parser_utils.get_auth_code(response)) == self.config.successful_code:
+            hashed_password = self.security_utils.hash_password(password)
             last_index = self.get_last_index(select(models.Authorized.id))
-            date, time = get_datetime_now()
+            date, time = self.parser_utils.get_datetime_now()
             if self.get_auth_data(login) is None:
                 self.insert_query(models.Authorized, last_index, login, hashed_password, date, time)
             else:

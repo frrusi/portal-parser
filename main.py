@@ -3,22 +3,28 @@ from sqlalchemy import select
 from config.config_parser import ConfigParser
 from database import models
 from database.database import DataBase
+from exceptions import Exceptions
 from parser.parser import Parser
+from utils.parser_utils import ParserUtils
+from utils.secondary_utils import SecondaryUtils
+from utils.security_utils import SecurityUtils
 
 
 def main():
     config = ConfigParser("config/config.ini")
-    database = DataBase("database.sqlite3")
-    parser = Parser(database, config)
+    parser_utils = ParserUtils(config)
+    security_utils = SecurityUtils(config)
+    secondary_utils = SecondaryUtils()
+    exceptions = Exceptions(config)
+
+    database = DataBase("database.sqlite3", config, parser_utils, security_utils)
+    parser = Parser(database, config, exceptions, parser_utils, security_utils, secondary_utils)
 
     # database.delete_database()
     # database.create_all_tables()
 
     code = parser.auth("sobovyydv.19", "7*AGhjxz;kmvnlz")
-
-    if code != '200':
-        print("Авторизация не пройдена")
-        exit(0)
+    exceptions.check_auth(code)
 
     parser.get_user_id()
     print(parser.user_id)
@@ -26,7 +32,7 @@ def main():
     parser.get_csrf()
     print(parser.csrf)
 
-    group_name = "П2-19"
+    group_name = "П1-19"
     if database.select_query(select(models.Group), 2) is None:
         parser.get_groups()
 
@@ -43,16 +49,16 @@ def main():
         parser.get_marks(group_name, semester, subject_name)
 
     print(database.get_all_groups())
-    print(database.get_all_semesters("П2-19"))
+    print(database.get_all_semesters("П1-19"))
 
-    print(database.get_all_subjects("П2-19", 5))
-    print(database.get_all_subjects("П2-19", 5, "text"))
+    print(database.get_all_subjects("П1-19", 5))
+    print(database.get_all_subjects("П1-19", 5, "text"))
 
-    print(database.get_all_students("П2-19"))
-    print(database.get_all_students("П2-19", "text"))
+    print(database.get_all_students("П1-19"))
+    print(database.get_all_students("П1-19", "text"))
 
-    print(database.get_group("П2-19"))
-    print(database.get_group(245))
+    print(database.get_group("П1-19"))
+    print(database.get_group(244))
 
 
 if __name__ == "__main__":
