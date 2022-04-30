@@ -8,7 +8,8 @@ from sqlalchemy import select
 from database import models
 from database.database import DataBase
 from utils import parser_utils as pt
-from utils import security_utils as st
+from utils import security_utils as scrt
+from utils import secondary_utils as scnt
 from parser.parser_meta import ParserMeta
 from config.config import Config
 
@@ -25,9 +26,11 @@ class Parser(metaclass=ParserMeta):
         self.user_id = None
 
     def auth(self, login: str, password: str):
-        if (auth_data := self.database.get_auth_data(login)) is not None:
-            return st.get_answer_check_password(auth_data[2], password, self.config)
-
+        if not scnt.check_internet_by_url(self.config.url):
+            if (auth_data := self.database.get_auth_data(login)) is not None:
+                return scrt.get_answer_check_password(auth_data[2], password, self.config)
+            else:
+                return self.config.error_code
         response = self.session.post(self.config.auth_url, Config.get_auth_data(login, password))
         return self.database.insert_auth_data(response, login, password, self.config)
 

@@ -1,4 +1,7 @@
+from sqlalchemy import select
+
 from config.config_parser import ConfigParser
+from database import models
 from database.database import DataBase
 from parser.parser import Parser
 
@@ -23,12 +26,21 @@ def main():
     parser.get_csrf()
     print(parser.csrf)
 
-    database.delete_database()
-    database.create_all_tables()
+    group_name = "П2-19"
+    if database.select_query(select(models.Group), 2) is None:
+        parser.get_groups()
 
-    parser.get_groups()
-    parser.get_journal("П2-19")
-    parser.get_marks("П2-19", 5, "Иностранный язык")
+    group_id = database.get_group(group_name)
+    if database.select_query(select(models.Subject).where(models.Subject.group == group_id), 2) is None:
+        parser.get_journal(group_name)
+
+    semester = 5
+    subject_name = "Иностранный язык"
+    subject_id = database.get_subject((models.Subject.id,), subject_name, str(semester), group_name)[0]
+    if database.select_query(select(models.Marks).where(models.Marks.group == group_id,
+                                                        models.Marks.semester == semester,
+                                                        models.Marks.subject == subject_id), 2) is None:
+        parser.get_marks(group_name, semester, subject_name)
 
     print(database.get_all_groups())
     print(database.get_all_semesters("П2-19"))

@@ -2,7 +2,7 @@ import os
 from itertools import chain
 from typing import Union
 
-from sqlalchemy import create_engine, MetaData, select, delete, insert
+from sqlalchemy import create_engine, MetaData, select, delete, insert, update
 from sqlalchemy.sql.functions import coalesce
 
 from database import models
@@ -21,7 +21,8 @@ class DataBase:
             os.remove(self.name)
 
     def create_all_tables(self):
-        models.Base.metadata.create_all(self.engine)
+        if not os.path.exists(self.name):
+            models.Base.metadata.create_all(self.engine)
 
     def select_query(self, query, return_type: int):
         with self.engine.connect() as connection:
@@ -35,6 +36,10 @@ class DataBase:
     def insert_query(self, table, *args):
         with self.engine.connect() as connection:
             connection.execute(insert(table).values(args))
+
+    def update_query(self, query):
+        with self.engine.connect() as connection:
+            connection.execute(query)
 
     def to_sql_query(self, table_object, table_name: str, index=None):
         with self.engine.connect() as connection:
@@ -110,7 +115,14 @@ class DataBase:
             hashed_password = hash_password(password)
             last_index = self.get_last_index(select(models.Authorized.id))
             date, time = get_datetime_now()
-            self.insert_query(models.Authorized, last_index, login, hashed_password, date, time)
+            if self.get_auth_data(login) is None:
+                self.insert_query(models.Authorized, last_index, login, hashed_password, date, time)
+            else:
+                self.update_query(update(models.Authorized).where(
+                    models.Authorized.login == login
+                ).values(password=hashed_password,
+                         date=date,
+                         time=time))
         return code
 
     def get_data(self, subject: str, semester: str):
