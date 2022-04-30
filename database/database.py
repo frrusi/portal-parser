@@ -21,7 +21,8 @@ class DataBase:
             os.remove(self.name)
 
     def create_all_tables(self):
-        models.Base.metadata.create_all(self.engine)
+        if not os.path.exists(self.name):
+            models.Base.metadata.create_all(self.engine)
 
     def select_query(self, query, return_type: int):
         with self.engine.connect() as connection:
