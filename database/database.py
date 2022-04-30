@@ -5,7 +5,7 @@ from typing import Union
 from sqlalchemy import create_engine, MetaData, select, delete, insert
 from sqlalchemy.sql.functions import coalesce
 
-import models
+from database import models
 from utils.parser_utils import get_auth_code
 from utils.security_utils import hash_password
 
