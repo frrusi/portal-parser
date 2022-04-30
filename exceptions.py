@@ -19,7 +19,11 @@ class Exceptions:
         if response_code != self.config.successful_code:
             raise AuthError(self.config.auth_error)
 
-    @staticmethod
-    def check_none(value):
+    def check_none(self, value):
         if value is None:
-            raise ValueError("Value must not be None")
+            raise ValueError(self.config.none_value_error)
+
+    def check_value_by_number_range(self, number_range: tuple, value: int):
+        if value not in number_range:
+            raise ValueError(self.config.value_error.format(possible_values=number_range))
+
