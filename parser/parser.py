@@ -30,66 +30,10 @@ class Parser(metaclass=ParserMeta):
         if not self.scnt.check_internet_by_url(self.config.url):
             if (auth_data := self.database.get_auth_data(login)) is not None:
                 return self.scrt.get_answer_check_password(auth_data[2], password)
-            else:
-                return self.config.error_code
+            return self.config.error_code
+
         response = self.session.post(self.config.auth_url, Config.get_auth_data(login, password))
         return self.database.insert_auth_data(response, login, password)
-
-    def reset_password_get_email(self, email: str):
-        self.exceptions.check_none(self.csrf)
-
-        response = self.session.post(self.config.recovery_url,
-                                     Config.get_reset_password_data(email, self.csrf))
-
-        self.pt.check_reset_password_message(self.pt.get_reset_password_message(self.session, self.config.recovery_url),
-                                             self.config.enter_email_message,
-                                             self.config.email_error)
-
-        code = input(self.config.enter_code_message + ": ")
-        self.pt.life_loop_thread(self.reset_password_get_code, True, response, code)
-
-    def reset_password_get_code(self, response: requests.models.Response, code: str):
-        self.exceptions.check_none(self.csrf)
-
-        self.session.post(self.config.recovery_url,
-                          Config.get_recovery_code_data(code, self.csrf),
-                          cookies=response.cookies)
-
-        self.pt.check_reset_password_message(self.pt.get_reset_password_message(self.session, self.config.recovery_url),
-                                             self.config.enter_code_message,
-                                             self.config.code_message_error)
-
-    def get_user_id(self):
-        tree = self.pt.get_tree(self.session, self.config.url)
-        self.user_id = re.search(
-            r'sender_id : \d*', str(tree.xpath('//script[contains(text(), "sender_id")]/text()'))
-        ).group(0).split(':')[-1].strip()
-
-    def get_csrf(self):
-        tree = self.pt.get_tree(self.session, self.config.url)
-        csrf = str(tree.xpath('//script[contains(text(),"csrf")]/text()'))
-        self.csrf = re.search(r'csrf.*,', csrf).group(0)[:-1].split()[-1].replace("'", '')
-
-    def change_avatar(self, path_image: str):
-        response = self.session.post(self.config.upload_photo_url.format(id=self.user_id),
-                                     files={'avatar_file': open(path_image, 'rb')})
-        change_avatar = f'/{response.json()["files"][0]["file"]}'
-        self.session.post(self.config.profile_data_url, {'change_avatar': change_avatar, 'csrf': self.csrf},
-                          cookies=response.cookies)
-
-    def change_email(self, email: str):
-        self.exceptions.check_none(self.csrf)
-
-        self.session.post(self.config.profile_data_url,
-                          Config.get_change_email_data(email, self.csrf))
-
-    def change_password(self, password: str):
-        self.session.post(self.config.profile_data_url,
-                          Config.get_change_password_data(password, self.csrf))
-
-    def get_full_info_about_auth_user(self):
-        tree = self.pt.get_tree(self.session, self.config.user_url)
-        return [check.strip() for check in tree.xpath('//div[@class="info"]/text()[normalize-space()]')]
 
     def get_groups(self):
         date, time, tree = self.pt.get_datetime_and_tree(self.session, self.config.groups_url.format(course='0'))
@@ -168,3 +112,59 @@ class Parser(metaclass=ParserMeta):
                                                  'lesson_date', 'date', 'time'], index=range(index, index + len(marks)))
 
             self.database.to_sql_query(marks, 'marks')
+
+    def get_user_id(self):
+        tree = self.pt.get_tree(self.session, self.config.url)
+        self.user_id = re.search(r'sender_id : \d*',
+                                 str(tree.xpath('//script[contains(text(), "sender_id")]/text()'))
+                                 ).group(0).split(':')[-1].strip()
+
+    def get_csrf(self):
+        tree = self.pt.get_tree(self.session, self.config.url)
+        csrf = str(tree.xpath('//script[contains(text(),"csrf")]/text()'))
+        self.csrf = re.search(r'csrf.*,', csrf).group(0)[:-1].split()[-1].replace("'", '')
+
+    def get_full_info_about_auth_user(self):
+        tree = self.pt.get_tree(self.session, self.config.user_url)
+        return [check.strip() for check in tree.xpath('//div[@class="info"]/text()[normalize-space()]')]
+
+    def reset_password_get_email(self, email: str):
+        self.exceptions.check_none(self.csrf)
+
+        response = self.session.post(self.config.recovery_url,
+                                     Config.get_reset_password_data(email, self.csrf))
+
+        self.pt.check_reset_password_message(self.pt.get_reset_password_message(self.session),
+                                             self.config.enter_email_message,
+                                             self.config.email_error)
+
+        code = input(self.config.enter_code_message + ": ")
+        self.pt.life_loop_thread(self.reset_password_get_code, True, response, code)
+
+    def reset_password_get_code(self, response: requests.models.Response, code: str):
+        self.exceptions.check_none(self.csrf)
+
+        self.session.post(self.config.recovery_url,
+                          Config.get_recovery_code_data(code, self.csrf),
+                          cookies=response.cookies)
+
+        self.pt.check_reset_password_message(self.pt.get_reset_password_message(self.session),
+                                             self.config.enter_code_message,
+                                             self.config.code_message_error)
+
+    def change_avatar(self, path_image: str):
+        response = self.session.post(self.config.upload_photo_url.format(id=self.user_id),
+                                     files={'avatar_file': open(path_image, 'rb')})
+        change_avatar = f'/{response.json()["files"][0]["file"]}'
+        self.session.post(self.config.profile_data_url, {'change_avatar': change_avatar, 'csrf': self.csrf},
+                          cookies=response.cookies)
+
+    def change_email(self, email: str):
+        self.exceptions.check_none(self.csrf)
+
+        self.session.post(self.config.profile_data_url,
+                          Config.get_change_email_data(email, self.csrf))
+
+    def change_password(self, password: str):
+        self.session.post(self.config.profile_data_url,
+                          Config.get_change_password_data(password, self.csrf))

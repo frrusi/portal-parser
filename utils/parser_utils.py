@@ -62,7 +62,7 @@ class ParserUtils:
         tree = self.get_tree(session, url)
         return date, time, tree
 
-    def get_reset_password_message(self, session: sessions.Session, url: str) -> str:
+    def get_reset_password_message(self, session: sessions.Session) -> str:
         """Функция получения сообщения во время восстановления пароля
 
         Args:
@@ -70,7 +70,7 @@ class ParserUtils:
             url: URL для обращения
         """
 
-        tree = self.get_tree(session, url)
+        tree = self.get_tree(session, self.config.recovery_url)
         return tree.xpath('//form[@class="access_recovery_form"]/input')[0].get('placeholder')
 
     @staticmethod
