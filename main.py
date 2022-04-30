@@ -20,10 +20,7 @@ def main():
     database = DataBase("database.sqlite3", config, parser_utils, security_utils, exceptions)
     parser = Parser(database, config, exceptions, parser_utils, security_utils, secondary_utils)
 
-    # database.delete_database()
-    # database.create_all_tables()
-
-    code = parser.auth("sobovyydv.19", "7*AGhjxz;kmvnlz")
+    code = parser.auth("LOGIN", "PASSWORD")
     exceptions.check_auth(code)
 
     parser.get_user_id()
