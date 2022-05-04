@@ -26,3 +26,4 @@ class Exceptions:
     def check_value_by_number_range(self, number_range: tuple, value: int):
         if value not in number_range:
             raise ValueError(self.config.value_error.format(possible_values=number_range))
+
