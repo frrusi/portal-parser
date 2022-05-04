@@ -1,16 +1,57 @@
-from configparser import SafeConfigParser
+class Config:
+    @staticmethod
+    def get_auth_data(login, password):
+        return {
+            'login': login,
+            'pass': password,
+            'auth': '1',
+            'ajax': '1'
+        }
 
+    @staticmethod
+    def get_headers_data(accept, user_agent):
+        return {
+            'accept': accept,
+            'user-agent': user_agent
+        }
 
-section_names = 'urls', 'codes', 'messages', 'headers'
+    @staticmethod
+    def get_reset_password_data(email, csrf):
+        return {
+            'recoverystr': email,
+            'csrf': csrf,
+            'checkrecover': 'Применить'
+        }
 
+    @staticmethod
+    def get_recovery_code_data(code, csrf):
+        return {
+            'recoverycode': code,
+            'csrf': csrf,
+            'checkcode': 'Применить'
+        }
 
-class ConfigParser:
-    def __init__(self, *file_names):
-        parser = SafeConfigParser()
-        found = parser.read(file_names, encoding="utf-8")
-        if not found:
-            raise FileNotFoundError('No config file found')
-        for name in section_names:
-            self.__dict__.update(parser.items(name))
+    @staticmethod
+    def get_change_password_data(password, csrf):
+        return {
+            'changepass': '1',
+            'newpass': password,
+            'csrf': csrf
+        }
 
+    @staticmethod
+    def get_change_email_data(email, csrf):
+        return {
+            'changemail': '1',
+            'mail': email,
+            'aj': '1',
+            'csrf': csrf
+        }
 
+    @staticmethod
+    def get_search_data(group):
+        return {
+            'searchPeople': '1', 'limit': '30',
+            'offset': '0', 'str': f'!{group}',
+            'type': '0', 'online': '0'
+        }
