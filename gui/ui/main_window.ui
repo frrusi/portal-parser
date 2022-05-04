@@ -237,7 +237,7 @@ QComboBox QAbstractItemView {
      </rect>
     </property>
     <property name="currentIndex">
-     <number>4</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="profile_page">
      <widget class="QFrame" name="main_information">
@@ -381,7 +381,7 @@ QComboBox QAbstractItemView {
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../../icons/change_image.png</pixmap>
+        <pixmap>../icons/change_image.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -785,7 +785,7 @@ QComboBox QAbstractItemView {
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../../icons/journal_semester.png</pixmap>
+        <pixmap>../icons/journal_semester.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -872,7 +872,7 @@ QComboBox QAbstractItemView {
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../../icons/journal_subject.png</pixmap>
+        <pixmap>../icons/journal_subject.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -894,7 +894,7 @@ QComboBox QAbstractItemView {
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../../icons/synchronization.png</pixmap>
+        <pixmap>../icons/synchronization.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -913,7 +913,7 @@ QComboBox QAbstractItemView {
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../../icons/synchronization.png</pixmap>
+        <pixmap>../icons/synchronization.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -932,7 +932,7 @@ QComboBox QAbstractItemView {
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../../icons/synchronization.png</pixmap>
+        <pixmap>../icons/synchronization.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -961,7 +961,7 @@ QComboBox QAbstractItemView {
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../../icons/journal_group.png</pixmap>
+        <pixmap>../icons/journal_group.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -1078,7 +1078,7 @@ QComboBox QAbstractItemView {
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../../icons/change_mail.png</pixmap>
+        <pixmap>../icons/change_mail.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -1123,7 +1123,7 @@ QComboBox QAbstractItemView {
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../../icons/change_password.png</pixmap>
+        <pixmap>../icons/key-chain.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -1307,7 +1307,7 @@ QComboBox QAbstractItemView {
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../../icons/sql-server.png</pixmap>
+        <pixmap>../icons/sql-server.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -1369,7 +1369,7 @@ QComboBox QAbstractItemView {
       <property name="frameShadow">
        <enum>QFrame::Raised</enum>
       </property>
-      <widget class="QLabel" name="label">
+      <widget class="QLabel" name="developers_icon">
        <property name="geometry">
         <rect>
          <x>850</x>
@@ -1382,13 +1382,13 @@ QComboBox QAbstractItemView {
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../../icons/mammoth_icon.png</pixmap>
+        <pixmap>../icons/mammoth_icon.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
        </property>
       </widget>
-      <widget class="QLabel" name="label_2">
+      <widget class="QLabel" name="developers_name">
        <property name="geometry">
         <rect>
          <x>840</x>
@@ -1412,7 +1412,7 @@ QComboBox QAbstractItemView {
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <widget class="QLabel" name="label_3">
+      <widget class="QLabel" name="program_version">
        <property name="geometry">
         <rect>
          <x>390</x>
@@ -1430,7 +1430,7 @@ QComboBox QAbstractItemView {
         <string>Версия программы: alpha</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_4">
+      <widget class="QLabel" name="description_program_title">
        <property name="geometry">
         <rect>
          <x>20</x>
@@ -1449,7 +1449,7 @@ QComboBox QAbstractItemView {
         <string>Описание программы</string>
        </property>
       </widget>
-      <widget class="QLabel" name="label_5">
+      <widget class="QLabel" name="description_program">
        <property name="geometry">
         <rect>
          <x>30</x>
@@ -1557,7 +1557,7 @@ QComboBox QAbstractItemView {
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>../../icons/navbar_profile.png</pixmap>
+      <pixmap>../icons/navbar_profile.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1579,7 +1579,7 @@ QComboBox QAbstractItemView {
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>../../icons/navbar_journal.png</pixmap>
+      <pixmap>../icons/navbar_journal.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1604,7 +1604,7 @@ QComboBox QAbstractItemView {
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>../../icons/navbar_settings.png</pixmap>
+      <pixmap>../icons/navbar_settings.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1626,7 +1626,7 @@ QComboBox QAbstractItemView {
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>../../icons/navbar_help.png</pixmap>
+      <pixmap>../icons/navbar_help.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
