@@ -1,3 +1,5 @@
+import re
+
 import requests
 
 from config.config import Config
@@ -22,6 +24,12 @@ class ParserUserSettings:
     def get_full_info_about_auth_user(self):
         tree = self.pt.get_tree(self.session, self.config.user_url)
         return [check.strip() for check in tree.xpath('//div[@class="info"]/text()[normalize-space()]')]
+
+    def get_user_avatar(self):
+        tree = self.pt.get_tree(self.session, self.config.user_url)
+        return re.search(r'/(\S*).png',
+                         tree.xpath('//div[@class="user_rating"]/div[@class="users_avatar_wrap"]')[0].get('onclick')
+                         ).group(0)
 
     def reset_password_get_email(self, email: str):
         self.exceptions.check_none(self.csrf)

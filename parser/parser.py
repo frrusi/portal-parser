@@ -34,10 +34,6 @@ class Parser(ParserUserSettings, metaclass=ParserMeta):
         csrf = str(tree.xpath('//script[contains(text(),"csrf")]/text()'))
         self.csrf = re.search(r'csrf.*,', csrf).group(0)[:-1].split()[-1].replace("'", '')
 
-    def get_full_info_about_auth_user(self):
-        tree = self.pt.get_tree(self.session, self.config.user_url)
-        return [check.strip() for check in tree.xpath('//div[@class="info"]/text()[normalize-space()]')]
-
     def get_groups(self):
         date, time, tree = self.pt.get_datetime_and_tree(self.session, self.config.groups_url.format(course='0'))
         last_course = int(tree.xpath('//select[@name="k"]/option[last()]/text()')[0])

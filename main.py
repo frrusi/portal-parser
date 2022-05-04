@@ -29,6 +29,8 @@ def main():
     parser.get_csrf()
     print(parser.csrf)
 
+    secondary_utils.get_image(config.url + parser.get_user_avatar())
+
     group_name = "П3-19"
     if database.select_query(select(models.Group), 2) is None:
         parser.get_groups()
