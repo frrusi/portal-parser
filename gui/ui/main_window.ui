@@ -14,60 +14,71 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget[objectName=&quot;profile_page&quot;] { background-color: #f6f8fa; }
-QWidget[objectName=&quot;journal_page&quot;] { background-color: #f6f8fa; }
-QWidget[objectName=&quot;settings_page&quot;] { background-color: #f6f8fa; }
-QWidget[objectName=&quot;help_page&quot;] { background-color: #f6f8fa; }
+   <string notr="true">QWidget[objectName=&quot;profile_page&quot;],
+QWidget[objectName=&quot;journal_page&quot;],
+QWidget[objectName=&quot;settings_page&quot;],
+QWidget[objectName=&quot;help_page&quot;],
 QWidget[objectName=&quot;change_page&quot;] { background-color: #f6f8fa; }
 
 
-QFrame[objectName=&quot;navigation_bar&quot;] { background-color: #19202e }
-QFrame[objectName=&quot;main_information&quot;] { background-color: #ffffff }
+QFrame[objectName=&quot;main_information&quot;],
+QFrame[objectName=&quot;journal_choice&quot;],
+QFrame[objectName=&quot;change_object&quot;],
+QFrame[objectName=&quot;settings_program_frame&quot;],
+QFrame[objectName=&quot;about_program_frame&quot;],
 QFrame[objectName=&quot;about_me_main&quot;] { background-color: #ffffff }
-QFrame[objectName=&quot;about_me_secondary&quot; ]{ border-top: 1px solid #f7f7f7;  border-bottom: 1px solid #f7f7f7; }
-QFrame[objectName=&quot;journal_choice&quot;] { background-color: #ffffff }
-QFrame[objectName=&quot;change_object&quot;] { background-color: #ffffff }
 
 
-QPushButton[objectName=&quot;profile_menu&quot;] { background: transparent; }
-QPushButton[objectName=&quot;journal_menu&quot;] { background: transparent; }  
-QPushButton[objectName=&quot;settings_menu&quot;] { background: transparent; }  
-QPushButton[objectName=&quot;help_menu&quot;] { background: transparent; }  
-QPushButton[objectName=&quot;image_change&quot;] { background: transparent; }
-QPushButton[objectName=&quot;group_sync&quot;] { background: transparent; }  
-QPushButton[objectName=&quot;semester_sync&quot;] { background: transparent; }  
-QPushButton[objectName=&quot;subject_sync&quot;] { background: transparent; }    
+QFrame[objectName=&quot;navigation_bar&quot;] { background-color: #19202e }
+
+
+QFrame[objectName=&quot;about_me_secondary&quot; ] { border-top: 1px solid #f7f7f7;  border-bottom: 1px solid #f7f7f7; }
+
+
+QPushButton[objectName=&quot;profile_menu&quot;],
+QPushButton[objectName=&quot;journal_menu&quot;],
+QPushButton[objectName=&quot;settings_menu&quot;],
+QPushButton[objectName=&quot;help_menu&quot;],
+QPushButton[objectName=&quot;image_change&quot;],
+QPushButton[objectName=&quot;group_sync&quot;],
+QPushButton[objectName=&quot;semester_sync&quot;],
+QPushButton[objectName=&quot;subject_sync&quot;] { background: transparent; }
+
+
 QPushButton[objectName=&quot;settings&quot;] {
 	 background: transparent;
 	 border: 2px solid #474b51;
 	 border-radius: 5px;
 	 color: #474b51; 
 }
+
 QPushButton[objectName=&quot;settings&quot;]:hover {
 	border: 2px solid #474b51;
 	border-radius: 7px;
 	background-color: #474b51;
 	color: white;
 }
+
 QPushButton[objectName=&quot;settings&quot;]:pressed {
 	border: 2px solid #474b51;
 	border-radius: 7px;
 	background-color: #474b51;
 	color: white;
 }
+
 QPushButton[objectName=&quot;journal_open&quot;] {
 	 background: transparent;
-	 border: 1px solid #f9f9f9;
+	 border: 1px solid #c1c3d0;
 	 border-radius: 5px;
 	 color: #474b51; 
 }
 QPushButton[objectName=&quot;journal_open&quot;]:hover {
-	border: 1px solid #c1c3d0;
+	border: 1px solid #000000;
 	border-radius: 7px;
 	background-color: transparent;
 }
 QPushButton[objectName=&quot;journal_open&quot;]:pressed {
-	border: 1px solid #c1c3d0;
+	border: 1px solid #000000;
 	border-radius: 7px;
 	background-color: transparent;
 }
@@ -107,6 +118,25 @@ QPushButton[objectName=&quot;password_change&quot;]:pressed {
 	background-color: #c1c3d0;
 	color: white;
 }
+QPushButton[objectName=&quot;path_db_button&quot;] {
+	 background: transparent;
+	 border: 2px solid #f7f7f7;
+	 border-radius: 5px;
+	 color: #474b51; 
+}
+QPushButton[objectName=&quot;path_db_button&quot;]:hover {
+	border: 2px solid #c1c3d0;
+	border-radius: 7px;
+	background-color: #c1c3d0;
+	color: white;
+}
+QPushButton[objectName=&quot;path_db_button&quot;]:pressed {
+	border: 2px solid #c1c3d0;
+	border-radius: 7px;
+	background-color: #c1c3d0;
+	color: white;
+}
+
 
 
 QLabel[objectName=&quot;date&quot;] { color: #c8c8c8; }
@@ -118,7 +148,9 @@ QLabel[objectName=&quot;year_title&quot;] { color: #c8c8c8 }
 QLabel[objectName=&quot;group_title&quot;] { color: #c8c8c8 }
 QLabel[objectName=&quot;semester_title&quot;] { color: #c8c8c8 }
 QLabel[objectName=&quot;subject_title&quot;] { color: #c8c8c8 }
-QLabel[objectName=&quot;settings_subtitle&quot;] { color: #6c6d72 }
+QLabel[objectName=&quot;settings_user_subtitle&quot;],
+QLabel[objectName=&quot;about_program_subtitle&quot;],
+QLabel[objectName=&quot;journal_subtitle&quot;], QLabel[objectName=&quot;settings_program_subtitle&quot;] { color: #6c6d72 }
 QLabel[objectName=&quot;image&quot;] {
 	border-radius: 65px;
 	min-height: 130px;
@@ -133,7 +165,66 @@ QLabel[objectName=&quot;image&quot;] {
 QLineEdit[objectName=&quot;email_entry&quot;] { border: 1px solid #f7f7f7; border-radius: 4px;}
 QLineEdit[objectName=&quot;email_entry&quot;]:hover { border: 1px solid #c1c3d0;  border-radius: 4px;}
 QLineEdit[objectName=&quot;password_entry&quot;] { border: 1px solid #f7f7f7; border-radius: 4px;}
-QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3d0;  border-radius: 4px;}</string>
+QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3d0;  border-radius: 4px;}
+QLineEdit[objectName=&quot;path_db_line&quot;] { border: 1px solid #f7f7f7; border-radius: 4px;}
+QLineEdit[objectName=&quot;path_db_line&quot;]:hover { border: 1px solid #c1c3d0;  border-radius: 4px;}
+
+
+
+QComboBox {
+    border: 1px solid #c8c8c8;
+    border-radius: 3px;
+    padding: 1px 18px 1px 3px;
+    min-width: 6em;
+}
+
+QComboBox:editable {
+    background: white;
+}
+
+QComboBox:!editable, QComboBox::drop-down:editable {
+     background: white;
+}
+
+/* QComboBox gets the &quot;on&quot; state when the popup is open */
+QComboBox:!editable:on, QComboBox::drop-down:editable:on {
+    background: white;
+}
+
+QComboBox:on { /* shift the text when the popup opens */
+    padding-top: 3px;
+    padding-left: 4px;
+}
+
+QComboBox::drop-down {
+    subcontrol-origin: padding;
+    subcontrol-position: top right;
+    width: 15px;
+
+    border-left-width: 1px;
+    border-left-color: white;
+    border-left-style: solid; /* just a single line */
+    border-top-right-radius: 3px; /* same radius as the QComboBox */
+    border-bottom-right-radius: 3px;
+}
+
+QComboBox::down-arrow {
+	padding: 0px 5px 0px 0px;
+    image: url(D:/portal-parser/icons/down-arrow.png);
+}
+
+QComboBox::down-arrow:on { /* shift the arrow when popup is open */
+    top: 1px;
+    left: 1px;
+}
+
+QComboBox QAbstractItemView {
+    border: 1px solid #c8c8c8;
+	color: black;
+	selection-color: black;
+    selection-background-color: #c8c8c8;
+	min-height: 50px;
+}</string>
   </property>
   <widget class="QWidget" name="centralwidget">
    <widget class="QStackedWidget" name="stackedWidget">
@@ -146,7 +237,7 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>4</number>
     </property>
     <widget class="QWidget" name="profile_page">
      <widget class="QFrame" name="main_information">
@@ -290,7 +381,7 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>icons/image_icon.png</pixmap>
+        <pixmap>../../icons/change_image.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -586,10 +677,10 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
      <widget class="QFrame" name="journal_choice">
       <property name="geometry">
        <rect>
-        <x>180</x>
-        <y>120</y>
-        <width>651</width>
-        <height>171</height>
+        <x>30</x>
+        <y>110</y>
+        <width>931</width>
+        <height>241</height>
        </rect>
       </property>
       <property name="frameShape">
@@ -601,11 +692,17 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
       <widget class="QComboBox" name="group_choice">
        <property name="geometry">
         <rect>
-         <x>40</x>
-         <y>30</y>
-         <width>161</width>
+         <x>50</x>
+         <y>70</y>
+         <width>171</width>
          <height>31</height>
         </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="editable">
+        <bool>true</bool>
        </property>
        <item>
         <property name="text">
@@ -614,12 +711,12 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
        </item>
        <item>
         <property name="text">
-         <string>П2-19</string>
+         <string>П1-19</string>
         </property>
        </item>
        <item>
         <property name="text">
-         <string>П1-19</string>
+         <string>П2-19</string>
         </property>
        </item>
        <item>
@@ -631,8 +728,8 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
       <widget class="QPushButton" name="group_sync">
        <property name="geometry">
         <rect>
-         <x>100</x>
-         <y>60</y>
+         <x>120</x>
+         <y>120</y>
          <width>31</width>
          <height>31</height>
         </rect>
@@ -647,11 +744,17 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
       <widget class="QComboBox" name="semester_choice">
        <property name="geometry">
         <rect>
-         <x>260</x>
-         <y>30</y>
-         <width>161</width>
+         <x>390</x>
+         <y>70</y>
+         <width>171</width>
          <height>31</height>
         </rect>
+       </property>
+       <property name="styleSheet">
+        <string notr="true"/>
+       </property>
+       <property name="editable">
+        <bool>true</bool>
        </property>
        <item>
         <property name="text">
@@ -659,13 +762,13 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
         </property>
        </item>
       </widget>
-      <widget class="QLabel" name="semester_title">
+      <widget class="QLabel" name="semester_icon">
        <property name="geometry">
         <rect>
-         <x>260</x>
-         <y>10</y>
-         <width>161</width>
-         <height>20</height>
+         <x>460</x>
+         <y>30</y>
+         <width>31</width>
+         <height>31</height>
         </rect>
        </property>
        <property name="font">
@@ -679,7 +782,13 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
         <string notr="true"/>
        </property>
        <property name="text">
-        <string>Семестры:</string>
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>../../icons/journal_semester.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
@@ -688,14 +797,17 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
       <widget class="QComboBox" name="subject_choice">
        <property name="geometry">
         <rect>
-         <x>480</x>
-         <y>30</y>
-         <width>161</width>
+         <x>710</x>
+         <y>70</y>
+         <width>171</width>
          <height>31</height>
         </rect>
        </property>
        <property name="styleSheet">
         <string notr="true"/>
+       </property>
+       <property name="editable">
+        <bool>true</bool>
        </property>
        <item>
         <property name="text">
@@ -711,8 +823,8 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
       <widget class="QPushButton" name="subject_sync">
        <property name="geometry">
         <rect>
-         <x>450</x>
-         <y>30</y>
+         <x>780</x>
+         <y>120</y>
          <width>31</width>
          <height>31</height>
         </rect>
@@ -727,8 +839,8 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
       <widget class="QPushButton" name="journal_open">
        <property name="geometry">
         <rect>
-         <x>70</x>
-         <y>140</y>
+         <x>195</x>
+         <y>190</y>
          <width>541</width>
          <height>23</height>
         </rect>
@@ -737,13 +849,13 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
         <string>Открыть Журнал</string>
        </property>
       </widget>
-      <widget class="QLabel" name="subject_title">
+      <widget class="QLabel" name="subject_icon">
        <property name="geometry">
         <rect>
-         <x>480</x>
-         <y>10</y>
-         <width>161</width>
-         <height>20</height>
+         <x>780</x>
+         <y>30</y>
+         <width>31</width>
+         <height>31</height>
         </rect>
        </property>
        <property name="font">
@@ -757,76 +869,82 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
         <string notr="true"/>
        </property>
        <property name="text">
-        <string>Предметы:</string>
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>../../icons/journal_subject.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="group_sync_icon">
+       <property name="geometry">
+        <rect>
+         <x>120</x>
+         <y>120</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>../../icons/synchronization.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="semester_sync_icon">
+       <property name="geometry">
+        <rect>
+         <x>460</x>
+         <y>120</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>../../icons/synchronization.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="subject_sync_icon">
+       <property name="geometry">
+        <rect>
+         <x>780</x>
+         <y>120</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>../../icons/synchronization.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
        </property>
       </widget>
       <widget class="QLabel" name="group_icon">
        <property name="geometry">
         <rect>
-         <x>100</x>
-         <y>60</y>
-         <width>31</width>
-         <height>31</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="pixmap">
-        <pixmap>icons/refresh_icon.png</pixmap>
-       </property>
-       <property name="scaledContents">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QLabel" name="semester_icon">
-       <property name="geometry">
-        <rect>
-         <x>240</x>
-         <y>30</y>
-         <width>21</width>
-         <height>21</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="pixmap">
-        <pixmap>icons/refresh_icon.png</pixmap>
-       </property>
-       <property name="scaledContents">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QLabel" name="subject_icon">
-       <property name="geometry">
-        <rect>
-         <x>450</x>
+         <x>120</x>
          <y>30</y>
          <width>31</width>
          <height>31</height>
-        </rect>
-       </property>
-       <property name="text">
-        <string/>
-       </property>
-       <property name="pixmap">
-        <pixmap>icons/refresh_icon.png</pixmap>
-       </property>
-       <property name="scaledContents">
-        <bool>true</bool>
-       </property>
-      </widget>
-      <widget class="QLabel" name="group_title">
-       <property name="geometry">
-        <rect>
-         <x>40</x>
-         <y>10</y>
-         <width>161</width>
-         <height>20</height>
         </rect>
        </property>
        <property name="font">
@@ -840,39 +958,84 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
         <string notr="true"/>
        </property>
        <property name="text">
-        <string>Группы:</string>
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>../../icons/journal_group.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
        </property>
        <property name="alignment">
         <set>Qt::AlignCenter</set>
        </property>
       </widget>
-      <zorder>group_icon</zorder>
-      <zorder>subject_icon</zorder>
-      <zorder>semester_icon</zorder>
+      <widget class="QPushButton" name="semester_sync">
+       <property name="geometry">
+        <rect>
+         <x>460</x>
+         <y>120</y>
+         <width>31</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+      </widget>
+      <zorder>group_sync_icon</zorder>
+      <zorder>subject_sync_icon</zorder>
+      <zorder>semester_sync_icon</zorder>
       <zorder>group_choice</zorder>
       <zorder>group_sync</zorder>
       <zorder>semester_choice</zorder>
-      <zorder>semester_title</zorder>
+      <zorder>semester_icon</zorder>
       <zorder>subject_choice</zorder>
       <zorder>subject_sync</zorder>
       <zorder>journal_open</zorder>
-      <zorder>subject_title</zorder>
-      <zorder>group_title</zorder>
+      <zorder>subject_icon</zorder>
+      <zorder>group_icon</zorder>
+      <zorder>semester_sync</zorder>
      </widget>
-     <widget class="QPushButton" name="semester_sync">
+     <widget class="QLabel" name="journal_subtitle">
       <property name="geometry">
        <rect>
-        <x>370</x>
-        <y>220</y>
-        <width>31</width>
-        <height>31</height>
+        <x>60</x>
+        <y>80</y>
+        <width>191</width>
+        <height>21</height>
        </rect>
       </property>
-      <property name="cursor">
-       <cursorShape>PointingHandCursor</cursorShape>
+      <property name="font">
+       <font>
+        <family>Bahnschrift Light</family>
+        <pointsize>10</pointsize>
+       </font>
       </property>
       <property name="text">
-       <string/>
+       <string>Выбор параметров</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="journal_title">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>30</y>
+        <width>281</width>
+        <height>51</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Bahnschrift Light</family>
+        <pointsize>18</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Журнал</string>
       </property>
      </widget>
     </widget>
@@ -915,7 +1078,7 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>icons/mail.png</pixmap>
+        <pixmap>../../icons/change_mail.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -960,7 +1123,7 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>icons/key-chain.png</pixmap>
+        <pixmap>../../icons/change_password.png</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -1009,7 +1172,7 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
        </property>
       </widget>
      </widget>
-     <widget class="QLabel" name="settings_title">
+     <widget class="QLabel" name="settings_user_title">
       <property name="geometry">
        <rect>
         <x>30</x>
@@ -1028,7 +1191,7 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
        <string>Настройки аккаунта</string>
       </property>
      </widget>
-     <widget class="QLabel" name="settings_subtitle">
+     <widget class="QLabel" name="settings_user_subtitle">
       <property name="geometry">
        <rect>
         <x>50</x>
@@ -1049,33 +1212,256 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
      </widget>
     </widget>
     <widget class="QWidget" name="settings_page">
-     <widget class="QLabel" name="label_3">
+     <widget class="QLabel" name="settings_program_title">
       <property name="geometry">
        <rect>
-        <x>300</x>
-        <y>160</y>
-        <width>201</width>
-        <height>71</height>
+        <x>20</x>
+        <y>10</y>
+        <width>311</width>
+        <height>51</height>
        </rect>
       </property>
-      <property name="text">
-       <string>Настройки</string>
+      <property name="font">
+       <font>
+        <family>Bahnschrift Light</family>
+        <pointsize>18</pointsize>
+       </font>
       </property>
+      <property name="text">
+       <string>Настройки программы</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="settings_program_subtitle">
+      <property name="geometry">
+       <rect>
+        <x>40</x>
+        <y>60</y>
+        <width>381</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Bahnschrift Light</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Изменение настроек в соответствии с нуждами пользователя</string>
+      </property>
+     </widget>
+     <widget class="QFrame" name="settings_program_frame">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>90</y>
+        <width>931</width>
+        <height>271</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QPushButton" name="path_db_button">
+       <property name="geometry">
+        <rect>
+         <x>420</x>
+         <y>160</y>
+         <width>91</width>
+         <height>25</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>Выбрать файл</string>
+       </property>
+      </widget>
+      <widget class="QLineEdit" name="path_db_line">
+       <property name="geometry">
+        <rect>
+         <x>300</x>
+         <y>120</y>
+         <width>341</width>
+         <height>31</height>
+        </rect>
+       </property>
+       <property name="readOnly">
+        <bool>false</bool>
+       </property>
+       <property name="placeholderText">
+        <string>Полный путь до БД</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="db_icon">
+       <property name="geometry">
+        <rect>
+         <x>450</x>
+         <y>70</y>
+         <width>41</width>
+         <height>41</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>../../icons/sql-server.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
      </widget>
     </widget>
     <widget class="QWidget" name="help_page">
-     <widget class="QLabel" name="label_4">
+     <widget class="QLabel" name="about_program_title">
       <property name="geometry">
        <rect>
-        <x>290</x>
-        <y>110</y>
-        <width>211</width>
-        <height>111</height>
+        <x>30</x>
+        <y>10</y>
+        <width>311</width>
+        <height>51</height>
        </rect>
       </property>
-      <property name="text">
-       <string>Обо мне</string>
+      <property name="font">
+       <font>
+        <family>Bahnschrift Light</family>
+        <pointsize>18</pointsize>
+       </font>
       </property>
+      <property name="text">
+       <string>О программе</string>
+      </property>
+     </widget>
+     <widget class="QLabel" name="about_program_subtitle">
+      <property name="geometry">
+       <rect>
+        <x>50</x>
+        <y>60</y>
+        <width>381</width>
+        <height>21</height>
+       </rect>
+      </property>
+      <property name="font">
+       <font>
+        <family>Bahnschrift Light</family>
+        <pointsize>10</pointsize>
+       </font>
+      </property>
+      <property name="text">
+       <string>Краткая информация о программе</string>
+      </property>
+     </widget>
+     <widget class="QFrame" name="about_program_frame">
+      <property name="geometry">
+       <rect>
+        <x>30</x>
+        <y>90</y>
+        <width>941</width>
+        <height>271</height>
+       </rect>
+      </property>
+      <property name="frameShape">
+       <enum>QFrame::StyledPanel</enum>
+      </property>
+      <property name="frameShadow">
+       <enum>QFrame::Raised</enum>
+      </property>
+      <widget class="QLabel" name="label">
+       <property name="geometry">
+        <rect>
+         <x>850</x>
+         <y>20</y>
+         <width>60</width>
+         <height>60</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string/>
+       </property>
+       <property name="pixmap">
+        <pixmap>../../icons/mammoth_icon.png</pixmap>
+       </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_2">
+       <property name="geometry">
+        <rect>
+         <x>840</x>
+         <y>80</y>
+         <width>81</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Bahnschrift Light</family>
+         <pointsize>10</pointsize>
+         <weight>75</weight>
+         <bold>true</bold>
+        </font>
+       </property>
+       <property name="text">
+        <string>modern.</string>
+       </property>
+       <property name="alignment">
+        <set>Qt::AlignCenter</set>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_3">
+       <property name="geometry">
+        <rect>
+         <x>390</x>
+         <y>240</y>
+         <width>161</width>
+         <height>20</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Bahnschrift Light</family>
+        </font>
+       </property>
+       <property name="text">
+        <string>Версия программы: alpha</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_4">
+       <property name="geometry">
+        <rect>
+         <x>20</x>
+         <y>20</y>
+         <width>171</width>
+         <height>21</height>
+        </rect>
+       </property>
+       <property name="font">
+        <font>
+         <family>Bahnschrift Light</family>
+         <pointsize>10</pointsize>
+        </font>
+       </property>
+       <property name="text">
+        <string>Описание программы</string>
+       </property>
+      </widget>
+      <widget class="QLabel" name="label_5">
+       <property name="geometry">
+        <rect>
+         <x>30</x>
+         <y>50</y>
+         <width>771</width>
+         <height>171</height>
+        </rect>
+       </property>
+       <property name="text">
+        <string>------------------------------------------------------------------------------------------------------------------------------------------</string>
+       </property>
+      </widget>
      </widget>
     </widget>
    </widget>
@@ -1171,7 +1557,7 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>icons/profile_icon.png</pixmap>
+      <pixmap>../../icons/navbar_profile.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1193,7 +1579,7 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>icons/journal_icon.png</pixmap>
+      <pixmap>../../icons/navbar_journal.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1218,7 +1604,7 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>icons/settings_icon.png</pixmap>
+      <pixmap>../../icons/navbar_settings.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
@@ -1240,7 +1626,7 @@ QLineEdit[objectName=&quot;password_entry&quot;]:hover { border: 1px solid #c1c3
       <string/>
      </property>
      <property name="pixmap">
-      <pixmap>icons/help_icon.png</pixmap>
+      <pixmap>../../icons/navbar_help.png</pixmap>
      </property>
      <property name="scaledContents">
       <bool>true</bool>
