@@ -57,3 +57,5 @@ class Authorized(Base):
     id = Column(Integer, primary_key=True)
     login = Column(String, nullable=False)
     password = Column(String, nullable=False)
+    date = Column(String, nullable=False)
+    time = Column(String, nullable=False)
