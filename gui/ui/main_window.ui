@@ -210,7 +210,7 @@ QComboBox::drop-down {
 
 QComboBox::down-arrow {
 	padding: 0px 5px 0px 0px;
-    image: url(D:/portal-parser/icons/down-arrow.png);
+    image: url(D:/portal-parser/gui/icons/down-arrow.png);
 }
 
 QComboBox::down-arrow:on { /* shift the arrow when popup is open */
