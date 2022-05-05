@@ -157,7 +157,7 @@ QLabel[objectName=&quot;image&quot;] {
 	max-height: 130px;
 	min-width: 130px;
 	max-width: 130px;
-	background-color: red;
+	background-color: transparent;
 }
 
 
@@ -267,14 +267,17 @@ QComboBox QAbstractItemView {
        <property name="text">
         <string/>
        </property>
+       <property name="scaledContents">
+        <bool>true</bool>
+       </property>
       </widget>
       <widget class="QLabel" name="name">
        <property name="geometry">
         <rect>
          <x>0</x>
-         <y>170</y>
+         <y>160</y>
          <width>231</width>
-         <height>21</height>
+         <height>31</height>
         </rect>
        </property>
        <property name="font">
@@ -320,7 +323,7 @@ QComboBox QAbstractItemView {
          <x>0</x>
          <y>190</y>
          <width>231</width>
-         <height>21</height>
+         <height>20</height>
         </rect>
        </property>
        <property name="font">
