@@ -18,7 +18,7 @@ class SecondaryUtils:
     @staticmethod
     def get_image(url):
         response = requests.get(url)
-        with open("test.png", "wb") as file:
+        with open(r"data\user_avatar.png", "wb") as file:
             file.write(response.content)
 
     @staticmethod
