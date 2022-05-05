@@ -27,9 +27,9 @@ class ParserUserSettings:
 
     def get_user_avatar(self):
         tree = self.pt.get_tree(self.session, self.config.user_url)
-        return re.search(r'/(\S*).png',
+        return re.search(r"'([\S]+?)'",
                          tree.xpath('//div[@class="user_rating"]/div[@class="users_avatar_wrap"]')[0].get('onclick')
-                         ).group(0)
+                         ).group(0)[1:-1]
 
     def reset_password_get_email(self, email: str):
         self.exceptions.check_none(self.csrf)
