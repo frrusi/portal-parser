@@ -1,4 +1,5 @@
-from PyQt5 import QtGui, QtWidgets
+from PyQt5 import QtGui, QtWidgets, QtCore
+from PyQt5.QtWidgets import QFileDialog
 
 from database.database import DataBase
 from gui.windows import main_window, login_window, recovery_window, recovery_code_window
@@ -12,7 +13,47 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         super(MainWindow, self).__init__()
         self.setupUi(self)
 
+        self.profile_icon.setPixmap(QtGui.QPixmap("gui/icons/navbar_profile.png"))
+        self.journal_icon.setPixmap(QtGui.QPixmap("gui/icons/navbar_journal.png"))
+        self.settings_icon.setPixmap(QtGui.QPixmap("gui/icons/navbar_settings.png"))
+        self.help_icon.setPixmap(QtGui.QPixmap("gui/icons/navbar_help.png"))
 
+        self.image_icon.setPixmap(QtGui.QPixmap("gui/icons/change_image.png"))
+
+        self.group_icon.setPixmap(QtGui.QPixmap("gui/icons/journal_group.png"))
+        self.group_sync_icon.setPixmap(QtGui.QPixmap("gui/icons/synchronization.png"))
+        self.semester_icon.setPixmap(QtGui.QPixmap("gui/icons/journal_semester.png"))
+        self.semester_sync_icon.setPixmap(QtGui.QPixmap("gui/icons/synchronization.png"))
+        self.subject_icon.setPixmap(QtGui.QPixmap("gui/icons/journal_subject.png"))
+        self.subject_sync_icon.setPixmap(QtGui.QPixmap("gui/icons/synchronization.png"))
+
+        self.email_icon.setPixmap(QtGui.QPixmap("gui/icons/change_mail.png"))
+        self.password_icon.setPixmap(QtGui.QPixmap("gui/icons/change_password.png"))
+
+        self.db_icon.setPixmap(QtGui.QPixmap("gui/icons/sql-server.png"))
+
+        self.developers_icon.setPixmap(QtGui.QPixmap("gui/icons/mammoth_icon.png"))
+
+    @staticmethod
+    def circleImage(imagePath):
+        source = QtGui.QPixmap(imagePath)
+        size = min(source.width(), source.height())
+
+        target = QtGui.QPixmap(size, size)
+        target.fill(QtCore.Qt.transparent)
+
+        qp = QtGui.QPainter(target)
+        qp.setRenderHints(qp.Antialiasing)
+        path = QtGui.QPainterPath()
+        path.addEllipse(0, 0, size, size)
+        qp.setClipPath(path)
+
+        sourceRect = QtCore.QRect(0, 0, size, size)
+        sourceRect.moveCenter(source.rect().center())
+        qp.drawPixmap(target.rect(), source, sourceRect)
+        qp.end()
+
+        return target
 
 
 class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
@@ -39,6 +80,72 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
 
         self.entry.clicked.connect(self.auth)
 
+        self.MainWindow.profile_menu.clicked.connect(lambda: self.change_page('profile'))
+        self.MainWindow.journal_menu.clicked.connect(lambda: self.change_page('journal'))
+        self.MainWindow.settings.clicked.connect(lambda: self.change_page('change'))
+        self.MainWindow.settings_menu.clicked.connect(lambda: self.change_page('settings'))
+        self.MainWindow.help_menu.clicked.connect(lambda: self.change_page('about'))
+
+        self.MainWindow.image_change.clicked.connect(self.change_image_profile)
+        self.MainWindow.email_change.clicked.connect(self.change_email)
+        self.MainWindow.password_change.clicked.connect(self.change_password)
+
+    def change_page(self, window):
+        windows = {
+            'profile': 0,
+            'journal': 1,
+            'change': 2,
+            'settings': 3,
+            'about': 4
+        }
+
+        self.MainWindow.stackedWidget.setCurrentIndex(windows[window])
+
+    def fill_about_user(self, information):
+        self.MainWindow.name.clear()
+        self.MainWindow.name.setText(f"<b>{information[0]} {information[1]}</b>")
+
+        self.MainWindow.date.clear()
+        self.MainWindow.date.setText(f"{information[3]}")
+
+        self.MainWindow.group.clear()
+        self.MainWindow.group.setText(f"{information[7]}")
+
+        self.MainWindow.institute_about.clear()
+        self.MainWindow.institute_about.setText(f"{information[4]}")
+
+        self.MainWindow.specialization_about.clear()
+        self.MainWindow.specialization_about.setText(f"{information[5]}")
+
+        self.MainWindow.training_about.clear()
+        self.MainWindow.training_about.setText(f"{information[9]}")
+
+        self.MainWindow.profile_about.clear()
+        self.MainWindow.profile_about.setText(f"{information[6]}")
+
+        self.MainWindow.year_about.clear()
+        self.MainWindow.year_about.setText(f"{information[8]}")
+
+        self.MainWindow.email_entry.clear()
+        self.MainWindow.email_entry.setText(f"{information[10]}")
+
+    def change_image_profile(self):
+        file_path = QFileDialog.getOpenFileName(self, "Выбор фотографии", "./", "Image(*.png *.jpg *.jpeg)")[0]
+        self.parser.change_avatar(file_path)
+
+        with open(file_path, "rb") as new_file, open(r'data\user_avatar.png', 'wb') as old_file:
+            old_file.write(new_file.read())
+
+        self.MainWindow.image.setPixmap(self.MainWindow.circleImage('data/user_avatar.png'))
+
+    def change_email(self):
+        email = self.MainWindow.email_entry.text()
+        self.parser.change_email(email)
+
+    def change_password(self):
+        password = self.MainWindow.password_entry.text()
+        self.parser.change_password(password)
+
     def auth(self):
         LOGIN = self.login.text()
         PASSWORD = self.password.text()
@@ -55,6 +162,15 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
             self.parser.get_user_id()
             self.parser.get_csrf()
             self.parser.get_groups()
+
+            info_about_user = self.parser.get_full_info_about_auth_user()
+            self.fill_about_user(info_about_user)
+
+            self.secondary_utils.create_dir('data')
+            url_user_avatar = self.parser.get_user_avatar()
+            self.secondary_utils.get_image(self.config.url + url_user_avatar)
+
+            self.MainWindow.image.setPixmap(self.MainWindow.circleImage('data/user_avatar.png'))
 
             self.close()
             self.MainWindow.show()
