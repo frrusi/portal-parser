@@ -1,3 +1,5 @@
+import os
+
 import requests
 
 
@@ -18,3 +20,8 @@ class SecondaryUtils:
         response = requests.get(url)
         with open("test.png", "wb") as file:
             file.write(response.content)
+
+    @staticmethod
+    def create_dir(dir_path: str):
+        if not os.path.exists(dir_path):
+            os.mkdir(dir_path)
