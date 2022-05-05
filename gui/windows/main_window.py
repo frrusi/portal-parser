@@ -158,7 +158,7 @@ class Ui_MainWindow(object):
 "    max-height: 130px;\n"
 "    min-width: 130px;\n"
 "    max-width: 130px;\n"
-"    background-color: red;\n"
+"    background-color: transparent;\n"
 "}\n"
 "\n"
 "\n"
@@ -241,9 +241,10 @@ class Ui_MainWindow(object):
         self.image = QtWidgets.QLabel(self.main_information)
         self.image.setGeometry(QtCore.QRect(50, 30, 130, 130))
         self.image.setText("")
+        self.image.setScaledContents(True)
         self.image.setObjectName("image")
         self.name = QtWidgets.QLabel(self.main_information)
-        self.name.setGeometry(QtCore.QRect(0, 170, 231, 21))
+        self.name.setGeometry(QtCore.QRect(0, 160, 231, 31))
         font = QtGui.QFont()
         font.setFamily("Montserrat SemiBold")
         font.setPointSize(14)
@@ -261,7 +262,7 @@ class Ui_MainWindow(object):
         self.group.setAlignment(QtCore.Qt.AlignCenter)
         self.group.setObjectName("group")
         self.date = QtWidgets.QLabel(self.main_information)
-        self.date.setGeometry(QtCore.QRect(0, 190, 231, 21))
+        self.date.setGeometry(QtCore.QRect(0, 190, 231, 20))
         font = QtGui.QFont()
         font.setFamily("Montserrat Medium")
         font.setPointSize(9)
