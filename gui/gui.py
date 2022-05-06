@@ -1,11 +1,57 @@
 from PyQt5 import QtGui, QtWidgets, QtCore
-from PyQt5.QtWidgets import QFileDialog
+from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem
 
-from database.database import DataBase
-from gui.windows import main_window, login_window, recovery_window, recovery_code_window
-
+from gui.windows import main_window, login_window, journal_window
 from parser.parser import Parser
-from parser._parser_user_settings import ParserUserSettings
+
+from database import models
+from sqlalchemy import select
+
+
+class JournalWindow(QtWidgets.QMainWindow, journal_window.Ui_JournalWindow):
+    def __init__(self, database):
+        super(JournalWindow, self).__init__()
+        self.setupUi(self)
+
+        self.item = None
+
+        self.database = database
+
+    def intilization(self, group, semester, subject):
+        get_all_date = self.database.get_data(subject, semester)
+        get_all_student = self.database.get_all_students(group, 'text')
+        get_all_marks = self.database.get_marks(subject, semester)
+
+        self.table.setColumnCount(len(get_all_date) + 1)
+        self.table.setRowCount(len(get_all_student))
+        self.table.setColumnWidth(0, 200)
+
+        for i in range(1, len(get_all_date) + 1):
+            self.table.setColumnWidth(i, 50)
+
+        self.table.horizontalHeader().setStretchLastSection(True)
+
+        self.table.setStyleSheet(
+            'QWidget { background-color: #ffffff; } QHeaderView::section { background-color: #ffffff; }'
+            'QTableWidget QTableCornerButton::section {background-color: #ffffff;}')
+        self.table.setStyleSheet('selection-background-color: #ffffe0; selection-color: #000000')
+
+        self.table.setHorizontalHeaderLabels(['Список группы'] + get_all_date)
+
+        for index, value in enumerate(get_all_student):
+            self.item = QTableWidgetItem(value)
+
+            self.item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+            self.table.setItem(index, 0, self.item)
+            self.table.resizeColumnsToContents()
+
+        for index, value in enumerate(get_all_marks):
+            self.item = QTableWidgetItem(value)
+
+            self.item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+            self.item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+            self.table.setItem(index // len(get_all_date), index % len(get_all_date) + 1, self.item)
+            self.table.resizeColumnsToContents()
 
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
@@ -70,6 +116,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
 
         self.parser = Parser(database, config, exceptions, parser_utils, security_utils, secondary_utils)
         self.MainWindow = MainWindow()
+        self.JournalWindow = JournalWindow(database)
 
         self.login.setPlaceholderText("Логин")
         self.password.setPlaceholderText("Пароль")
@@ -146,6 +193,54 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         password = self.MainWindow.password_entry.text()
         self.parser.change_password(password)
 
+    def fill_combobox_group(self):
+        get_all_group = self.database.get_all_groups()
+
+        self.MainWindow.group_choice.clear()
+        self.MainWindow.group_choice.addItems(['Выберите группу'] + get_all_group)
+
+        self.MainWindow.group_choice.currentIndexChanged.connect(self.fill_combobox_semester)
+
+    def fill_combobox_semester(self):
+        self.MainWindow.semester_choice.clear()
+        group = self.MainWindow.group_choice.currentText()
+
+        group_id = self.database.get_group(group)
+        if self.database.select_query(select(models.Subject).where(models.Subject.group == group_id), 2) is None:
+            self.parser.get_journal(group)
+
+        get_all_semester = self.database.get_all_semesters(group)
+
+        self.MainWindow.semester_choice.addItems(['Выберите семестр'] + get_all_semester)
+
+        self.MainWindow.semester_choice.currentIndexChanged.connect(self.fill_combobox_subject)
+
+    def fill_combobox_subject(self):
+        self.MainWindow.subject_choice.clear()
+        group = self.MainWindow.group_choice.currentText()
+        semester = self.MainWindow.semester_choice.currentText()
+
+        get_all_subject = self.database.get_all_subjects(group, int(semester), 'text')
+
+        self.MainWindow.subject_choice.addItems(['Выберите предмет'] + get_all_subject)
+
+        self.MainWindow.journal_open.clicked.connect(self.fill_journal)
+
+    def fill_journal(self):
+        group = self.MainWindow.group_choice.currentText()
+        semester = self.MainWindow.semester_choice.currentText()
+        subject = self.MainWindow.subject_choice.currentText()
+
+        group_id = self.database.get_group(group)
+        subject_id = self.database.get_subject((models.Subject.id,), subject, semester, group)[0]
+        if self.database.select_query(select(models.Marks).where(models.Marks.group == group_id,
+                                                                 models.Marks.semester == int(semester),
+                                                                 models.Marks.subject == subject_id), 2) is None:
+            self.parser.get_marks(group, int(semester), subject)
+        self.JournalWindow.intilization(group, semester, subject)
+
+        self.JournalWindow.show()
+
     def auth(self):
         LOGIN = self.login.text()
         PASSWORD = self.password.text()
@@ -161,7 +256,8 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         else:
             self.parser.get_user_id()
             self.parser.get_csrf()
-            self.parser.get_groups()
+            if self.database.select_query(select(models.Group), 2) is None:
+                self.parser.get_groups()
 
             info_about_user = self.parser.get_full_info_about_auth_user()
             self.fill_about_user(info_about_user)
@@ -171,6 +267,8 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
             self.secondary_utils.get_image(self.config.url + url_user_avatar)
 
             self.MainWindow.image.setPixmap(self.MainWindow.circleImage('data/user_avatar.png'))
+
+            self.fill_combobox_group()
 
             self.close()
             self.MainWindow.show()

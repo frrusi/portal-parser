@@ -11,45 +11,35 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_journal(object):
-    def setupUi(self, journal):
-        journal.setObjectName("journal")
-        journal.resize(1686, 672)
-        journal.setStyleSheet("QWidget[objectName=\"journal\"] { background-color: white; }")
-        self.horizontalLayout_3 = QtWidgets.QHBoxLayout(journal)
-        self.horizontalLayout_3.setObjectName("horizontalLayout_3")
-        self.horizontalLayout = QtWidgets.QHBoxLayout()
-        self.horizontalLayout.setContentsMargins(-1, -1, 0, -1)
+class Ui_JournalWindow(object):
+    def setupUi(self, JournalWindow):
+        JournalWindow.setObjectName("JournalWindow")
+        JournalWindow.resize(1212, 707)
+        self.centralwidget = QtWidgets.QWidget(JournalWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
         self.horizontalLayout.setObjectName("horizontalLayout")
-        self.frame = QtWidgets.QFrame(journal)
-        self.frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.frame.setObjectName("frame")
-        self.verticalLayout = QtWidgets.QVBoxLayout(self.frame)
-        self.verticalLayout.setContentsMargins(0, 0, 0, 0)
-        self.verticalLayout.setObjectName("verticalLayout")
-        self.table = QtWidgets.QTableWidget(self.frame)
-        self.table.setStyleSheet("QTableWidget[objectName=\"table\"] { border: 0px;}")
+        self.table = QtWidgets.QTableWidget(self.centralwidget)
+        self.table.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.table.setObjectName("table")
         self.table.setColumnCount(0)
         self.table.setRowCount(0)
-        self.verticalLayout.addWidget(self.table)
-        self.horizontalLayout.addWidget(self.frame)
-        self.horizontalLayout_3.addLayout(self.horizontalLayout)
+        self.horizontalLayout.addWidget(self.table)
+        JournalWindow.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(journal)
-        QtCore.QMetaObject.connectSlotsByName(journal)
+        self.retranslateUi(JournalWindow)
+        QtCore.QMetaObject.connectSlotsByName(JournalWindow)
 
-    def retranslateUi(self, journal):
+    def retranslateUi(self, JournalWindow):
         _translate = QtCore.QCoreApplication.translate
-        journal.setWindowTitle(_translate("journal", "Form"))
+        JournalWindow.setWindowTitle(_translate("JournalWindow", "MainWindow"))
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    journal = QtWidgets.QWidget()
-    ui = Ui_journal()
-    ui.setupUi(journal)
-    journal.show()
+    JournalWindow = QtWidgets.QMainWindow()
+    ui = Ui_JournalWindow()
+    ui.setupUi(JournalWindow)
+    JournalWindow.show()
     sys.exit(app.exec_())
