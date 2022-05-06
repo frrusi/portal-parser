@@ -237,7 +237,7 @@ QComboBox QAbstractItemView {
      </rect>
     </property>
     <property name="currentIndex">
-     <number>1</number>
+     <number>0</number>
     </property>
     <widget class="QWidget" name="profile_page">
      <widget class="QFrame" name="main_information">
@@ -421,7 +421,7 @@ QComboBox QAbstractItemView {
         <rect>
          <x>40</x>
          <y>60</y>
-         <width>591</width>
+         <width>601</width>
          <height>231</height>
         </rect>
        </property>
