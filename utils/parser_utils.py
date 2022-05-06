@@ -74,7 +74,7 @@ class ParserUtils:
         return tree.xpath('//form[@class="access_recovery_form"]/input')[0].get('placeholder')
 
     @staticmethod
-    def check_reset_password_message(message_from_site: str, check_message: str, error_message: str) -> None:
+    def check_reset_password_message(message_from_site: str, check_message: str, error_message: str) -> str | None:
         """Функция проверки введенных данных во время восстановления пароля
 
         Args:
@@ -84,8 +84,8 @@ class ParserUtils:
         """
 
         if message_from_site == check_message:
-            print(f'ERROR: {error_message}')
-            exit(0)
+            return error_message
+        return None
 
     @staticmethod
     def life_loop_thread(function, join: bool, *args) -> Union[None, threading.Thread]:
