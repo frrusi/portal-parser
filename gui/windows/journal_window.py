@@ -11,36 +11,35 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_journal(object):
-    def setupUi(self, journal):
-        journal.setObjectName("journal")
-        journal.resize(1686, 672)
-        journal.setStyleSheet("QWidget[objectName=\"journal\"] { background-color: white; }")
-        self.verticalLayout_2 = QtWidgets.QVBoxLayout(journal)
-        self.verticalLayout_2.setObjectName("verticalLayout_2")
-        self.table = QtWidgets.QTableWidget(journal)
-        self.table.setMinimumSize(QtCore.QSize(0, 0))
-        self.table.setMaximumSize(QtCore.QSize(16777215, 16777215))
-        self.table.setStyleSheet("QTableWidget[objectName=\"table\"] { border: 0px;}")
+class Ui_JournalWindow(object):
+    def setupUi(self, JournalWindow):
+        JournalWindow.setObjectName("JournalWindow")
+        JournalWindow.resize(1212, 707)
+        self.centralwidget = QtWidgets.QWidget(JournalWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)
+        self.horizontalLayout.setObjectName("horizontalLayout")
+        self.table = QtWidgets.QTableWidget(self.centralwidget)
         self.table.setSizeAdjustPolicy(QtWidgets.QAbstractScrollArea.AdjustToContents)
         self.table.setObjectName("table")
         self.table.setColumnCount(0)
         self.table.setRowCount(0)
-        self.verticalLayout_2.addWidget(self.table)
+        self.horizontalLayout.addWidget(self.table)
+        JournalWindow.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(journal)
-        QtCore.QMetaObject.connectSlotsByName(journal)
+        self.retranslateUi(JournalWindow)
+        QtCore.QMetaObject.connectSlotsByName(JournalWindow)
 
-    def retranslateUi(self, journal):
+    def retranslateUi(self, JournalWindow):
         _translate = QtCore.QCoreApplication.translate
-        journal.setWindowTitle(_translate("journal", "Form"))
+        JournalWindow.setWindowTitle(_translate("JournalWindow", "MainWindow"))
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    journal = QtWidgets.QWidget()
-    ui = Ui_journal()
-    ui.setupUi(journal)
-    journal.show()
+    JournalWindow = QtWidgets.QMainWindow()
+    ui = Ui_JournalWindow()
+    ui.setupUi(JournalWindow)
+    JournalWindow.show()
     sys.exit(app.exec_())
