@@ -33,7 +33,10 @@ class Ui_MainWindow(object):
                                  "QFrame[objectName=\"navigation_bar\"] { background-color: #19202e }\n"
                                  "\n"
                                  "\n"
-                                 "QFrame[objectName=\"about_me_secondary\" ] { border-top: 1px solid #f7f7f7;  border-bottom: 1px solid #f7f7f7; }\n"
+                                 "QFrame[objectName=\"about_me_secondary\" ] {\n"
+                                 "    border-top: 1px solid #f7f7f7;\n"
+                                 "    border-bottom: 1px solid #f7f7f7;\n"
+                                 "}\n"
                                  "\n"
                                  "\n"
                                  "QPushButton[objectName=\"profile_menu\"],\n"
@@ -53,13 +56,7 @@ class Ui_MainWindow(object):
                                  "     color: #474b51; \n"
                                  "}\n"
                                  "\n"
-                                 "QPushButton[objectName=\"settings\"]:hover {\n"
-                                 "    border: 2px solid #474b51;\n"
-                                 "    border-radius: 7px;\n"
-                                 "    background-color: #474b51;\n"
-                                 "    color: white;\n"
-                                 "}\n"
-                                 "\n"
+                                 "QPushButton[objectName=\"settings\"]:hover,\n"
                                  "QPushButton[objectName=\"settings\"]:pressed {\n"
                                  "    border: 2px solid #474b51;\n"
                                  "    border-radius: 7px;\n"
@@ -73,64 +70,28 @@ class Ui_MainWindow(object):
                                  "     border-radius: 5px;\n"
                                  "     color: #474b51; \n"
                                  "}\n"
-                                 "QPushButton[objectName=\"journal_open\"]:hover {\n"
-                                 "    border: 1px solid #000000;\n"
-                                 "    border-radius: 7px;\n"
-                                 "    background-color: transparent;\n"
-                                 "}\n"
+                                 "\n"
+                                 "QPushButton[objectName=\"journal_open\"]:hover,\n"
                                  "QPushButton[objectName=\"journal_open\"]:pressed {\n"
                                  "    border: 1px solid #000000;\n"
                                  "    border-radius: 7px;\n"
                                  "    background-color: transparent;\n"
                                  "}\n"
-                                 "QPushButton[objectName=\"email_change\"] {\n"
-                                 "     background: transparent;\n"
-                                 "     border: 2px solid #f7f7f7;\n"
-                                 "     border-radius: 5px;\n"
-                                 "     color: #474b51; \n"
-                                 "}\n"
-                                 "QPushButton[objectName=\"email_change\"]:hover {\n"
-                                 "    border: 2px solid #c1c3d0;\n"
-                                 "    border-radius: 7px;\n"
-                                 "    background-color: #c1c3d0;\n"
-                                 "    color: white;\n"
-                                 "}\n"
-                                 "QPushButton[objectName=\"email_change\"]:pressed {\n"
-                                 "    border: 2px solid #c1c3d0;\n"
-                                 "    border-radius: 7px;\n"
-                                 "    background-color: #c1c3d0;\n"
-                                 "    color: white;\n"
-                                 "}\n"
-                                 "QPushButton[objectName=\"password_change\"] {\n"
-                                 "     background: transparent;\n"
-                                 "     border: 2px solid #f7f7f7;\n"
-                                 "     border-radius: 5px;\n"
-                                 "     color: #474b51; \n"
-                                 "}\n"
-                                 "QPushButton[objectName=\"password_change\"]:hover {\n"
-                                 "    border: 2px solid #c1c3d0;\n"
-                                 "    border-radius: 7px;\n"
-                                 "    background-color: #c1c3d0;\n"
-                                 "    color: white;\n"
-                                 "}\n"
-                                 "QPushButton[objectName=\"password_change\"]:pressed {\n"
-                                 "    border: 2px solid #c1c3d0;\n"
-                                 "    border-radius: 7px;\n"
-                                 "    background-color: #c1c3d0;\n"
-                                 "    color: white;\n"
-                                 "}\n"
+                                 "\n"
+                                 "QPushButton[objectName=\"password_change\"],\n"
+                                 "QPushButton[objectName=\"email_change\"],\n"
                                  "QPushButton[objectName=\"path_db_button\"] {\n"
                                  "     background: transparent;\n"
                                  "     border: 2px solid #f7f7f7;\n"
                                  "     border-radius: 5px;\n"
                                  "     color: #474b51; \n"
                                  "}\n"
-                                 "QPushButton[objectName=\"path_db_button\"]:hover {\n"
-                                 "    border: 2px solid #c1c3d0;\n"
-                                 "    border-radius: 7px;\n"
-                                 "    background-color: #c1c3d0;\n"
-                                 "    color: white;\n"
-                                 "}\n"
+                                 "\n"
+                                 "QPushButton[objectName=\"email_change\"]:hover,\n"
+                                 "QPushButton[objectName=\"email_change\"]:pressed,\n"
+                                 "QPushButton[objectName=\"password_change\"]:hover,\n"
+                                 "QPushButton[objectName=\"password_change\"]:pressed,\n"
+                                 "QPushButton[objectName=\"path_db_button\"]:hover,\n"
                                  "QPushButton[objectName=\"path_db_button\"]:pressed {\n"
                                  "    border: 2px solid #c1c3d0;\n"
                                  "    border-radius: 7px;\n"
@@ -138,20 +99,20 @@ class Ui_MainWindow(object):
                                  "    color: white;\n"
                                  "}\n"
                                  "\n"
+                                 "QLabel[objectName=\"date\"],\n"
+                                 "QLabel[objectName=\"institute_title\"],\n"
+                                 "QLabel[objectName=\"specialization_title\"],\n"
+                                 "QLabel[objectName=\"profile_title\"],\n"
+                                 "QLabel[objectName=\"training_title\"],\n"
+                                 "QLabel[objectName=\"year_title\"],\n"
+                                 "QLabel[objectName=\"group_title\"],\n"
+                                 "QLabel[objectName=\"semester_title\"],\n"
+                                 "QLabel[objectName=\"subject_title\"] { color: #c8c8c8; }\n"
                                  "\n"
-                                 "\n"
-                                 "QLabel[objectName=\"date\"] { color: #c8c8c8; }\n"
-                                 "QLabel[objectName=\"institute_title\"] { color: #c8c8c8; }\n"
-                                 "QLabel[objectName=\"specialization_title\"] { color: #c8c8c8; }\n"
-                                 "QLabel[objectName=\"profile_title\"] { color: #c8c8c8 }\n"
-                                 "QLabel[objectName=\"training_title\"] { color: #c8c8c8 }\n"
-                                 "QLabel[objectName=\"year_title\"] { color: #c8c8c8 }\n"
-                                 "QLabel[objectName=\"group_title\"] { color: #c8c8c8 }\n"
-                                 "QLabel[objectName=\"semester_title\"] { color: #c8c8c8 }\n"
-                                 "QLabel[objectName=\"subject_title\"] { color: #c8c8c8 }\n"
                                  "QLabel[objectName=\"settings_user_subtitle\"],\n"
                                  "QLabel[objectName=\"about_program_subtitle\"],\n"
-                                 "QLabel[objectName=\"journal_subtitle\"], QLabel[objectName=\"settings_program_subtitle\"] { color: #6c6d72 }\n"
+                                 "QLabel[objectName=\"journal_subtitle\"], QLabel[objectName=\"settings_program_subtitle\"] { color: #6c6d72; }\n"
+                                 "\n"
                                  "QLabel[objectName=\"image\"] {\n"
                                  "    border-radius: 65px;\n"
                                  "    min-height: 130px;\n"
@@ -161,15 +122,19 @@ class Ui_MainWindow(object):
                                  "    background-color: transparent;\n"
                                  "}\n"
                                  "\n"
+                                 "QLineEdit[objectName=\"email_entry\"],\n"
+                                 "QLineEdit[objectName=\"password_entry\"],\n"
+                                 "QLineEdit[objectName=\"path_db_line\"] { \n"
+                                 "    border: 1px solid #f7f7f7;\n"
+                                 "    border-radius: 4px;\n"
+                                 "}\n"
                                  "\n"
-                                 "\n"
-                                 "QLineEdit[objectName=\"email_entry\"] { border: 1px solid #f7f7f7; border-radius: 4px;}\n"
-                                 "QLineEdit[objectName=\"email_entry\"]:hover { border: 1px solid #c1c3d0;  border-radius: 4px;}\n"
-                                 "QLineEdit[objectName=\"password_entry\"] { border: 1px solid #f7f7f7; border-radius: 4px;}\n"
-                                 "QLineEdit[objectName=\"password_entry\"]:hover { border: 1px solid #c1c3d0;  border-radius: 4px;}\n"
-                                 "QLineEdit[objectName=\"path_db_line\"] { border: 1px solid #f7f7f7; border-radius: 4px;}\n"
-                                 "QLineEdit[objectName=\"path_db_line\"]:hover { border: 1px solid #c1c3d0;  border-radius: 4px;}\n"
-                                 "\n"
+                                 "QLineEdit[objectName=\"email_entry\"]:hover,\n"
+                                 "QLineEdit[objectName=\"password_entry\"]:hover,\n"
+                                 "QLineEdit[objectName=\"path_db_line\"]:hover {\n"
+                                 "    border: 1px solid #c1c3d0; \n"
+                                 "    border-radius: 4px;\n"
+                                 "}\n"
                                  "\n"
                                  "\n"
                                  "QComboBox {\n"
@@ -179,20 +144,13 @@ class Ui_MainWindow(object):
                                  "    min-width: 6em;\n"
                                  "}\n"
                                  "\n"
-                                 "QComboBox:editable {\n"
-                                 "    background: white;\n"
-                                 "}\n"
+                                 "QComboBox:editable,\n"
+                                 "QComboBox:!editable, \n"
+                                 "QComboBox::drop-down:editable, \n"
+                                 "QComboBox:!editable:on, \n"
+                                 "QComboBox::drop-down:editable:on { background: white; }\n"
                                  "\n"
-                                 "QComboBox:!editable, QComboBox::drop-down:editable {\n"
-                                 "     background: white;\n"
-                                 "}\n"
-                                 "\n"
-                                 "/* QComboBox gets the \"on\" state when the popup is open */\n"
-                                 "QComboBox:!editable:on, QComboBox::drop-down:editable:on {\n"
-                                 "    background: white;\n"
-                                 "}\n"
-                                 "\n"
-                                 "QComboBox:on { /* shift the text when the popup opens */\n"
+                                 "QComboBox:on {\n"
                                  "    padding-top: 3px;\n"
                                  "    padding-left: 4px;\n"
                                  "}\n"
@@ -204,8 +162,8 @@ class Ui_MainWindow(object):
                                  "\n"
                                  "    border-left-width: 1px;\n"
                                  "    border-left-color: white;\n"
-                                 "    border-left-style: solid; /* just a single line */\n"
-                                 "    border-top-right-radius: 3px; /* same radius as the QComboBox */\n"
+                                 "    border-left-style: solid;\n"
+                                 "    border-top-right-radius: 3px;\n"
                                  "    border-bottom-right-radius: 3px;\n"
                                  "}\n"
                                  "\n"
@@ -214,7 +172,7 @@ class Ui_MainWindow(object):
                                  "    image: url(D:/portal-parser/gui/icons/down-arrow.png);\n"
                                  "}\n"
                                  "\n"
-                                 "QComboBox::down-arrow:on { /* shift the arrow when popup is open */\n"
+                                 "QComboBox::down-arrow:on {\n"
                                  "    top: 1px;\n"
                                  "    left: 1px;\n"
                                  "}\n"
@@ -298,7 +256,7 @@ class Ui_MainWindow(object):
         self.about_me_main.setFrameShadow(QtWidgets.QFrame.Raised)
         self.about_me_main.setObjectName("about_me_main")
         self.about_me_secondary = QtWidgets.QFrame(self.about_me_main)
-        self.about_me_secondary.setGeometry(QtCore.QRect(40, 60, 591, 231))
+        self.about_me_secondary.setGeometry(QtCore.QRect(40, 60, 601, 231))
         self.about_me_secondary.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.about_me_secondary.setFrameShadow(QtWidgets.QFrame.Raised)
         self.about_me_secondary.setObjectName("about_me_secondary")
@@ -402,10 +360,14 @@ class Ui_MainWindow(object):
         self.journal_choice.setObjectName("journal_choice")
         self.group_choice = QtWidgets.QComboBox(self.journal_choice)
         self.group_choice.setGeometry(QtCore.QRect(50, 70, 171, 31))
+        self.group_choice.setStyleSheet("")
         self.group_choice.setEditable(True)
         self.group_choice.setInsertPolicy(QtWidgets.QComboBox.NoInsert)
-        self.group_choice.completer().setCompletionMode(QtWidgets.QCompleter.PopupCompletion)
         self.group_choice.setObjectName("group_choice")
+        self.group_choice.addItem("")
+        self.group_choice.addItem("")
+        self.group_choice.addItem("")
+        self.group_choice.addItem("")
         self.group_sync = QtWidgets.QPushButton(self.journal_choice)
         self.group_sync.setGeometry(QtCore.QRect(120, 120, 31, 31))
         self.group_sync.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
@@ -415,8 +377,6 @@ class Ui_MainWindow(object):
         self.semester_choice.setGeometry(QtCore.QRect(390, 70, 171, 31))
         self.semester_choice.setStyleSheet("")
         self.semester_choice.setEditable(True)
-        self.semester_choice.setInsertPolicy(QtWidgets.QComboBox.NoInsert)
-        self.semester_choice.completer().setCompletionMode(QtWidgets.QCompleter.PopupCompletion)
         self.semester_choice.setObjectName("semester_choice")
         self.semester_choice.addItem("")
         self.semester_icon = QtWidgets.QLabel(self.journal_choice)
@@ -436,8 +396,6 @@ class Ui_MainWindow(object):
         self.subject_choice.setGeometry(QtCore.QRect(710, 70, 171, 31))
         self.subject_choice.setStyleSheet("")
         self.subject_choice.setEditable(True)
-        self.subject_choice.setInsertPolicy(QtWidgets.QComboBox.NoInsert)
-        self.subject_choice.completer().setCompletionMode(QtWidgets.QCompleter.PopupCompletion)
         self.subject_choice.setObjectName("subject_choice")
         self.subject_choice.addItem("")
         self.subject_choice.addItem("")
@@ -739,7 +697,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(1)
+        self.stackedWidget.setCurrentIndex(0)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):
@@ -788,14 +746,3 @@ class Ui_MainWindow(object):
         self.description_program_title.setText(_translate("MainWindow", "Описание программы"))
         self.description_program.setText(_translate("MainWindow",
                                                     "------------------------------------------------------------------------------------------------------------------------------------------"))
-
-
-if __name__ == "__main__":
-    import sys
-
-    app = QtWidgets.QApplication(sys.argv)
-    MainWindow = QtWidgets.QMainWindow()
-    ui = Ui_MainWindow()
-    ui.setupUi(MainWindow)
-    MainWindow.show()
-    sys.exit(app.exec_())
