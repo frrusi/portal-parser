@@ -1,11 +1,11 @@
 from PyQt5 import QtGui, QtWidgets, QtCore
 from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem
-
-from gui.windows import main_window, login_window, journal_window
-from parser.parser import Parser
-
-from database import models
 from sqlalchemy import select
+
+from config.config import Config
+from database import models
+from gui.windows import main_window, login_window, journal_window, recovery_window
+from parser.parser import Parser
 
 
 class JournalWindow(QtWidgets.QMainWindow, journal_window.Ui_JournalWindow):
@@ -52,6 +52,70 @@ class JournalWindow(QtWidgets.QMainWindow, journal_window.Ui_JournalWindow):
             self.item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
             self.table.setItem(index // len(get_all_date), index % len(get_all_date) + 1, self.item)
             self.table.resizeColumnsToContents()
+
+
+class RecoveryWindow(QtWidgets.QMainWindow, recovery_window.Ui_RecoveryWindow):
+    def __init__(self, database, config, exceptions, parser_utils, security_utils, secondary_utils):
+        super(RecoveryWindow, self).__init__()
+        self.setupUi(self)
+        self.response = None
+
+        self.parser = Parser(database, config, exceptions, parser_utils, security_utils, secondary_utils)
+
+        self.email_apply.clicked.connect(self.show_recovery_email)
+        self.code_apply.clicked.connect(self.show_recovery_code)
+
+    def reset_password_get_email(self, email: str):
+        self.parser.exceptions.check_none(self.parser.csrf)
+
+        self.response = self.parser.session.post(self.parser.config.recovery_url,
+                                          Config.get_reset_password_data(email, self.parser.csrf))
+
+    def reset_password_get_code(self, code: str):
+        self.parser.exceptions.check_none(self.parser.csrf)
+
+        self.parser.session.post(self.parser.config.recovery_url,
+                          Config.get_recovery_code_data(code, self.parser.csrf),
+                          cookies=self.response.cookies)
+
+    def show_recovery_email(self):
+        self.parser.get_csrf()
+
+        EMAIL = self.email_input.text()
+
+        self.reset_password_get_email(EMAIL)
+
+        if self.parser.pt.check_reset_password_message(self.parser.pt.get_reset_password_message(self.parser.session),
+                                                       self.parser.config.enter_email_message,
+                                                       self.parser.config.email_error) is not None:
+            self.email_input.clear()
+            self.email_input.setPlaceholderText(self.parser.config.email_error)
+            pal = self.email_input.palette()
+            text_color = QtGui.QColor("red")
+
+            pal.setColor(QtGui.QPalette.PlaceholderText, text_color)
+            self.email_input.setPalette(pal)
+        else:
+            self.stackedWidget.setCurrentIndex(1)
+
+    def show_recovery_code(self):
+        self.parser.get_csrf()
+
+        CODE = self.code_input.text()
+        self.reset_password_get_code(CODE)
+
+        if self.parser.pt.check_reset_password_message(self.parser.pt.get_reset_password_message(self.parser.session),
+                                                       self.parser.config.enter_code_message,
+                                                       self.parser.config.code_message_error) is not None:
+            self.code_input.clear()
+            self.code_input.setPlaceholderText(self.parser.config.code_message_error)
+            pal = self.code_input.palette()
+            text_color = QtGui.QColor("red")
+
+            pal.setColor(QtGui.QPalette.PlaceholderText, text_color)
+            self.code_input.setPalette(pal)
+        else:
+            self.close()
 
 
 class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
@@ -117,6 +181,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.parser = Parser(database, config, exceptions, parser_utils, security_utils, secondary_utils)
         self.MainWindow = MainWindow()
         self.JournalWindow = JournalWindow(database)
+        self.RecoveryWindow = RecoveryWindow(database, config, exceptions, parser_utils, security_utils, secondary_utils)
 
         self.login.setPlaceholderText("Логин")
         self.password.setPlaceholderText("Пароль")
@@ -126,6 +191,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.password.setEchoMode(QtWidgets.QLineEdit.Password)
 
         self.entry.clicked.connect(self.auth)
+        self.remember.clicked.connect(self.show_recovery_window)
 
         self.MainWindow.profile_menu.clicked.connect(lambda: self.change_page('profile'))
         self.MainWindow.journal_menu.clicked.connect(lambda: self.change_page('journal'))
@@ -147,6 +213,10 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         }
 
         self.MainWindow.stackedWidget.setCurrentIndex(windows[window])
+
+    def show_recovery_window(self):
+        self.parser.get_csrf()
+        self.RecoveryWindow.show()
 
     def fill_about_user(self, information):
         self.MainWindow.name.clear()
@@ -192,6 +262,14 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
     def change_password(self):
         password = self.MainWindow.password_entry.text()
         self.parser.change_password(password)
+
+        self.MainWindow.password_entry.clear()
+        self.MainWindow.password_entry.setPlaceholderText('Успешно')
+        pal = self.MainWindow.password_entry.palette()
+        text_color = QtGui.QColor("green")
+
+        pal.setColor(QtGui.QPalette.PlaceholderText, text_color)
+        self.MainWindow.password_entry.setPalette(pal)
 
     def fill_combobox_group(self):
         get_all_group = self.database.get_all_groups()
