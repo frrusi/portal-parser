@@ -1,14 +1,14 @@
 from PyQt5 import QtGui, QtWidgets, QtCore
 from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem
 
-from database.database import DataBase
-from gui.windows import main_window, login_window, recovery_window, recovery_code_window, journal_window_2
-
+from gui.windows import main_window, login_window, journal_window
 from parser.parser import Parser
-from parser._parser_user_settings import ParserUserSettings
+
+from database import models
+from sqlalchemy import select
 
 
-class JournalWindow(QtWidgets.QMainWindow, journal_window_2.Ui_journal):
+class JournalWindow(QtWidgets.QMainWindow, journal_window.Ui_JournalWindow):
     def __init__(self, database):
         super(JournalWindow, self).__init__()
         self.setupUi(self)
@@ -28,6 +28,8 @@ class JournalWindow(QtWidgets.QMainWindow, journal_window_2.Ui_journal):
 
         for i in range(1, len(get_all_date) + 1):
             self.table.setColumnWidth(i, 50)
+
+        self.table.horizontalHeader().setStretchLastSection(True)
 
         self.table.setStyleSheet(
             'QWidget { background-color: #ffffff; } QHeaderView::section { background-color: #ffffff; }'
@@ -203,7 +205,9 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.MainWindow.semester_choice.clear()
         group = self.MainWindow.group_choice.currentText()
 
-        self.parser.get_journal(group)
+        group_id = self.database.get_group(group)
+        if self.database.select_query(select(models.Subject).where(models.Subject.group == group_id), 2) is None:
+            self.parser.get_journal(group)
 
         get_all_semester = self.database.get_all_semesters(group)
 
@@ -227,7 +231,12 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         semester = self.MainWindow.semester_choice.currentText()
         subject = self.MainWindow.subject_choice.currentText()
 
-        self.parser.get_marks(group, int(semester), subject)
+        group_id = self.database.get_group(group)
+        subject_id = self.database.get_subject((models.Subject.id,), subject, semester, group)[0]
+        if self.database.select_query(select(models.Marks).where(models.Marks.group == group_id,
+                                                                 models.Marks.semester == int(semester),
+                                                                 models.Marks.subject == subject_id), 2) is None:
+            self.parser.get_marks(group, int(semester), subject)
         self.JournalWindow.intilization(group, semester, subject)
 
         self.JournalWindow.show()
@@ -247,7 +256,8 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         else:
             self.parser.get_user_id()
             self.parser.get_csrf()
-            self.parser.get_groups()
+            if self.database.select_query(select(models.Group), 2) is None:
+                self.parser.get_groups()
 
             info_about_user = self.parser.get_full_info_about_auth_user()
             self.fill_about_user(info_about_user)
