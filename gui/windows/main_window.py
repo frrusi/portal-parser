@@ -404,6 +404,7 @@ class Ui_MainWindow(object):
         self.group_choice.setGeometry(QtCore.QRect(50, 70, 171, 31))
         self.group_choice.setStyleSheet("")
         self.group_choice.setEditable(True)
+        self.group_choice.setInsertPolicy(QtWidgets.QComboBox.NoInsert)
         self.group_choice.setObjectName("group_choice")
         self.group_choice.addItem("")
         self.group_choice.addItem("")
@@ -738,7 +739,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
-        self.stackedWidget.setCurrentIndex(0)
+        self.stackedWidget.setCurrentIndex(1)
         QtCore.QMetaObject.connectSlotsByName(MainWindow)
 
     def retranslateUi(self, MainWindow):

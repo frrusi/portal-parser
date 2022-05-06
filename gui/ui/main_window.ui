@@ -237,7 +237,7 @@ QComboBox QAbstractItemView {
      </rect>
     </property>
     <property name="currentIndex">
-     <number>0</number>
+     <number>1</number>
     </property>
     <widget class="QWidget" name="profile_page">
      <widget class="QFrame" name="main_information">
@@ -706,6 +706,9 @@ QComboBox QAbstractItemView {
        </property>
        <property name="editable">
         <bool>true</bool>
+       </property>
+       <property name="insertPolicy">
+        <enum>QComboBox::NoInsert</enum>
        </property>
        <item>
         <property name="text">
