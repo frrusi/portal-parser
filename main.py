@@ -5,10 +5,8 @@ from PyQt5 import QtWidgets
 from config.config_parser import ConfigParser
 from database.database import DataBase
 from exceptions import Exceptions
-from gui.gui import AuthWindow
-from utils.parser_utils import ParserUtils
-from utils.secondary_utils import SecondaryUtils
-from utils.security_utils import SecurityUtils
+from gui.connection.auth_connection import AuthWindow
+from utils import ParserUtils, SecurityUtils, SecondaryUtils
 
 
 def main():
@@ -20,11 +18,11 @@ def main():
 
     database = DataBase("database.sqlite3", config, parser_utils, security_utils, exceptions)
 
-    database.delete_database()
-    database.create_all_tables()
+    # database.delete_database()
+    # database.create_all_tables()
 
     app = QtWidgets.QApplication(sys.argv)
-    window = AuthWindow(config, database, parser_utils, security_utils, secondary_utils, exceptions)
+    window = AuthWindow(config, database, exceptions, parser_utils, security_utils, secondary_utils)
     window.show()
     sys.exit(app.exec_())
 

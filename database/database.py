@@ -98,16 +98,6 @@ class DataBase:
                                                              models.Subject.subject == subject,
                                                              models.Subject.group == self.get_group(group)), 2)
 
-    def delete_information_about_group(self, group: str):
-        for table in [models.Students, models.Subject, models.Marks]:
-            self.engine_connect(delete(table).where(table.group == self.get_group(group)))
-
-    def delete_marks_group(self, group: str, subject, semester):
-        group_id = self.get_group(group)
-        subject_id = self.get_subject((models.Subject.id,), subject, semester, group)[0]
-        self.engine_connect(delete(models.Marks).where(models.Marks.group == group_id,
-                                                       models.Marks.subject == subject_id))
-
     def get_auth_data(self, login):
         return self.select_query(select(models.Authorized).where(models.Authorized.login == login), 2)
 
