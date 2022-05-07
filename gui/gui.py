@@ -1,74 +1,148 @@
-from PyQt5 import QtGui, QtCore, QtWidgets
-from PyQt5.QtGui import QIcon
-from PyQt5.QtWidgets import QTableWidgetItem
+from PyQt5 import QtGui, QtWidgets, QtCore
+from PyQt5.QtWidgets import QFileDialog, QTableWidgetItem
+from sqlalchemy import select
 
-from database.database import DataBase
-from gui.windows import window_recovery_code, window_journal, window_login, window_recovery, window_main
+from config.config import Config
+from database import models
+from gui.windows import main_window, login_window, journal_window, recovery_window
 from parser.parser import Parser
-from utils.parser_utils import get_reset_password_message
 
 
-class WindowJournal(QtWidgets.QDialog, window_journal.Ui_journal):
-    def __init__(self, database, config):
-        super(WindowJournal, self).__init__()
+class JournalWindow(QtWidgets.QMainWindow, journal_window.Ui_JournalWindow):
+    def __init__(self, database):
+        super(JournalWindow, self).__init__()
         self.setupUi(self)
 
         self.item = None
 
-        self.parser = Parser(database, config)
-        self.database = DataBase("sqlite3.sqlite3")
+        self.database = database
 
-        self.setWindowTitle("Журнал успеваемости")
+    def intilization(self, group, semester, subject):
+        get_all_date = self.database.get_data(subject, semester)
+        get_all_student = self.database.get_all_students(group, 'text')
+        get_all_marks = self.database.get_marks(subject, semester)
 
-    def fillJournal(self, group, semester: str, subject: str):
-        try:
-            get_all_date = self.database.get_data(subject, semester)
-            print(get_all_date)
-            get_all_student = self.database.get_all_students(group, 'text')
-            print(get_all_student)
-            get_all_marks = self.database.get_marks(subject, semester)
-            print(get_all_marks)
+        self.table.setColumnCount(len(get_all_date) + 1)
+        self.table.setRowCount(len(get_all_student))
+        self.table.setColumnWidth(0, 200)
 
-            self.table.setColumnCount(len(get_all_date) + 1)
-            print(len(get_all_date))
-            self.table.setRowCount(len(get_all_student))
-            self.table.setColumnWidth(0, 200)
+        for i in range(1, len(get_all_date) + 1):
+            self.table.setColumnWidth(i, 50)
 
-            for i in range(1, len(get_all_date) + 1):
-                self.table.setColumnWidth(i, 50)
+        self.table.horizontalHeader().setStretchLastSection(True)
 
-            self.table.setHorizontalHeaderLabels(['Список группы'] + get_all_date)
+        self.table.setStyleSheet(
+            'QWidget { background-color: #ffffff; } QHeaderView::section { background-color: #ffffff; }'
+            'QTableWidget QTableCornerButton::section {background-color: #ffffff;}')
+        self.table.setStyleSheet('selection-background-color: #ffffe0; selection-color: #000000')
 
-            self.table.setStyleSheet(
-                'QWidget { background-color: #ffffff; } QHeaderView::section { background-color: #ffffff; }'
-                'QTableWidget QTableCornerButton::section {background-color: #ffffff;}')
-            self.table.setStyleSheet('selection-background-color: #ffffe0; selection-color: #000000')
+        self.table.setHorizontalHeaderLabels(['Список группы'] + get_all_date)
 
-            for index, value in enumerate(get_all_student):
-                self.item = QTableWidgetItem(value)
+        for index, value in enumerate(get_all_student):
+            self.item = QTableWidgetItem(value)
 
-                self.item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
-                self.table.setItem(index, 0, self.item)
+            self.item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+            self.table.setItem(index, 0, self.item)
+            self.table.resizeColumnsToContents()
 
-            for index, value in enumerate(get_all_marks):
-                self.item = QTableWidgetItem(value)
+        for index, value in enumerate(get_all_marks):
+            self.item = QTableWidgetItem(value)
 
-                self.item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
-                self.item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
-                self.table.setItem(index // len(get_all_date), index % len(get_all_date) + 1, self.item)
-        except Exception as ex:
-            print(ex)
+            self.item.setFlags(QtCore.Qt.ItemIsSelectable | QtCore.Qt.ItemIsEnabled)
+            self.item.setTextAlignment(QtCore.Qt.AlignHCenter | QtCore.Qt.AlignVCenter)
+            self.table.setItem(index // len(get_all_date), index % len(get_all_date) + 1, self.item)
+            self.table.resizeColumnsToContents()
 
 
-class WindowMain(QtWidgets.QDialog, window_main.Ui_Main):
-    def __init__(self, database, config):
-        super(WindowMain, self).__init__()
+class RecoveryWindow(QtWidgets.QMainWindow, recovery_window.Ui_RecoveryWindow):
+    def __init__(self, database, config, exceptions, parser_utils, security_utils, secondary_utils):
+        super(RecoveryWindow, self).__init__()
+        self.setupUi(self)
+        self.response = None
+
+        self.parser = Parser(database, config, exceptions, parser_utils, security_utils, secondary_utils)
+
+        self.email_apply.clicked.connect(self.show_recovery_email)
+        self.code_apply.clicked.connect(self.show_recovery_code)
+
+    def reset_password_get_email(self, email: str):
+        self.parser.exceptions.check_none(self.parser.csrf)
+
+        self.response = self.parser.session.post(self.parser.config.recovery_url,
+                                          Config.get_reset_password_data(email, self.parser.csrf))
+
+    def reset_password_get_code(self, code: str):
+        self.parser.exceptions.check_none(self.parser.csrf)
+
+        self.parser.session.post(self.parser.config.recovery_url,
+                          Config.get_recovery_code_data(code, self.parser.csrf),
+                          cookies=self.response.cookies)
+
+    def show_recovery_email(self):
+        self.parser.get_csrf()
+
+        EMAIL = self.email_input.text()
+
+        self.reset_password_get_email(EMAIL)
+
+        if self.parser.pt.check_reset_password_message(self.parser.pt.get_reset_password_message(self.parser.session),
+                                                       self.parser.config.enter_email_message,
+                                                       self.parser.config.email_error) is not None:
+            self.email_input.clear()
+            self.email_input.setPlaceholderText(self.parser.config.email_error)
+            pal = self.email_input.palette()
+            text_color = QtGui.QColor("red")
+
+            pal.setColor(QtGui.QPalette.PlaceholderText, text_color)
+            self.email_input.setPalette(pal)
+        else:
+            self.stackedWidget.setCurrentIndex(1)
+
+    def show_recovery_code(self):
+        self.parser.get_csrf()
+
+        CODE = self.code_input.text()
+        self.reset_password_get_code(CODE)
+
+        if self.parser.pt.check_reset_password_message(self.parser.pt.get_reset_password_message(self.parser.session),
+                                                       self.parser.config.enter_code_message,
+                                                       self.parser.config.code_message_error) is not None:
+            self.code_input.clear()
+            self.code_input.setPlaceholderText(self.parser.config.code_message_error)
+            pal = self.code_input.palette()
+            text_color = QtGui.QColor("red")
+
+            pal.setColor(QtGui.QPalette.PlaceholderText, text_color)
+            self.code_input.setPalette(pal)
+        else:
+            self.close()
+
+
+class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
+    def __init__(self):
+        super(MainWindow, self).__init__()
         self.setupUi(self)
 
-        self.parser = Parser(database, config)
+        self.profile_icon.setPixmap(QtGui.QPixmap("gui/icons/navbar_profile.png"))
+        self.journal_icon.setPixmap(QtGui.QPixmap("gui/icons/navbar_journal.png"))
+        self.settings_icon.setPixmap(QtGui.QPixmap("gui/icons/navbar_settings.png"))
+        self.help_icon.setPixmap(QtGui.QPixmap("gui/icons/navbar_help.png"))
 
-        self.image.setPixmap(self.circleImage("./icons/test.png"))
-        self.image_5.setPixmap(self.circleImage("./icons/test.png"))
+        self.image_icon.setPixmap(QtGui.QPixmap("gui/icons/change_image.png"))
+
+        self.group_icon.setPixmap(QtGui.QPixmap("gui/icons/journal_group.png"))
+        self.group_sync_icon.setPixmap(QtGui.QPixmap("gui/icons/synchronization.png"))
+        self.semester_icon.setPixmap(QtGui.QPixmap("gui/icons/journal_semester.png"))
+        self.semester_sync_icon.setPixmap(QtGui.QPixmap("gui/icons/synchronization.png"))
+        self.subject_icon.setPixmap(QtGui.QPixmap("gui/icons/journal_subject.png"))
+        self.subject_sync_icon.setPixmap(QtGui.QPixmap("gui/icons/synchronization.png"))
+
+        self.email_icon.setPixmap(QtGui.QPixmap("gui/icons/change_mail.png"))
+        self.password_icon.setPixmap(QtGui.QPixmap("gui/icons/change_password.png"))
+
+        self.db_icon.setPixmap(QtGui.QPixmap("gui/icons/sql-server.png"))
+
+        self.developers_icon.setPixmap(QtGui.QPixmap("gui/icons/mammoth_icon.png"))
 
     @staticmethod
     def circleImage(imagePath):
@@ -92,285 +166,187 @@ class WindowMain(QtWidgets.QDialog, window_main.Ui_Main):
         return target
 
 
-class RecoveryCode(QtWidgets.QDialog, window_recovery_code.Ui_Recovery_2):
-    def __init__(self, database, config):
-        super(RecoveryCode, self).__init__()
+class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
+    def __init__(self, config, database, parser_utils, security_utils, secondary_utils, exceptions):
+        super(AuthWindow, self).__init__()
         self.setupUi(self)
 
-        self.parser = Parser(database, config)
+        self.config = config
+        self.database = database
+        self.parser_utils = parser_utils
+        self.security_utils = security_utils
+        self.secondary_utils = secondary_utils
+        self.exceptions = exceptions
 
-
-class RecoveryEmail(QtWidgets.QDialog, window_recovery.Ui_Recovery):
-    def __init__(self, database, config):
-        super(RecoveryEmail, self).__init__()
-        self.response = None
-        self.setupUi(self)
-
-        self.parser = Parser(database, config)
-        self.recoverCode = RecoveryCode(database, config)
-
-        self.text_4.setText("<p>1. Если вы сотрудник, то используйте вашу корпоративную почту <b>@ut-mo.ru</b>.</p>")
-        self.text_5.setText(
-            "<p>2. Если вы студент и не получали логин/пароль (на руки или по почте) и не указывали <b>адрес вашей электронной почты</p>"
-            "<p>в заявлении абитуриента</b>, то их (логин и пароль) можно получить в вашем деканате или по почте <i>efedotova@ut-mo.ru</i>.</p>")
-        self.text_6.setText(
-            "<p>3. Если вы студент и получали логин/пароль, то используйте почту, указанную при активации аккаунта</p>"
-            "<p>или в заявлении абитуриента.</p>")
-        self.email_system.setPlaceholderText("Ваш e-mail в системе")
-
-        self.apply.clicked.connect(self.ShowRecoveryEmail)
-        self.recoverCode.apply.clicked.connect(self.EntryRecoveryCode)
-
-    def reset_password_email(self, email: str):
-        assert self.parser.csrf is not None, 'CSRF not found'
-
-        self.response = self.parser.session.post(self.parser.config.recovery_url, {
-            'recoverystr': email, 'csrf': self.parser.csrf,
-            'checkrecover': 'Применить'
-        })
-
-    def reset_password_code(self):
-        code = self.recoverCode.code_email.text()
-
-        self.parser.session.post(self.parser.config.recovery_url, {
-            'recoverycode': code, 'csrf': self.parser.csrf,
-            'checkcode': 'Применить'
-        }, cookies=self.response.cookies)
-
-    def ShowRecoveryEmail(self):
-        try:
-            self.parser.get_csrf()
-
-            EMAIL = self.email_system.text()
-            self.reset_password_email(EMAIL)
-
-            if get_reset_password_message(self.parser.session,
-                                          self.parser.config.recovery_url) == self.parser.config.enter_email_message:
-                self.error.setStyleSheet('padding: 10px 10px;'
-                                         'box-sizing: border-box;'
-                                         'font-family: \'SESans\',Arial,sans-serif;'
-                                         'font-size: 16px;'
-                                         'color: #ea0e0e;')
-                self.error.setAlignment(QtCore.Qt.AlignCenter)
-                self.error.setText(self.parser.config.error_email_message)
-            else:
-                self.close()
-                self.recoverCode.show()
-        except Exception as ex:
-            print(ex)
-
-    def EntryRecoveryCode(self):
-        try:
-            self.parser.get_csrf()
-            self.reset_password_code()
-
-            if get_reset_password_message(self.parser.session,
-                                          self.parser.config.recovery_url) == self.parser.config.enter_code_message:
-                self.recoverCode.error.setStyleSheet('padding: 10px 10px;'
-                                                     'box-sizing: border-box;'
-                                                     'font-family: \'SESans\',Arial,sans-serif;'
-                                                     'font-size: 16px;'
-                                                     'color: #ea0e0e;')
-                self.recoverCode.error.setAlignment(QtCore.Qt.AlignCenter)
-                self.recoverCode.error.setText(self.parser.config.error_code_message)
-            else:
-                self.recoverCode.close()
-        except Exception as ex:
-            print(ex)
-
-
-class Authorization(QtWidgets.QDialog, window_login.Ui_Authorization):
-    def __init__(self, database, config):
-        super(Authorization, self).__init__()
-        self.setupUi(self)
-
-        self.parser = Parser(database, config)
-        self.database = DataBase("sqlite3.sqlite3")
-        self.recoveryEmail = RecoveryEmail(database, config)
-        self.windowMain = WindowMain(database, config)
-        self.windowJournal = WindowJournal(database, config)
+        self.parser = Parser(database, config, exceptions, parser_utils, security_utils, secondary_utils)
+        self.MainWindow = MainWindow()
+        self.JournalWindow = JournalWindow(database)
+        self.RecoveryWindow = RecoveryWindow(database, config, exceptions, parser_utils, security_utils, secondary_utils)
 
         self.login.setPlaceholderText("Логин")
         self.password.setPlaceholderText("Пароль")
 
-        self.icon.setPixmap(QtGui.QPixmap("./icons/logo.png"))
+        self.icon.setPixmap(QtGui.QPixmap("gui/icons/logo.png"))
 
         self.password.setEchoMode(QtWidgets.QLineEdit.Password)
 
-        self.visibleIcon = QIcon("./icons/visibleicon.png")
-        self.hiddenIcon = QIcon("./icons/hiddenicon.png")
-        self.windowMain.semesterSelect.addItem('Нужно выбрать группу')
-        self.windowMain.subjectSelect.addItem('Нужно выбрать семестр')
+        self.entry.clicked.connect(self.auth)
+        self.remember.clicked.connect(self.show_recovery_window)
 
-        self.toggleShowPassword = self.password.addAction(self.visibleIcon, QtWidgets.QLineEdit.TrailingPosition)
-        self.toggleShowPassword.triggered.connect(self.textShowPassword)
-        self.passwordShow = False
+        self.MainWindow.profile_menu.clicked.connect(lambda: self.change_page('profile'))
+        self.MainWindow.journal_menu.clicked.connect(lambda: self.change_page('journal'))
+        self.MainWindow.settings.clicked.connect(lambda: self.change_page('change'))
+        self.MainWindow.settings_menu.clicked.connect(lambda: self.change_page('settings'))
+        self.MainWindow.help_menu.clicked.connect(lambda: self.change_page('about'))
 
-        self.entry.clicked.connect(self.checkAuth)
-        self.remember.clicked.connect(self.recoveryShow)
+        self.MainWindow.image_change.clicked.connect(self.change_image_profile)
+        self.MainWindow.email_change.clicked.connect(self.change_email)
+        self.MainWindow.password_change.clicked.connect(self.change_password)
 
-        self.windowMain.apply.clicked.connect(self.emailChange)
-        self.windowMain.apply_2.clicked.connect(self.passwordChange)
-        self.windowMain.change.clicked.connect(self.changeImage)
+    def change_page(self, window):
+        windows = {
+            'profile': 0,
+            'journal': 1,
+            'change': 2,
+            'settings': 3,
+            'about': 4
+        }
 
-    def textShowPassword(self):
-        if not self.passwordShow:
-            self.password.setEchoMode(QtWidgets.QLineEdit.Normal)
-            self.passwordShow = True
-            self.toggleShowPassword.setIcon(self.hiddenIcon)
-        else:
-            self.password.setEchoMode(QtWidgets.QLineEdit.Password)
-            self.passwordShow = False
-            self.toggleShowPassword.setIcon(self.visibleIcon)
+        self.MainWindow.stackedWidget.setCurrentIndex(windows[window])
 
-    def recoveryShow(self):
-        self.recoveryEmail.show()
+    def show_recovery_window(self):
+        self.parser.get_csrf()
+        self.RecoveryWindow.show()
 
-    def windowMainShow(self):
-        self.close()
-        self.windowMain.show()
+    def fill_about_user(self, information):
+        self.MainWindow.name.clear()
+        self.MainWindow.name.setText(f"<b>{information[0]} {information[1]}</b>")
 
-    def emailChange(self):
-        email = self.windowMain.change_mail.text()
+        self.MainWindow.date.clear()
+        self.MainWindow.date.setText(f"{information[3]}")
+
+        self.MainWindow.group.clear()
+        self.MainWindow.group.setText(f"{information[7]}")
+
+        self.MainWindow.institute_about.clear()
+        self.MainWindow.institute_about.setText(f"{information[4]}")
+
+        self.MainWindow.specialization_about.clear()
+        self.MainWindow.specialization_about.setText(f"{information[5]}")
+
+        self.MainWindow.training_about.clear()
+        self.MainWindow.training_about.setText(f"{information[9]}")
+
+        self.MainWindow.profile_about.clear()
+        self.MainWindow.profile_about.setText(f"{information[6]}")
+
+        self.MainWindow.year_about.clear()
+        self.MainWindow.year_about.setText(f"{information[8]}")
+
+        self.MainWindow.email_entry.clear()
+        self.MainWindow.email_entry.setText(f"{information[10]}")
+
+    def change_image_profile(self):
+        file_path = QFileDialog.getOpenFileName(self, "Выбор фотографии", "./", "Image(*.png *.jpg *.jpeg)")[0]
+        self.parser.change_avatar(file_path)
+
+        with open(file_path, "rb") as new_file, open(r'data\user_avatar.png', 'wb') as old_file:
+            old_file.write(new_file.read())
+
+        self.MainWindow.image.setPixmap(self.MainWindow.circleImage('data/user_avatar.png'))
+
+    def change_email(self):
+        email = self.MainWindow.email_entry.text()
         self.parser.change_email(email)
 
-    def passwordChange(self):
-        password = self.windowMain.change_passw.text()
+    def change_password(self):
+        password = self.MainWindow.password_entry.text()
         self.parser.change_password(password)
 
-    def changeImage(self):
-        try:
-            from tkinter import filedialog
-            file_path = filedialog.askopenfilename()
+        self.MainWindow.password_entry.clear()
+        self.MainWindow.password_entry.setPlaceholderText('Успешно')
+        pal = self.MainWindow.password_entry.palette()
+        text_color = QtGui.QColor("green")
 
+        pal.setColor(QtGui.QPalette.PlaceholderText, text_color)
+        self.MainWindow.password_entry.setPalette(pal)
+
+    def fill_combobox_group(self):
+        get_all_group = self.database.get_all_groups()
+
+        self.MainWindow.group_choice.clear()
+        self.MainWindow.group_choice.addItems(['Выберите группу'] + get_all_group)
+
+        self.MainWindow.group_choice.currentIndexChanged.connect(self.fill_combobox_semester)
+
+    def fill_combobox_semester(self):
+        self.MainWindow.semester_choice.clear()
+        group = self.MainWindow.group_choice.currentText()
+
+        group_id = self.database.get_group(group)
+        if self.database.select_query(select(models.Subject).where(models.Subject.group == group_id), 2) is None:
+            self.parser.get_journal(group)
+
+        get_all_semester = self.database.get_all_semesters(group)
+
+        self.MainWindow.semester_choice.addItems(['Выберите семестр'] + get_all_semester)
+
+        self.MainWindow.semester_choice.currentIndexChanged.connect(self.fill_combobox_subject)
+
+    def fill_combobox_subject(self):
+        self.MainWindow.subject_choice.clear()
+        group = self.MainWindow.group_choice.currentText()
+        semester = self.MainWindow.semester_choice.currentText()
+
+        get_all_subject = self.database.get_all_subjects(group, int(semester), 'text')
+
+        self.MainWindow.subject_choice.addItems(['Выберите предмет'] + get_all_subject)
+
+        self.MainWindow.journal_open.clicked.connect(self.fill_journal)
+
+    def fill_journal(self):
+        group = self.MainWindow.group_choice.currentText()
+        semester = self.MainWindow.semester_choice.currentText()
+        subject = self.MainWindow.subject_choice.currentText()
+
+        group_id = self.database.get_group(group)
+        subject_id = self.database.get_subject((models.Subject.id,), subject, semester, group)[0]
+        if self.database.select_query(select(models.Marks).where(models.Marks.group == group_id,
+                                                                 models.Marks.semester == int(semester),
+                                                                 models.Marks.subject == subject_id), 2) is None:
+            self.parser.get_marks(group, int(semester), subject)
+        self.JournalWindow.intilization(group, semester, subject)
+
+        self.JournalWindow.show()
+
+    def auth(self):
+        LOGIN = self.login.text()
+        PASSWORD = self.password.text()
+        CODE = self.parser.auth(LOGIN, PASSWORD)
+
+        if CODE != self.config.successful_code:
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
+            msg.setWindowTitle("Error")
+            msg.setText(self.config.auth_error)
+
+            msg.exec_()
+        else:
             self.parser.get_user_id()
             self.parser.get_csrf()
-            self.parser.change_avatar(file_path)
-
-            self.windowMain.image.setPixmap(self.windowMain.circleImage(file_path))
-            self.windowMain.image_5.setPixmap(self.windowMain.circleImage(file_path))
-        except Exception as ex:
-            print(ex)
-
-    def information(self, getInfo):
-        try:
-            self.windowMain.fio.clear()
-            self.windowMain.fio.setText(f"<strong>{getInfo[0]} {getInfo[1]} <strong>")
-
-            self.windowMain.group.clear()
-            self.windowMain.group.setText(f"Группа: <font color='#000000'>{getInfo[7]}<font></strong>")
-
-            self.windowMain.birthday.clear()
-            self.windowMain.birthday.setText(f"Дата рождения: <strong>{getInfo[3]}</strong>")
-
-            self.windowMain.email.clear()
-            self.windowMain.email.setText(f"Адрес электронной почты: <strong>{getInfo[10]}</strong>")
-
-            self.windowMain.institute.clear()
-            self.windowMain.institute.setText(f"Институт: <strong>{getInfo[4]}</strong>")
-
-            self.windowMain.specialization.clear()
-            self.windowMain.specialization.setText(f"Специальность: <strong>{getInfo[5]}</strong>")
-
-            self.windowMain.profile_back.clear()
-            self.windowMain.profile_back.setText(f"Профиль: <strong>{getInfo[6]}</strong>")
-
-            self.windowMain.change_mail.setText(f"{getInfo[10]}")
-            self.windowMain.change_passw.setPlaceholderText("Новый пароль")
-        except Exception as ex:
-            print(ex)
-
-    def groupUpdate(self):
-        try:
-            if self.windowMain.groupSelect.currentText() == 'Выберите группу':
-                self.windowMain.semesterSelect.clear()
-                self.windowMain.subjectSelect.clear()
-
-                self.windowMain.semesterSelect.addItem('Нежно выбрать группу')
-                self.windowMain.subjectSelect.addItem('Нужно выбрать семестр')
-            else:
-                get_all_group = self.database.get_all_groups()
-                print(get_all_group)
-
-                self.windowMain.groupSelect.clear()
-                self.windowMain.groupSelect.addItems(['Выберите группу'] + get_all_group)
-
-                self.windowMain.groupSelect.currentIndexChanged.connect(self.semesterUpdate)
-                self.windowMain.semesterSelect.currentIndexChanged.connect(self.subjectUpdate)
-                self.windowMain.pushButton.clicked.connect(self.journalUpdate)
-        except Exception as ex:
-            print(ex)
-
-    def semesterUpdate(self):
-        try:
-            if self.windowMain.groupSelect.currentText() == 'Выберите группу':
-                self.windowMain.semesterSelect.clear()
-                self.windowMain.subjectSelect.clear()
-
-                self.windowMain.semesterSelect.addItem('Нужно выбрать группу')
-                self.windowMain.subjectSelect.addItem("Нужно выбрать семестр")
-            else:
-                self.windowMain.semesterSelect.clear()
-                self.parser.get_journal(self.windowMain.groupSelect.currentText())
-
-                get_all_semester = self.database.get_all_semesters(self.windowMain.groupSelect.currentText())
-
-                self.windowMain.semesterSelect.addItems(['Выберите семестр'] + get_all_semester)
-        except Exception as ex:
-            print(ex)
-
-    def subjectUpdate(self):
-        try:
-            if self.windowMain.semesterSelect.currentText() == 'Выберите семестр':
-                self.windowMain.subjectSelect.clear()
-                self.windowMain.subjectSelect.addItem('Нужно выбрать семестр')
-            else:
-                self.windowMain.subjectSelect.clear()
-
-                get_all_subject = self.database.get_all_subjects(self.windowMain.groupSelect.currentText(),
-                                                                 self.windowMain.semesterSelect.currentText(), 'text')
-
-                self.windowMain.subjectSelect.addItems(['Выберите предмет'] + get_all_subject)
-        except Exception as ex:
-            print(ex)
-
-    def journalUpdate(self):
-        try:
-            group = self.windowMain.groupSelect.currentText()
-            semester = self.windowMain.semesterSelect.currentText()
-            subject = self.windowMain.subjectSelect.currentText()
-
-            self.parser.get_marks(group, int(semester), subject)
-            self.windowJournal.fillJournal(group, semester, subject)
-
-            self.windowJournal.show()
-        except Exception as ex:
-            print(ex)
-
-    def checkAuth(self):
-        try:
-            LOGIN = self.login.text()
-            PASSWORD = self.password.text()
-            CHECK = self.parser.auth(LOGIN, PASSWORD)
-
-            if CHECK != 200:
-                msg = QtWidgets.QMessageBox()
-                msg.setIcon(QtWidgets.QMessageBox.Warning)
-                msg.setWindowTitle("Error")
-                msg.setText("Неправильный логин или пароль")
-
-                start = msg.exec_()
-            else:
-                self.parser.get_user_id()
-                self.parser.get_csrf()
-
+            if self.database.select_query(select(models.Group), 2) is None:
                 self.parser.get_groups()
 
-                getInfo = self.parser.get_full_info_about_auth_user()
-                self.information(getInfo)
+            info_about_user = self.parser.get_full_info_about_auth_user()
+            self.fill_about_user(info_about_user)
 
-                self.groupUpdate()
+            self.secondary_utils.create_dir('data')
+            url_user_avatar = self.parser.get_user_avatar()
+            self.secondary_utils.get_image(self.config.url + url_user_avatar)
 
-                self.windowMainShow()
-        except Exception as ex:
-            print(ex)
+            self.MainWindow.image.setPixmap(self.MainWindow.circleImage('data/user_avatar.png'))
+
+            self.fill_combobox_group()
+
+            self.close()
+            self.MainWindow.show()

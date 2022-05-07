@@ -11,81 +11,33 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 
 
-class Ui_Recovery(object):
-    def setupUi(self, Recovery):
-        Recovery.setObjectName("Recovery")
-        Recovery.resize(930, 345)
-        Recovery.setMinimumSize(QtCore.QSize(930, 345))
-        Recovery.setMaximumSize(QtCore.QSize(930, 345))
-        Recovery.setStyleSheet("QWidget[objectName=\"Recovery\"] { background-color: #f6f7fb }")
-        self.text_1 = QtWidgets.QLabel(Recovery)
-        self.text_1.setGeometry(QtCore.QRect(20, 10, 901, 31))
-        font = QtGui.QFont()
-        font.setBold(True)
-        font.setWeight(99)
-        self.text_1.setFont(font)
-        self.text_1.setStyleSheet("font-weight: 800;\n"
-"color: #383838;")
-        self.text_1.setObjectName("text_1")
-        self.text_2 = QtWidgets.QLabel(Recovery)
-        self.text_2.setGeometry(QtCore.QRect(20, 40, 901, 31))
-        font = QtGui.QFont()
-        font.setBold(True)
-        font.setWeight(99)
-        self.text_2.setFont(font)
-        self.text_2.setStyleSheet("font-weight: 800;\n"
-"color: #383838;")
-        self.text_2.setObjectName("text_2")
-        self.text_3 = QtWidgets.QLabel(Recovery)
-        self.text_3.setGeometry(QtCore.QRect(20, 70, 901, 31))
-        font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(11)
-        font.setBold(False)
-        font.setWeight(50)
-        self.text_3.setFont(font)
-        self.text_3.setStyleSheet("color: #6a6a6a;")
-        self.text_3.setObjectName("text_3")
-        self.text_4 = QtWidgets.QLabel(Recovery)
-        self.text_4.setGeometry(QtCore.QRect(20, 100, 801, 31))
-        font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(11)
-        font.setBold(False)
-        font.setItalic(False)
-        font.setUnderline(False)
-        font.setWeight(50)
-        font.setStrikeOut(False)
-        font.setKerning(True)
-        self.text_4.setFont(font)
-        self.text_4.setStyleSheet("color: #6a6a6a;")
-        self.text_4.setText("")
-        self.text_4.setObjectName("text_4")
-        self.text_5 = QtWidgets.QLabel(Recovery)
-        self.text_5.setGeometry(QtCore.QRect(20, 130, 901, 71))
-        font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(11)
-        font.setBold(False)
-        font.setWeight(50)
-        self.text_5.setFont(font)
-        self.text_5.setStyleSheet("color: #6a6a6a;")
-        self.text_5.setText("")
-        self.text_5.setObjectName("text_5")
-        self.text_6 = QtWidgets.QLabel(Recovery)
-        self.text_6.setGeometry(QtCore.QRect(20, 200, 901, 51))
-        font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(11)
-        font.setBold(False)
-        font.setWeight(50)
-        self.text_6.setFont(font)
-        self.text_6.setStyleSheet("color: #6a6a6a;")
-        self.text_6.setText("")
-        self.text_6.setObjectName("text_6")
-        self.email_system = QtWidgets.QLineEdit(Recovery)
-        self.email_system.setGeometry(QtCore.QRect(20, 280, 751, 51))
-        self.email_system.setStyleSheet("QLineEdit[objectName=\"email_system\"] {\n"
+class Ui_RecoveryWindow(object):
+    def setupUi(self, RecoveryWindow):
+        RecoveryWindow.setObjectName("RecoveryWindow")
+        RecoveryWindow.resize(823, 212)
+        RecoveryWindow.setStyleSheet("QWidget[objectName=\"recovery_email\"],\n"
+"QWidget[objectName=\"recovery_code\"] { background-color: #f6f7fb }\n"
+"\n"
+"QPushButton {\n"
+"    color: white;\n"
+"    font-size: 12px;\n"
+"    font-family: \'SESans\',Arial,sans-serif;;    \n"
+"    border: 1px solid #3f5cde; \n"
+"    background-color: #3f5cde;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    border: 0px;\n"
+"    background-color: #243581;    \n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    border: 0px;\n"
+"    background-color: #243581; \n"
+"}\n"
+"\n"
+"QLineEdit {\n"
 "    border: 1px solid #e7e7e7;\n"
 "    backgorund-color: #fbfbfb;\n"
 "    border-radius: 15px;\n"
@@ -94,13 +46,37 @@ class Ui_Recovery(object):
 "    padding-left: 1em;\n"
 "}\n"
 "")
-        self.email_system.setObjectName("email_system")
-        self.apply = QtWidgets.QPushButton(Recovery)
-        self.apply.setGeometry(QtCore.QRect(810, 290, 91, 31))
-        self.apply.setMinimumSize(QtCore.QSize(91, 31))
-        self.apply.setMaximumSize(QtCore.QSize(91, 31))
-        self.apply.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.apply.setStyleSheet("QPushButton {\n"
+        self.centralwidget = QtWidgets.QWidget(RecoveryWindow)
+        self.centralwidget.setObjectName("centralwidget")
+        self.stackedWidget = QtWidgets.QStackedWidget(self.centralwidget)
+        self.stackedWidget.setGeometry(QtCore.QRect(0, 0, 821, 211))
+        self.stackedWidget.setObjectName("stackedWidget")
+        self.recovery_email = QtWidgets.QWidget()
+        self.recovery_email.setObjectName("recovery_email")
+        self.email_subtitle = QtWidgets.QLabel(self.recovery_email)
+        self.email_subtitle.setGeometry(QtCore.QRect(40, 60, 581, 21))
+        font = QtGui.QFont()
+        font.setFamily("Bahnschrift Light")
+        font.setPointSize(10)
+        self.email_subtitle.setFont(font)
+        self.email_subtitle.setObjectName("email_subtitle")
+        self.email_title = QtWidgets.QLabel(self.recovery_email)
+        self.email_title.setGeometry(QtCore.QRect(20, 10, 281, 51))
+        font = QtGui.QFont()
+        font.setFamily("Bahnschrift Light")
+        font.setPointSize(18)
+        self.email_title.setFont(font)
+        self.email_title.setObjectName("email_title")
+        self.email_input = QtWidgets.QLineEdit(self.recovery_email)
+        self.email_input.setGeometry(QtCore.QRect(180, 110, 461, 41))
+        self.email_input.setStyleSheet("")
+        self.email_input.setObjectName("email_input")
+        self.email_apply = QtWidgets.QPushButton(self.recovery_email)
+        self.email_apply.setGeometry(QtCore.QRect(350, 170, 121, 31))
+        self.email_apply.setMinimumSize(QtCore.QSize(0, 0))
+        self.email_apply.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.email_apply.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.email_apply.setStyleSheet("QPushButton {\n"
 "    color: white;\n"
 "    font-size: 12px;\n"
 "    font-family: \'SESans\',Arial,sans-serif;;    \n"
@@ -118,37 +94,85 @@ class Ui_Recovery(object):
 "    border: 0px;\n"
 "    background-color: #243581; \n"
 "}")
-        self.apply.setObjectName("apply")
-        self.error = QtWidgets.QLabel(Recovery)
-        self.error.setGeometry(QtCore.QRect(20, 240, 901, 41))
+        self.email_apply.setObjectName("email_apply")
+        self.stackedWidget.addWidget(self.recovery_email)
+        self.recovery_code = QtWidgets.QWidget()
+        self.recovery_code.setObjectName("recovery_code")
+        self.code_title = QtWidgets.QLabel(self.recovery_code)
+        self.code_title.setGeometry(QtCore.QRect(20, 10, 281, 51))
         font = QtGui.QFont()
-        font.setFamily("MS Shell Dlg 2")
-        font.setPointSize(11)
-        font.setBold(False)
-        font.setWeight(50)
-        self.error.setFont(font)
-        self.error.setStyleSheet("color: #6a6a6a;")
-        self.error.setText("")
-        self.error.setAlignment(QtCore.Qt.AlignCenter)
-        self.error.setObjectName("error")
+        font.setFamily("Bahnschrift Light")
+        font.setPointSize(18)
+        self.code_title.setFont(font)
+        self.code_title.setObjectName("code_title")
+        self.code_input = QtWidgets.QLineEdit(self.recovery_code)
+        self.code_input.setGeometry(QtCore.QRect(180, 110, 461, 41))
+        self.code_input.setStyleSheet("QLineEdit[objectName=\"email_system\"] {\n"
+"    border: 1px solid #e7e7e7;\n"
+"    backgorund-color: #fbfbfb;\n"
+"    border-radius: 15px;\n"
+"    font-family: Montserrat Medium;\n"
+"    font-size: 16px;\n"
+"    padding-left: 1em;\n"
+"}\n"
+"")
+        self.code_input.setObjectName("code_input")
+        self.code_apply = QtWidgets.QPushButton(self.recovery_code)
+        self.code_apply.setGeometry(QtCore.QRect(350, 170, 121, 31))
+        self.code_apply.setMinimumSize(QtCore.QSize(0, 0))
+        self.code_apply.setMaximumSize(QtCore.QSize(16777215, 16777215))
+        self.code_apply.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.code_apply.setStyleSheet("QPushButton {\n"
+"    color: white;\n"
+"    font-size: 12px;\n"
+"    font-family: \'SESans\',Arial,sans-serif;;    \n"
+"    border: 1px solid #3f5cde; \n"
+"    background-color: #3f5cde;\n"
+"    border-radius: 10px;\n"
+"}\n"
+"\n"
+"QPushButton:hover {\n"
+"    border: 0px;\n"
+"    background-color: #243581;    \n"
+"}\n"
+"\n"
+"QPushButton:pressed {\n"
+"    border: 0px;\n"
+"    background-color: #243581; \n"
+"}")
+        self.code_apply.setObjectName("code_apply")
+        self.code_subtitle = QtWidgets.QLabel(self.recovery_code)
+        self.code_subtitle.setGeometry(QtCore.QRect(40, 60, 581, 21))
+        font = QtGui.QFont()
+        font.setFamily("Bahnschrift Light")
+        font.setPointSize(10)
+        self.code_subtitle.setFont(font)
+        self.code_subtitle.setObjectName("code_subtitle")
+        self.stackedWidget.addWidget(self.recovery_code)
+        RecoveryWindow.setCentralWidget(self.centralwidget)
 
-        self.retranslateUi(Recovery)
-        QtCore.QMetaObject.connectSlotsByName(Recovery)
+        self.retranslateUi(RecoveryWindow)
+        self.stackedWidget.setCurrentIndex(0)
+        QtCore.QMetaObject.connectSlotsByName(RecoveryWindow)
 
-    def retranslateUi(self, Recovery):
+    def retranslateUi(self, RecoveryWindow):
         _translate = QtCore.QCoreApplication.translate
-        Recovery.setWindowTitle(_translate("Recovery", "Восстановление доступа"))
-        self.text_1.setText(_translate("Recovery", "Восстановление доступа"))
-        self.text_2.setText(_translate("Recovery", "Внимательно ознакомьтесь с пунктами ниже!"))
-        self.text_3.setText(_translate("Recovery", "Восстановление доступа возможно только при наличии вашей электронной почты в нашей базе."))
-        self.apply.setText(_translate("Recovery", "Применить"))
+        RecoveryWindow.setWindowTitle(_translate("RecoveryWindow", "MainWindow"))
+        self.email_subtitle.setText(_translate("RecoveryWindow", "Восстановление доступа возможно при наличии электронной почты в базе данных."))
+        self.email_title.setText(_translate("RecoveryWindow", "Восстановление доступа"))
+        self.email_input.setPlaceholderText(_translate("RecoveryWindow", "e-mail"))
+        self.email_apply.setText(_translate("RecoveryWindow", "Применить"))
+        self.code_title.setText(_translate("RecoveryWindow", "Восстановление доступа"))
+        self.code_input.setPlaceholderText(_translate("RecoveryWindow", "Код"))
+        self.code_apply.setText(_translate("RecoveryWindow", "Применить"))
+        self.code_subtitle.setText(_translate("RecoveryWindow", "На почту отправлен код восстановления доступа, введите его в течение 10 минут."))
 
 
 if __name__ == "__main__":
     import sys
     app = QtWidgets.QApplication(sys.argv)
-    Recovery = QtWidgets.QWidget()
-    ui = Ui_Recovery()
-    ui.setupUi(Recovery)
-    Recovery.show()
+    RecoveryWindow = QtWidgets.QMainWindow()
+    ui = Ui_RecoveryWindow()
+    ui.setupUi(RecoveryWindow)
+    RecoveryWindow.show()
     sys.exit(app.exec_())

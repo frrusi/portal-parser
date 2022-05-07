@@ -15,8 +15,8 @@ class Ui_Authorization(object):
     def setupUi(self, Authorization):
         Authorization.setObjectName("Authorization")
         Authorization.resize(562, 397)
-        Authorization.setMinimumSize(QtCore.QSize(0, 0))
-        Authorization.setMaximumSize(QtCore.QSize(16777215, 397))
+        Authorization.setMinimumSize(QtCore.QSize(562, 397))
+        Authorization.setMaximumSize(QtCore.QSize(562, 400))
         Authorization.setCursor(QtGui.QCursor(QtCore.Qt.ArrowCursor))
         Authorization.setAutoFillBackground(False)
         Authorization.setStyleSheet("QWidget[objectName=\"Authorization\"] { background-color: #f6f7fb }")
@@ -69,10 +69,10 @@ class Ui_Authorization(object):
         self.verticalLayout_8.setObjectName("verticalLayout_8")
         self.text = QtWidgets.QLabel(self.frame_6)
         font = QtGui.QFont()
-        font.setFamily("Montserrat SemiBold")
-        font.setPointSize(14)
-        font.setBold(True)
-        font.setWeight(75)
+        font.setFamily("Bahnschrift Light")
+        font.setPointSize(18)
+        font.setBold(False)
+        font.setWeight(50)
         self.text.setFont(font)
         self.text.setAlignment(QtCore.Qt.AlignCenter)
         self.text.setObjectName("text")
@@ -102,7 +102,6 @@ class Ui_Authorization(object):
 "    font-size: 15px;\n"
 "    padding-left: 1em;\n"
 "}")
-        self.login.setText("")
         self.login.setObjectName("login")
         self.verticalLayout.addWidget(self.login)
         self.password = QtWidgets.QLineEdit(self.frame)
@@ -141,7 +140,7 @@ class Ui_Authorization(object):
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.remember = QtWidgets.QPushButton(self.frame_2)
         font = QtGui.QFont()
-        font.setFamily("Montserrat SemiBold")
+        font.setFamily("Bahnschrift 53")
         font.setPointSize(-1)
         self.remember.setFont(font)
         self.remember.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
@@ -150,8 +149,8 @@ class Ui_Authorization(object):
         self.remember.setAutoFillBackground(False)
         self.remember.setStyleSheet("QPushButton {\n"
 "    color: black;\n"
-"    font-size: 12px;\n"
-"    font-family: Montserrat SemiBold;\n"
+"    font-size: 14px;\n"
+"    font-family: Bahnschrift Light;\n"
 "    background-color: transparent; \n"
 "    border: 1px solid transparent;\n"
 "    border-radius: 12px;\n"
@@ -184,7 +183,7 @@ class Ui_Authorization(object):
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.entry = QtWidgets.QPushButton(self.frame_4)
         font = QtGui.QFont()
-        font.setFamily("Montserrat ExtraBold")
+        font.setFamily("Bahnschrift SemiBold")
         font.setPointSize(-1)
         self.entry.setFont(font)
         self.entry.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
@@ -194,8 +193,8 @@ class Ui_Authorization(object):
 "    max-height: 25px;\n"
 "    min-height: 25px;\n"
 "    color: white;\n"
-"    font-size: 12px;\n"
-"    font-family: Montserrat ExtraBold;\n"
+"    font-size: 14px;\n"
+"    font-family: Bahnschrift SemiBold;\n"
 "    background-color: #3f5cde; \n"
 "    border: 1px solid #3f5cde;\n"
 "    border-radius: 12px;\n"
@@ -226,8 +225,11 @@ class Ui_Authorization(object):
         _translate = QtCore.QCoreApplication.translate
         Authorization.setWindowTitle(_translate("Authorization", "Окно авторизации"))
         self.text.setText(_translate("Authorization", "Авторизация"))
+        self.login.setPlaceholderText(_translate("Authorization", "Логин"))
+        self.password.setPlaceholderText(_translate("Authorization", "Пароль"))
         self.remember.setText(_translate("Authorization", "Не могу войти"))
         self.entry.setText(_translate("Authorization", "ВОЙТИ"))
+        self.entry.setShortcut(_translate("Authorization", "Return"))
 
 
 if __name__ == "__main__":
