@@ -47,9 +47,9 @@ class Ui_Authorization(object):
         self.horizontalLayout.setObjectName("horizontalLayout")
         self.icon = QtWidgets.QLabel(self.frame_7)
         self.icon.setStyleSheet("    min-height: 131px;\n"
-"    max-height: 131px;\n"
-"    min-width: 181px;\n"
-"    max-width: 181px;")
+                                "    max-height: 131px;\n"
+                                "    min-width: 181px;\n"
+                                "    max-width: 181px;")
         self.icon.setText("")
         self.icon.setPixmap(QtGui.QPixmap("../icons/logo.png"))
         self.icon.setScaledContents(True)
@@ -93,28 +93,28 @@ class Ui_Authorization(object):
         font.setPointSize(-1)
         self.login.setFont(font)
         self.login.setStyleSheet("QLineEdit {\n"
-"    min-height: 41px;\n"
-"    max-height: 41px;\n"
-"    border: 1px solid #e7e7e7;\n"
-"    backgorund-color: #fbfbfb;\n"
-"    border-radius: 20px;\n"
-"    font-family: Montserrat Medium;\n"
-"    font-size: 15px;\n"
-"    padding-left: 1em;\n"
-"}")
+                                 "    min-height: 41px;\n"
+                                 "    max-height: 41px;\n"
+                                 "    border: 1px solid #e7e7e7;\n"
+                                 "    backgorund-color: #fbfbfb;\n"
+                                 "    border-radius: 20px;\n"
+                                 "    font-family: Montserrat Medium;\n"
+                                 "    font-size: 15px;\n"
+                                 "    padding-left: 1em;\n"
+                                 "}")
         self.login.setObjectName("login")
         self.verticalLayout.addWidget(self.login)
         self.password = QtWidgets.QLineEdit(self.frame)
         self.password.setStyleSheet("QLineEdit {\n"
-"    min-height: 41px;\n"
-"    max-height: 41px;\n"
-"    border: 1px solid #e7e7e7;\n"
-"    backgorund-color: #fbfbfb;\n"
-"    border-radius: 20px;\n"
-"    font-family: Montserrat Medium;\n"
-"    font-size: 15px;\n"
-"    padding-left: 1em;\n"
-"}")
+                                    "    min-height: 41px;\n"
+                                    "    max-height: 41px;\n"
+                                    "    border: 1px solid #e7e7e7;\n"
+                                    "    backgorund-color: #fbfbfb;\n"
+                                    "    border-radius: 20px;\n"
+                                    "    font-family: Montserrat Medium;\n"
+                                    "    font-size: 15px;\n"
+                                    "    padding-left: 1em;\n"
+                                    "}")
         self.password.setText("")
         self.password.setEchoMode(QtWidgets.QLineEdit.PasswordEchoOnEdit)
         self.password.setObjectName("password")
@@ -148,25 +148,25 @@ class Ui_Authorization(object):
         self.remember.setLayoutDirection(QtCore.Qt.LeftToRight)
         self.remember.setAutoFillBackground(False)
         self.remember.setStyleSheet("QPushButton {\n"
-"    color: black;\n"
-"    font-size: 14px;\n"
-"    font-family: Bahnschrift Light;\n"
-"    background-color: transparent; \n"
-"    border: 1px solid transparent;\n"
-"    border-radius: 12px;\n"
-"}\n"
-"\n"
-"QPushButton::hover {\n"
-"    color: blue;\n"
-"    background-color:transparent ;\n"
-"    border-color: transparent;\n"
-"}\n"
-"\n"
-"QPushButton::pressed {\n"
-"    color: blue;\n"
-"    background-color: transparent;\n"
-"    border-color: transparent;\n"
-"}")
+                                    "    color: black;\n"
+                                    "    font-size: 14px;\n"
+                                    "    font-family: Bahnschrift Light;\n"
+                                    "    background-color: transparent; \n"
+                                    "    border: 1px solid transparent;\n"
+                                    "    border-radius: 12px;\n"
+                                    "}\n"
+                                    "\n"
+                                    "QPushButton::hover {\n"
+                                    "    color: blue;\n"
+                                    "    background-color:transparent ;\n"
+                                    "    border-color: transparent;\n"
+                                    "}\n"
+                                    "\n"
+                                    "QPushButton::pressed {\n"
+                                    "    color: blue;\n"
+                                    "    background-color: transparent;\n"
+                                    "    border-color: transparent;\n"
+                                    "}")
         self.remember.setObjectName("remember")
         self.horizontalLayout_2.addWidget(self.remember)
         self.verticalLayout_2.addLayout(self.horizontalLayout_2)
@@ -188,29 +188,29 @@ class Ui_Authorization(object):
         self.entry.setFont(font)
         self.entry.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.entry.setStyleSheet("QPushButton {\n"
-"    max-weight: 50px;\n"
-"    min-weight: 50px;\n"
-"    max-height: 25px;\n"
-"    min-height: 25px;\n"
-"    color: white;\n"
-"    font-size: 14px;\n"
-"    font-family: Bahnschrift SemiBold;\n"
-"    background-color: #3f5cde; \n"
-"    border: 1px solid #3f5cde;\n"
-"    border-radius: 12px;\n"
-"}\n"
-"\n"
-"QPushButton::hover {\n"
-"    color: white;\n"
-"    background-color: #243581;\n"
-"    border-color: #243581;\n"
-"}\n"
-"\n"
-"QPushButton::pressed {\n"
-"    color: white;\n"
-"    background-color: #243581;\n"
-"    border-color: #243581;\n"
-"}")
+                                 "    max-weight: 50px;\n"
+                                 "    min-weight: 50px;\n"
+                                 "    max-height: 25px;\n"
+                                 "    min-height: 25px;\n"
+                                 "    color: white;\n"
+                                 "    font-size: 14px;\n"
+                                 "    font-family: Bahnschrift SemiBold;\n"
+                                 "    background-color: #3f5cde; \n"
+                                 "    border: 1px solid #3f5cde;\n"
+                                 "    border-radius: 12px;\n"
+                                 "}\n"
+                                 "\n"
+                                 "QPushButton::hover {\n"
+                                 "    color: white;\n"
+                                 "    background-color: #243581;\n"
+                                 "    border-color: #243581;\n"
+                                 "}\n"
+                                 "\n"
+                                 "QPushButton::pressed {\n"
+                                 "    color: white;\n"
+                                 "    background-color: #243581;\n"
+                                 "    border-color: #243581;\n"
+                                 "}")
         self.entry.setObjectName("entry")
         self.verticalLayout_3.addWidget(self.entry)
         self.verticalLayout_4.addLayout(self.verticalLayout_3)
@@ -234,6 +234,7 @@ class Ui_Authorization(object):
 
 if __name__ == "__main__":
     import sys
+
     app = QtWidgets.QApplication(sys.argv)
     Authorization = QtWidgets.QWidget()
     ui = Ui_Authorization()
