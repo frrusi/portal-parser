@@ -434,7 +434,7 @@ QComboBox QAbstractItemView {
             <number>11</number>
            </property>
            <property name="topMargin">
-            <number>11</number>
+            <number>5</number>
            </property>
            <property name="rightMargin">
             <number>11</number>
@@ -533,14 +533,20 @@ QComboBox QAbstractItemView {
             </widget>
            </item>
            <item>
-            <layout class="QHBoxLayout" name="horizontalLayout_2">
+            <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0">
+             <property name="spacing">
+              <number>10</number>
+             </property>
+             <property name="topMargin">
+              <number>0</number>
+             </property>
              <property name="bottomMargin">
               <number>0</number>
              </property>
              <item>
               <widget class="QLabel" name="image">
                <property name="styleSheet">
-                <string notr="true">background-color: red;</string>
+                <string notr="true"/>
                </property>
                <property name="text">
                 <string/>
@@ -562,13 +568,13 @@ QComboBox QAbstractItemView {
                <property name="minimumSize">
                 <size>
                  <width>207</width>
-                 <height>21</height>
+                 <height>25</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
                  <width>207</width>
-                 <height>21</height>
+                 <height>25</height>
                 </size>
                </property>
                <property name="font">
