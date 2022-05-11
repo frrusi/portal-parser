@@ -38,10 +38,12 @@ class Parser(ParserUserSettings, metaclass=ParserMeta):
         date, time, tree = self.pt.get_datetime_and_tree(self.session, self.config.groups_url.format(course='0'))
         last_course = int(tree.xpath('//select[@name="k"]/option[last()]/text()')[0])
 
-        groups = []
+        groups = set()
         for course in range(1, last_course + 1):
             tree = self.pt.get_tree(self.session, self.config.groups_url.format(course=course))
-            groups += [[group, date, time] for group in tree.xpath('//table/tr[position() > 1]/td[1]/text()')]
+            groups.update(set(tuple([group,
+                                     date,
+                                     time]) for group in tree.xpath('//table/tr[position() > 1]/td[1]/text()')))
 
         groups = pd.DataFrame(groups, columns=['group', 'date', 'time'])
         self.database.to_sql_query(groups, 'groups')
