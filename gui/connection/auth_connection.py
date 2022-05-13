@@ -1,4 +1,4 @@
-from PyQt5 import QtGui, QtWidgets
+from PyQt5 import QtGui, QtWidgets, QtCore
 from PyQt5.QtWidgets import QFileDialog
 from sqlalchemy import select
 
@@ -8,6 +8,24 @@ from gui.connection.main_connection import MainWindow
 from gui.connection.recovery_connection import RecoveryWindow
 from gui.windows import login_window
 from parser.parser import Parser
+
+
+class RoundPixmapStyle(QtWidgets.QProxyStyle):
+    def __init__(self, radius=10, *args, **kwargs):
+        super(RoundPixmapStyle, self).__init__(*args, **kwargs)
+        self._radius = radius
+
+    def drawItemPixmap(self, painter, rectangle, alignment, pixmap):
+        painter.save()
+        pix = QtGui.QPixmap(pixmap.size())
+        pix.fill(QtCore.Qt.transparent)
+        p = QtGui.QPainter(pix)
+        p.setBrush(QtGui.QBrush(pixmap))
+        p.setPen(QtCore.Qt.NoPen)
+        p.drawRoundedRect(pixmap.rect(), self._radius, self._radius)
+        p.end()
+        super(RoundPixmapStyle, self).drawItemPixmap(painter, rectangle, alignment, pix)
+        painter.restore()
 
 
 class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
@@ -95,15 +113,23 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.MainWindow.email_entry.setText(f"{information[10]}")
 
     def change_image_profile(self):
-        file_path = QFileDialog.getOpenFileName(self, "Выбор фотографии", "./", "Image(*.png *.jpg *.jpeg)")[0]
+        file_path = QFileDialog.getOpenFileName(self, "Выбор фотографии", "./", "Image(*.png *.jpg *.jpeg *.gif *.bmp)")[0]
 
         if file_path:
             self.parser.change_avatar(file_path)
-
-            with open(file_path, "rb") as new_file, open(r'data\user_avatar.png', 'wb') as old_file:
+            file_extension = self.scnt.get_file_extension(file_path)
+            with open(file_path, "rb") as new_file, open(rf'data\user_avatar.{file_extension}', 'wb') as old_file:
                 old_file.write(new_file.read())
 
-            self.MainWindow.image.setPixmap(self.MainWindow.circleImage('data/user_avatar.png'))
+            if file_extension == 'gif':
+                proxy_style = RoundPixmapStyle(radius=65, style=self.MainWindow.image.style())
+                self.MainWindow.image.setStyle(proxy_style)
+                path = r'data/user_avatar.gif'
+                gif = QtGui.QMovie(path)
+                self.MainWindow.image.setMovie(gif)
+                gif.start()
+            else:
+                self.MainWindow.image.setPixmap(self.MainWindow.circleImage(rf'data/user_avatar.{file_extension}'))
 
     def change_email(self):
         email = self.MainWindow.email_entry.text()
@@ -193,8 +219,17 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
             self.scnt.create_dir('data')
             url_user_avatar = self.parser.get_user_avatar()
             self.scnt.get_image(self.config.url + url_user_avatar)
+            file_extension = self.scnt.get_file_extension(url_user_avatar)
 
-            self.MainWindow.image.setPixmap(self.MainWindow.circleImage('data/user_avatar.png'))
+            if file_extension == 'gif':
+                proxy_style = RoundPixmapStyle(radius=65, style=self.MainWindow.image.style())
+                self.MainWindow.image.setStyle(proxy_style)
+                path = r'data/user_avatar.gif'
+                gif = QtGui.QMovie(path)
+                self.MainWindow.image.setMovie(gif)
+                gif.start()
+            else:
+                self.MainWindow.image.setPixmap(self.MainWindow.circleImage(rf'data\user_avatar.{file_extension}'))
 
             self.fill_combobox_group()
 
