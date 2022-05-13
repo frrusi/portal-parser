@@ -187,6 +187,8 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
             if self.database.select_query(select(models.Group), 2) is None:
                 self.parser.get_groups()
 
+            #self.database.synchronization_groups(self.parser.get_groups(True))
+
             info_about_user = self.parser.get_full_info_about_auth_user()
             self.fill_about_user(info_about_user)
 
