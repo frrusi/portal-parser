@@ -69,6 +69,27 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.MainWindow.email_change.clicked.connect(self.change_email)
         self.MainWindow.password_change.clicked.connect(self.change_password)
 
+        self.MainWindow.journal_open.clicked.connect(self.fill_journal)
+
+        self.MainWindow.group_sync.clicked.connect(self.synchronization_group)
+        self.MainWindow.semester_sync.clicked.connect(self.synchronization_subjects_and_semesters)
+        # self.MainWindow.subject_sync.clicked.connect()
+
+    def synchronization_group(self):
+        self.database.synchronization_groups(self.parser.get_groups(True))
+
+    def synchronization_subjects_and_semesters(self):
+        group = self.MainWindow.group_choice.currentText()
+        self.parser.get_journal(group, True)
+
+    def synchronization_marks(self):
+        # ДОДЕЛАТЬ
+        group = self.MainWindow.group_choice.currentText()
+        semester = self.MainWindow.semester_choice.currentText()
+        subject = self.MainWindow.subject_choice.currentText()
+
+        self.database.synchronization_marks(self.parser.get_marks(group, int(semester), subject, True))
+
     def change_page(self, window):
         windows = {
             'profile': 0,
@@ -176,8 +197,6 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
 
         self.MainWindow.subject_choice.addItems(['Выберите предмет'] + get_all_subject)
 
-        self.MainWindow.journal_open.clicked.connect(self.fill_journal)
-
     def fill_journal(self):
         group = self.MainWindow.group_choice.currentText()
         semester = self.MainWindow.semester_choice.currentText()
@@ -210,8 +229,6 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
             self.parser.get_csrf()
             if self.database.select_query(select(models.Group), 2) is None:
                 self.parser.get_groups()
-
-            #self.database.synchronization_groups(self.parser.get_groups(True))
 
             info_about_user = self.parser.get_full_info_about_auth_user()
             self.fill_about_user(info_about_user)
