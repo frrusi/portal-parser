@@ -55,18 +55,17 @@ class Parser(ParserUserSettings, metaclass=ParserMeta):
         groups = pd.DataFrame(groups, columns=['group', 'date', 'time'])
         self.database.to_sql_query(groups, 'groups')
 
-    def get_journal(self, group: str):
+    def get_journal(self, group: str, isReturn=False):
         response = self.session.post(self.config.all_users_url, Config.get_search_data(group))
 
         url_journals = self.config.journals_url.format(id=response.json()["list"][0]["id"])
         group_id = self.database.select_query(select(models.Group.id).where(models.Group.group == group), 2)[0]
-        self.pt.life_loop_thread(self.get_subjects, True, url_journals, group_id)
 
-    def get_subjects(self, journal_url, group_id):
+        self.pt.life_loop_thread(self.get_subjects, True, url_journals, group_id, isReturn)
+
+    def get_subjects(self, journal_url, group_id, isReturn=False):
         date, time, tree = self.pt.get_datetime_and_tree(self.session, journal_url)
         first_journal_url = self.config.url + tree.xpath('//table/tr[2]/td[position() = last() - 1]/a')[0].get('href')
-
-        thread_students = self.pt.life_loop_thread(self.get_students, False, first_journal_url, group_id)
 
         subjects = tree.xpath('//table/tr[position() > 1]/td[position() = 1 or position() = 2]/text()')
         urls = tree.xpath('//table/tr[position() > 1]/td[position() = 6]/a')
@@ -76,17 +75,28 @@ class Parser(ParserUserSettings, metaclass=ParserMeta):
         subjects = np.unique(np.array([[subjects[index], group_id, subjects[index + 1].rstrip('.'),
                                         self.config.url + urls[index - index // 2].get('href'), date, time] for index in
                                        range(0, len(subjects), 2)]), axis=0)
-        subjects = pd.DataFrame(subjects, columns=['semester', 'group', 'subject', 'url', 'date', 'time'],
-                                index=range(index, index + len(subjects)))
+        if isReturn:
+            thread_students = self.pt.life_loop_thread(self.get_students, False, first_journal_url,
+                                                       group_id, subjects, isReturn)
+        else:
+            thread_students = self.pt.life_loop_thread(self.get_students, False, first_journal_url,
+                                                       group_id, subjects)
 
-        self.database.to_sql_query(subjects, 'subjects', '')
+            subjects = pd.DataFrame(subjects, columns=['semester', 'group', 'subject', 'url', 'date', 'time'],
+                                    index=range(index, index + len(subjects)))
+
+            self.database.to_sql_query(subjects, 'subjects', '')
         thread_students.join()
 
-    def get_students(self, url, group_id):
+    def get_students(self, url, group_id, subjects, isReturn=False):
         date, time, tree = self.pt.get_datetime_and_tree(self.session, url)
 
         students = [name.split()[1:4] for name in tree.xpath(
             '(//span[@class="j_filter_by_fio"]/text() | //span[@class="j_filter_by_fio"]/strong/text())')]
+
+        if isReturn:
+            self.database.synchronization_subjects_and_semesters(subjects, students)
+            return None
 
         index = self.database.get_last_index(select(models.Students.id))
 
@@ -97,7 +107,7 @@ class Parser(ParserUserSettings, metaclass=ParserMeta):
 
         self.database.to_sql_query(students, 'students', '')
 
-    def get_marks(self, group: str, semester: int, subject: str):
+    def get_marks(self, group: str, semester: int, subject: str, isReturn=False):
         group_id = int(self.database.get_group(group))
         subject_id, url = self.database.get_subject((models.Subject.id, models.Subject.url,), subject, semester, group)
 
@@ -115,6 +125,9 @@ class Parser(ParserUserSettings, metaclass=ParserMeta):
             marks = np.array([[index, group_id, students[index // length_dates % len(students)], subject_id, semester,
                                mark, dates[index % length_dates], date, time] for index, mark in
                               enumerate(marks, index)])
+
+            if isReturn:
+                return marks
 
             marks = pd.DataFrame(marks, columns=['id', 'group', 'student', 'subject', 'semester', 'mark',
                                                  'lesson_date', 'date', 'time'], index=range(index, index + len(marks)))
