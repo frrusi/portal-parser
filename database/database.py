@@ -3,10 +3,11 @@ from itertools import chain
 from typing import Union
 
 import sqlalchemy.engine
-from sqlalchemy import create_engine, MetaData, select, delete, insert, update
+from sqlalchemy import create_engine, MetaData, select, insert, update
 from sqlalchemy.sql.functions import coalesce
 
 from database import models
+from utils.parser_utils import ParserUtils
 
 
 class DataBase:
@@ -55,7 +56,7 @@ class DataBase:
     def get_last_index(self, query):
         with self.engine.connect() as connection:
             try:
-                index = int(connection.execute(query).fetchall()[-1][0]) + 1
+                index = int(sorted([index[0] for index in connection.execute(query).fetchall()])[-1]) + 1
             except IndexError:
                 index = 0
         return index
@@ -131,3 +132,27 @@ class DataBase:
         return list(chain.from_iterable(self.select_query(select(models.Marks.mark
                                                                  ).where(models.Marks.subject == subject_id,
                                                                          models.Marks.semester == semester), 1)))
+
+    def synchronization_groups(self, new_groups):
+        date, time = ParserUtils.get_datetime_now()
+
+        for group in new_groups:
+            index = self.select_query(select(models.Group.id).where(models.Group.group == group), 2)
+
+            if index is None:
+                index = self.get_last_index(select(models.Group.id))
+                print(index)
+            else:
+                index = index[0]
+
+            stmt = sqlalchemy.dialects.sqlite.insert(models.Group).values(
+                id=index,
+                group=str(group),
+                date=str(date),
+                time=str(time))
+
+            stmt = stmt.on_conflict_do_update(
+                index_elements=[models.Group.id],
+                set_=dict(date=date, time=time))
+
+            self.engine_connect(stmt)
