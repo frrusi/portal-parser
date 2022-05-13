@@ -122,8 +122,6 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
                 old_file.write(new_file.read())
 
             if file_extension == 'gif':
-                proxy_style = RoundPixmapStyle(radius=65, style=self.MainWindow.image.style())
-                self.MainWindow.image.setStyle(proxy_style)
                 path = r'data/user_avatar.gif'
                 gif = QtGui.QMovie(path)
                 self.MainWindow.image.setMovie(gif)
