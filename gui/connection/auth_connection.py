@@ -50,9 +50,6 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.RecoveryWindow = RecoveryWindow(config, database, exceptions, parser_utils,
                                              security_utils, secondary_utils)
 
-        self.login.setPlaceholderText("Логин")
-        self.password.setPlaceholderText("Пароль")
-
         self.icon.setPixmap(QtGui.QPixmap("gui/icons/logo.png"))
         self.visibleIcon = QIcon("gui/icons/visible_icon.svg")
         self.hiddenIcon = QIcon("gui/icons/hidden_icon.svg")
