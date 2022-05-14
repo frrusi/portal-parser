@@ -535,7 +535,7 @@ QComboBox QAbstractItemView {
            <item>
             <layout class="QHBoxLayout" name="horizontalLayout_2" stretch="0">
              <property name="spacing">
-              <number>10</number>
+              <number>0</number>
              </property>
              <property name="topMargin">
               <number>0</number>
@@ -560,6 +560,12 @@ QComboBox QAbstractItemView {
            </item>
            <item>
             <layout class="QVBoxLayout" name="verticalLayout">
+             <property name="leftMargin">
+              <number>0</number>
+             </property>
+             <property name="topMargin">
+              <number>10</number>
+             </property>
              <property name="bottomMargin">
               <number>0</number>
              </property>
@@ -568,13 +574,13 @@ QComboBox QAbstractItemView {
                <property name="minimumSize">
                 <size>
                  <width>207</width>
-                 <height>25</height>
+                 <height>23</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
                  <width>207</width>
-                 <height>25</height>
+                 <height>23</height>
                 </size>
                </property>
                <property name="font">
@@ -602,13 +608,13 @@ QComboBox QAbstractItemView {
                <property name="minimumSize">
                 <size>
                  <width>207</width>
-                 <height>10</height>
+                 <height>12</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
                  <width>207</width>
-                 <height>10</height>
+                 <height>12</height>
                 </size>
                </property>
                <property name="font">
@@ -629,18 +635,21 @@ QComboBox QAbstractItemView {
            </item>
            <item>
             <layout class="QVBoxLayout" name="verticalLayout_3">
+             <property name="bottomMargin">
+              <number>0</number>
+             </property>
              <item>
               <widget class="QLabel" name="group">
                <property name="minimumSize">
                 <size>
                  <width>207</width>
-                 <height>10</height>
+                 <height>12</height>
                 </size>
                </property>
                <property name="maximumSize">
                 <size>
                  <width>207</width>
-                 <height>10</height>
+                 <height>12</height>
                 </size>
                </property>
                <property name="font">
