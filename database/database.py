@@ -4,6 +4,7 @@ from typing import Union
 
 import sqlalchemy.engine
 from sqlalchemy import create_engine, MetaData, select, insert, update
+from sqlalchemy import dialects
 from sqlalchemy.sql.functions import coalesce
 
 from database import models
@@ -150,13 +151,13 @@ class DataBase:
             else:
                 index = index[0]
 
-            stmt = sqlalchemy.dialects.sqlite.insert(models.Group
-                                                     ).values(id=index,
-                                                              group=str(group),
-                                                              date=str(date),
-                                                              time=str(time)
-                                                              ).on_conflict_do_update(index_elements=[models.Group.id],
-                                                                                      set_=dict(date=date, time=time))
+            stmt = dialects.sqlite.insert(models.Group
+                                          ).values(id=index,
+                                                   group=str(group),
+                                                   date=str(date),
+                                                   time=str(time)
+                                                   ).on_conflict_do_update(index_elements=[models.Group.id],
+                                                                           set_=dict(date=date, time=time))
 
             self.engine_connect(stmt)
 
@@ -169,7 +170,7 @@ class DataBase:
             if subject_id is None:
                 subject_id = self.get_last_index(select(models.Subject.id))
 
-            stmt = sqlalchemy.dialects.sqlite.insert(models.Subject).values(
+            stmt = dialects.sqlite.insert(models.Subject).values(
                 id=subject_id,
                 semester=subject[0],
                 group=subject[1],
@@ -186,6 +187,7 @@ class DataBase:
 
         for student in args[1]:
             group_id = args[0][1]
+
             if len(student) == 2:
                 student_id = self.get_student_id(student[0], student[1])
             elif len(student) == 3:
@@ -194,12 +196,14 @@ class DataBase:
             if student_id is None:
                 student_id = self.get_last_index(select(models.Students.id))
 
-            stmt = sqlalchemy.dialects.sqlite.insert(models.Students).values(
+            patronymic = None if len(student) == 2 else student[2]
+
+            stmt = dialects.sqlite.insert(models.Students).values(
                 id=student_id,
                 group=group_id,
-                name=subject[0],
-                surname=subject[1],
-                patronymic=subject[2],
+                name=student[0],
+                surname=student[1],
+                patronymic=patronymic,
                 date=str(date),
                 time=str(time)
             )
@@ -208,26 +212,3 @@ class DataBase:
                                               set_=dict(date=date, time=time))
 
             self.engine_connect(stmt)
-
-    # def synchronization_marks(self, new_data):
-    #     date, time = ParserUtils.get_datetime_now()
-    #     print(new_data)
-    #     exit(1)
-    #     for group in new_groups:
-    #         index = self.select_query(select(models.Group.id).where(models.Group.group == group), 2)
-    #
-    #         if index is None:
-    #             index = self.get_last_index(select(models.Group.id))
-    #             print(index)
-    #         else:
-    #             index = index[0]
-    #
-    #         stmt = sqlalchemy.dialects.sqlite.insert(models.Group
-    #                                                  ).values(id=index,
-    #                                                           group=str(group),
-    #                                                           date=str(date),
-    #                                                           time=str(time)
-    #                                                           ).on_conflict_do_update(index_elements=[models.Group.id],
-    #                                                                                   set_=dict(date=date, time=time))
-    #
-    #         self.engine_connect(stmt)
