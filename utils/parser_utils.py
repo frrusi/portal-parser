@@ -67,7 +67,6 @@ class ParserUtils:
 
         Args:
             session: Объект сессии модуля requests
-            url: URL для обращения
         """
 
         tree = self.get_tree(session, self.config.recovery_url)
