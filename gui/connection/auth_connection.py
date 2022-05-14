@@ -1,4 +1,5 @@
 from PyQt5 import QtGui, QtWidgets, QtCore
+from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QFileDialog
 from sqlalchemy import select
 
@@ -49,12 +50,14 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.RecoveryWindow = RecoveryWindow(config, database, exceptions, parser_utils,
                                              security_utils, secondary_utils)
 
-        self.login.setPlaceholderText("Логин")
-        self.password.setPlaceholderText("Пароль")
-
         self.icon.setPixmap(QtGui.QPixmap("gui/icons/logo.png"))
+        self.visibleIcon = QIcon("gui/icons/visible_icon.svg")
+        self.hiddenIcon = QIcon("gui/icons/hidden_icon.svg")
 
         self.password.setEchoMode(QtWidgets.QLineEdit.Password)
+        self.toggleShowPassword = self.password.addAction(self.visibleIcon, QtWidgets.QLineEdit.TrailingPosition)
+        self.toggleShowPassword.triggered.connect(self.show_password)
+        self.toggleBool = False
 
         self.entry.clicked.connect(self.auth)
         self.remember.clicked.connect(self.show_recovery_window)
@@ -72,8 +75,18 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.MainWindow.journal_open.clicked.connect(self.fill_journal)
 
         self.MainWindow.group_sync.clicked.connect(self.synchronization_group)
-        self.MainWindow.semester_sync.clicked.connect(self.synchronization_subjects_and_semesters)
+        self.MainWindow.sem_sub_sync.clicked.connect(self.synchronization_subjects_and_semesters)
         # self.MainWindow.subject_sync.clicked.connect()
+
+    def show_password(self):
+        if not self.toggleBool:
+            self.password.setEchoMode(QtWidgets.QLineEdit.Normal)
+            self.toggleBool = True
+            self.toggleShowPassword.setIcon(self.hiddenIcon)
+        else:
+            self.password.setEchoMode(QtWidgets.QLineEdit.Password)
+            self.toggleBool = False
+            self.toggleShowPassword.setIcon(self.visibleIcon)
 
     def synchronization_group(self):
         self.database.synchronization_groups(self.parser.get_groups(True))

@@ -18,178 +18,177 @@ class Ui_MainWindow(object):
         MainWindow.setMinimumSize(QtCore.QSize(1064, 371))
         MainWindow.setMaximumSize(QtCore.QSize(1088, 393))
         MainWindow.setStyleSheet("QWidget[objectName=\"centralwidget\"],\n"
-                                 "QWidget[objectName=\"profile_page\"],\n"
-                                 "QWidget[objectName=\"journal_page\"],\n"
-                                 "QWidget[objectName=\"settings_page\"],\n"
-                                 "QWidget[objectName=\"help_page\"],\n"
-                                 "QWidget[objectName=\"change_page\"] { background-color: #f6f8fa; }\n"
-                                 "\n"
-                                 "\n"
-                                 "QFrame[objectName=\"journal_choice\"],\n"
-                                 "QFrame[objectName=\"change_object\"],\n"
-                                 "QFrame[objectName=\"settings_program_frame\"],\n"
-                                 "QFrame[objectName=\"about_program_frame\"],\n"
-                                 "QFrame[objectName=\"about_me_main\"] { background-color: #ffffff }\n"
-                                 "\n"
-                                 "\n"
-                                 "QFrame[objectName=\"navigation_bar\"] { background-color: #19202e }\n"
-                                 "QFrame[objectName=\"main_information\"] { min-height:311px;  max-height: 311px;  min-width: 231px;  max-width: 231px;  background-color: #ffffff; }\n"
-                                 "\n"
-                                 "\n"
-                                 "QFrame[objectName=\"image_change_frame\"] { min-height:21px;  max-height: 21px;  min-width: 21px;  max-width: 21px; }\n"
-                                 "\n"
-                                 "\n"
-                                 "QFrame[objectName=\"about_me_secondary\" ] {\n"
-                                 "    border-top: 1px solid #f7f7f7;\n"
-                                 "    border-bottom: 1px solid #f7f7f7;\n"
-                                 "}\n"
-                                 "\n"
-                                 "\n"
-                                 "QPushButton[objectName=\"profile_menu\"],\n"
-                                 "QPushButton[objectName=\"journal_menu\"],\n"
-                                 "QPushButton[objectName=\"settings_menu\"],\n"
-                                 "QPushButton[objectName=\"help_menu\"],\n"
-                                 "QPushButton[objectName=\"image_change\"],\n"
-                                 "QPushButton[objectName=\"group_sync\"],\n"
-                                 "QPushButton[objectName=\"semester_sync\"],\n"
-                                 "QPushButton[objectName=\"subject_sync\"] { background: transparent; }\n"
-                                 "\n"
-                                 "\n"
-                                 "QPushButton[objectName=\"settings\"] {\n"
-                                 "     background: transparent;\n"
-                                 "     border: 2px solid #474b51;\n"
-                                 "     border-radius: 5px;\n"
-                                 "     color: #474b51; \n"
-                                 "}\n"
-                                 "\n"
-                                 "QPushButton[objectName=\"settings\"]:hover,\n"
-                                 "QPushButton[objectName=\"settings\"]:pressed {\n"
-                                 "    border: 2px solid #474b51;\n"
-                                 "    border-radius: 7px;\n"
-                                 "    background-color: #474b51;\n"
-                                 "    color: white;\n"
-                                 "}\n"
-                                 "\n"
-                                 "QPushButton[objectName=\"journal_open\"] {\n"
-                                 "     background: transparent;\n"
-                                 "     border: 1px solid #c1c3d0;\n"
-                                 "     border-radius: 5px;\n"
-                                 "     color: #474b51; \n"
-                                 "}\n"
-                                 "\n"
-                                 "QPushButton[objectName=\"journal_open\"]:hover,\n"
-                                 "QPushButton[objectName=\"journal_open\"]:pressed {\n"
-                                 "    border: 1px solid #000000;\n"
-                                 "    border-radius: 7px;\n"
-                                 "    background-color: transparent;\n"
-                                 "}\n"
-                                 "\n"
-                                 "QPushButton[objectName=\"password_change\"],\n"
-                                 "QPushButton[objectName=\"email_change\"],\n"
-                                 "QPushButton[objectName=\"path_db_button\"] {\n"
-                                 "     background: transparent;\n"
-                                 "     border: 2px solid #f7f7f7;\n"
-                                 "     border-radius: 5px;\n"
-                                 "     color: #474b51; \n"
-                                 "}\n"
-                                 "\n"
-                                 "QPushButton[objectName=\"email_change\"]:hover,\n"
-                                 "QPushButton[objectName=\"email_change\"]:pressed,\n"
-                                 "QPushButton[objectName=\"password_change\"]:hover,\n"
-                                 "QPushButton[objectName=\"password_change\"]:pressed,\n"
-                                 "QPushButton[objectName=\"path_db_button\"]:hover,\n"
-                                 "QPushButton[objectName=\"path_db_button\"]:pressed {\n"
-                                 "    border: 2px solid #c1c3d0;\n"
-                                 "    border-radius: 7px;\n"
-                                 "    background-color: #c1c3d0;\n"
-                                 "    color: white;\n"
-                                 "}\n"
-                                 "\n"
-                                 "QLabel[objectName=\"date\"],\n"
-                                 "QLabel[objectName=\"institute_title\"],\n"
-                                 "QLabel[objectName=\"specialization_title\"],\n"
-                                 "QLabel[objectName=\"profile_title\"],\n"
-                                 "QLabel[objectName=\"training_title\"],\n"
-                                 "QLabel[objectName=\"year_title\"],\n"
-                                 "QLabel[objectName=\"group_title\"],\n"
-                                 "QLabel[objectName=\"semester_title\"],\n"
-                                 "QLabel[objectName=\"subject_title\"] { color: #c8c8c8; }\n"
-                                 "\n"
-                                 "QLabel[objectName=\"settings_user_subtitle\"],\n"
-                                 "QLabel[objectName=\"about_program_subtitle\"],\n"
-                                 "QLabel[objectName=\"journal_subtitle\"], QLabel[objectName=\"settings_program_subtitle\"] { color: #6c6d72; }\n"
-                                 "\n"
-                                 "QLabel[objectName=\"image\"] {\n"
-                                 "    border-radius: 65px;\n"
-                                 "    min-height: 130px;\n"
-                                 "    max-height: 130px;\n"
-                                 "    min-width: 130px;\n"
-                                 "    max-width: 130px;\n"
-                                 "    background-color: transparent;\n"
-                                 "}\n"
-                                 "\n"
-                                 "QLineEdit[objectName=\"email_entry\"],\n"
-                                 "QLineEdit[objectName=\"password_entry\"],\n"
-                                 "QLineEdit[objectName=\"path_db_line\"] { \n"
-                                 "    border: 1px solid #f7f7f7;\n"
-                                 "    border-radius: 4px;\n"
-                                 "}\n"
-                                 "\n"
-                                 "QLineEdit[objectName=\"email_entry\"]:hover,\n"
-                                 "QLineEdit[objectName=\"password_entry\"]:hover,\n"
-                                 "QLineEdit[objectName=\"path_db_line\"]:hover {\n"
-                                 "    border: 1px solid #c1c3d0; \n"
-                                 "    border-radius: 4px;\n"
-                                 "}\n"
-                                 "\n"
-                                 "\n"
-                                 "QComboBox {\n"
-                                 "    border: 1px solid #c8c8c8;\n"
-                                 "    border-radius: 3px;\n"
-                                 "    padding: 1px 18px 1px 3px;\n"
-                                 "    min-width: 6em;\n"
-                                 "}\n"
-                                 "\n"
-                                 "QComboBox:editable,\n"
-                                 "QComboBox:!editable, \n"
-                                 "QComboBox::drop-down:editable, \n"
-                                 "QComboBox:!editable:on, \n"
-                                 "QComboBox::drop-down:editable:on { background: white; }\n"
-                                 "\n"
-                                 "QComboBox:on {\n"
-                                 "    padding-top: 3px;\n"
-                                 "    padding-left: 4px;\n"
-                                 "}\n"
-                                 "\n"
-                                 "QComboBox::drop-down {\n"
-                                 "    subcontrol-origin: padding;\n"
-                                 "    subcontrol-position: top right;\n"
-                                 "    width: 15px;\n"
-                                 "\n"
-                                 "    border-left-width: 1px;\n"
-                                 "    border-left-color: white;\n"
-                                 "    border-left-style: solid;\n"
-                                 "    border-top-right-radius: 3px;\n"
-                                 "    border-bottom-right-radius: 3px;\n"
-                                 "}\n"
-                                 "\n"
-                                 "QComboBox::down-arrow {\n"
-                                 "    padding: 0px 5px 0px 0px;\n"
-                                 "    image: url(gui/icons/down-arrow.png);\n"
-                                 "}\n"
-                                 "\n"
-                                 "QComboBox::down-arrow:on {\n"
-                                 "    top: 1px;\n"
-                                 "    left: 1px;\n"
-                                 "}\n"
-                                 "\n"
-                                 "QComboBox QAbstractItemView {\n"
-                                 "    border: 1px solid #c8c8c8;\n"
-                                 "    color: black;\n"
-                                 "    selection-color: black;\n"
-                                 "    selection-background-color: #c8c8c8;\n"
-                                 "    min-height: 50px;\n"
-                                 "}")
+"QWidget[objectName=\"profile_page\"],\n"
+"QWidget[objectName=\"journal_page\"],\n"
+"QWidget[objectName=\"settings_page\"],\n"
+"QWidget[objectName=\"help_page\"],\n"
+"QWidget[objectName=\"change_page\"] { background-color: #f6f8fa; }\n"
+"\n"
+"\n"
+"QFrame[objectName=\"journal_choice\"],\n"
+"QFrame[objectName=\"change_object\"],\n"
+"QFrame[objectName=\"settings_program_frame\"],\n"
+"QFrame[objectName=\"about_program_frame\"],\n"
+"QFrame[objectName=\"about_me_main\"] { background-color: #ffffff }\n"
+"\n"
+"\n"
+"QFrame[objectName=\"navigation_bar\"] { background-color: #19202e }\n"
+"QFrame[objectName=\"main_information\"] { min-height:311px;  max-height: 311px;  min-width: 231px;  max-width: 231px;  background-color: #ffffff; }\n"
+"\n"
+"\n"
+"QFrame[objectName=\"image_change_frame\"] { min-height:21px;  max-height: 21px;  min-width: 21px;  max-width: 21px; }\n"
+"\n"
+"\n"
+"QFrame[objectName=\"about_me_secondary\" ] {\n"
+"    border-top: 1px solid #f7f7f7;\n"
+"    border-bottom: 1px solid #f7f7f7;\n"
+"}\n"
+"\n"
+"\n"
+"QPushButton[objectName=\"profile_menu\"],\n"
+"QPushButton[objectName=\"journal_menu\"],\n"
+"QPushButton[objectName=\"settings_menu\"],\n"
+"QPushButton[objectName=\"help_menu\"],\n"
+"QPushButton[objectName=\"image_change\"],\n"
+"QPushButton[objectName=\"group_sync\"],\n"
+"QPushButton[objectName=\"sem_sub_sync\"] { background: transparent; }\n"
+"\n"
+"\n"
+"QPushButton[objectName=\"settings\"] {\n"
+"     background: transparent;\n"
+"     border: 2px solid #474b51;\n"
+"     border-radius: 5px;\n"
+"     color: #474b51; \n"
+"}\n"
+"\n"
+"QPushButton[objectName=\"settings\"]:hover,\n"
+"QPushButton[objectName=\"settings\"]:pressed {\n"
+"    border: 2px solid #474b51;\n"
+"    border-radius: 7px;\n"
+"    background-color: #474b51;\n"
+"    color: white;\n"
+"}\n"
+"\n"
+"QPushButton[objectName=\"journal_open\"] {\n"
+"     background: transparent;\n"
+"     border: 1px solid #c1c3d0;\n"
+"     border-radius: 5px;\n"
+"     color: #474b51; \n"
+"}\n"
+"\n"
+"QPushButton[objectName=\"journal_open\"]:hover,\n"
+"QPushButton[objectName=\"journal_open\"]:pressed {\n"
+"    border: 1px solid #000000;\n"
+"    border-radius: 7px;\n"
+"    background-color: transparent;\n"
+"}\n"
+"\n"
+"QPushButton[objectName=\"password_change\"],\n"
+"QPushButton[objectName=\"email_change\"],\n"
+"QPushButton[objectName=\"path_db_button\"] {\n"
+"     background: transparent;\n"
+"     border: 2px solid #f7f7f7;\n"
+"     border-radius: 5px;\n"
+"     color: #474b51; \n"
+"}\n"
+"\n"
+"QPushButton[objectName=\"email_change\"]:hover,\n"
+"QPushButton[objectName=\"email_change\"]:pressed,\n"
+"QPushButton[objectName=\"password_change\"]:hover,\n"
+"QPushButton[objectName=\"password_change\"]:pressed,\n"
+"QPushButton[objectName=\"path_db_button\"]:hover,\n"
+"QPushButton[objectName=\"path_db_button\"]:pressed {\n"
+"    border: 2px solid #c1c3d0;\n"
+"    border-radius: 7px;\n"
+"    background-color: #c1c3d0;\n"
+"    color: white;\n"
+"}\n"
+"\n"
+"QLabel[objectName=\"date\"],\n"
+"QLabel[objectName=\"institute_title\"],\n"
+"QLabel[objectName=\"specialization_title\"],\n"
+"QLabel[objectName=\"profile_title\"],\n"
+"QLabel[objectName=\"training_title\"],\n"
+"QLabel[objectName=\"year_title\"],\n"
+"QLabel[objectName=\"group_title\"],\n"
+"QLabel[objectName=\"semester_title\"],\n"
+"QLabel[objectName=\"subject_title\"] { color: #c8c8c8; }\n"
+"\n"
+"QLabel[objectName=\"settings_user_subtitle\"],\n"
+"QLabel[objectName=\"about_program_subtitle\"],\n"
+"QLabel[objectName=\"journal_subtitle\"], QLabel[objectName=\"settings_program_subtitle\"] { color: #6c6d72; }\n"
+"\n"
+"QLabel[objectName=\"image\"] {\n"
+"    border-radius: 65px;\n"
+"    min-height: 130px;\n"
+"    max-height: 130px;\n"
+"    min-width: 130px;\n"
+"    max-width: 130px;\n"
+"    background-color: transparent;\n"
+"}\n"
+"\n"
+"QLineEdit[objectName=\"email_entry\"],\n"
+"QLineEdit[objectName=\"password_entry\"],\n"
+"QLineEdit[objectName=\"path_db_line\"] { \n"
+"    border: 1px solid #f7f7f7;\n"
+"    border-radius: 4px;\n"
+"}\n"
+"\n"
+"QLineEdit[objectName=\"email_entry\"]:hover,\n"
+"QLineEdit[objectName=\"password_entry\"]:hover,\n"
+"QLineEdit[objectName=\"path_db_line\"]:hover {\n"
+"    border: 1px solid #c1c3d0; \n"
+"    border-radius: 4px;\n"
+"}\n"
+"\n"
+"\n"
+"QComboBox {\n"
+"    border: 1px solid #c8c8c8;\n"
+"    border-radius: 3px;\n"
+"    padding: 1px 18px 1px 3px;\n"
+"    min-width: 6em;\n"
+"}\n"
+"\n"
+"QComboBox:editable,\n"
+"QComboBox:!editable, \n"
+"QComboBox::drop-down:editable, \n"
+"QComboBox:!editable:on, \n"
+"QComboBox::drop-down:editable:on { background: white; }\n"
+"\n"
+"QComboBox:on {\n"
+"    padding-top: 3px;\n"
+"    padding-left: 4px;\n"
+"}\n"
+"\n"
+"QComboBox::drop-down {\n"
+"    subcontrol-origin: padding;\n"
+"    subcontrol-position: top right;\n"
+"    width: 15px;\n"
+"\n"
+"    border-left-width: 1px;\n"
+"    border-left-color: white;\n"
+"    border-left-style: solid;\n"
+"    border-top-right-radius: 3px;\n"
+"    border-bottom-right-radius: 3px;\n"
+"}\n"
+"\n"
+"QComboBox::down-arrow {\n"
+"    padding: 0px 5px 0px 0px;\n"
+"    image: url(D:/portal-parser/gui/icons/down-arrow.png);\n"
+"}\n"
+"\n"
+"QComboBox::down-arrow:on {\n"
+"    top: 1px;\n"
+"    left: 1px;\n"
+"}\n"
+"\n"
+"QComboBox QAbstractItemView {\n"
+"    border: 1px solid #c8c8c8;\n"
+"    color: black;\n"
+"    selection-color: black;\n"
+"    selection-background-color: #c8c8c8;\n"
+"    min-height: 50px;\n"
+"}")
         self.centralwidget = QtWidgets.QWidget(MainWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout_7 = QtWidgets.QHBoxLayout(self.centralwidget)
@@ -305,7 +304,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_4.addWidget(self.frame)
         self.horizontalLayout_2 = QtWidgets.QHBoxLayout()
         self.horizontalLayout_2.setContentsMargins(-1, 0, -1, 0)
-        self.horizontalLayout_2.setSpacing(10)
+        self.horizontalLayout_2.setSpacing(0)
         self.horizontalLayout_2.setObjectName("horizontalLayout_2")
         self.image = QtWidgets.QLabel(self.main_information)
         self.image.setStyleSheet("")
@@ -315,11 +314,11 @@ class Ui_MainWindow(object):
         self.horizontalLayout_2.addWidget(self.image)
         self.verticalLayout_4.addLayout(self.horizontalLayout_2)
         self.verticalLayout = QtWidgets.QVBoxLayout()
-        self.verticalLayout.setContentsMargins(-1, -1, -1, 0)
+        self.verticalLayout.setContentsMargins(0, 10, -1, 0)
         self.verticalLayout.setObjectName("verticalLayout")
         self.name = QtWidgets.QLabel(self.main_information)
-        self.name.setMinimumSize(QtCore.QSize(207, 25))
-        self.name.setMaximumSize(QtCore.QSize(207, 25))
+        self.name.setMinimumSize(QtCore.QSize(207, 23))
+        self.name.setMaximumSize(QtCore.QSize(207, 23))
         font = QtGui.QFont()
         font.setFamily("Montserrat SemiBold")
         font.setPointSize(14)
@@ -333,8 +332,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_2 = QtWidgets.QVBoxLayout()
         self.verticalLayout_2.setObjectName("verticalLayout_2")
         self.date = QtWidgets.QLabel(self.main_information)
-        self.date.setMinimumSize(QtCore.QSize(207, 10))
-        self.date.setMaximumSize(QtCore.QSize(207, 10))
+        self.date.setMinimumSize(QtCore.QSize(207, 12))
+        self.date.setMaximumSize(QtCore.QSize(207, 12))
         font = QtGui.QFont()
         font.setFamily("Montserrat Medium")
         font.setPointSize(9)
@@ -344,10 +343,11 @@ class Ui_MainWindow(object):
         self.verticalLayout_2.addWidget(self.date)
         self.verticalLayout_4.addLayout(self.verticalLayout_2)
         self.verticalLayout_3 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_3.setContentsMargins(-1, -1, -1, 0)
         self.verticalLayout_3.setObjectName("verticalLayout_3")
         self.group = QtWidgets.QLabel(self.main_information)
-        self.group.setMinimumSize(QtCore.QSize(207, 10))
-        self.group.setMaximumSize(QtCore.QSize(207, 10))
+        self.group.setMinimumSize(QtCore.QSize(207, 12))
+        self.group.setMaximumSize(QtCore.QSize(207, 12))
         font = QtGui.QFont()
         font.setFamily("Montserrat Medium")
         font.setPointSize(9)
@@ -620,6 +620,7 @@ class Ui_MainWindow(object):
         self.group_choice.setEditable(True)
         self.group_choice.setInsertPolicy(QtWidgets.QComboBox.NoInsert)
         self.group_choice.completer().setCompletionMode(QtWidgets.QCompleter.PopupCompletion)
+        self.group_choice.setInsertPolicy(QtWidgets.QComboBox.NoInsert)
         self.group_choice.setObjectName("group_choice")
         self.group_choice.addItem("")
         self.group_choice.addItem("")
@@ -663,7 +664,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_38 = QtWidgets.QVBoxLayout(self.semester_frame)
         self.verticalLayout_38.setObjectName("verticalLayout_38")
         self.verticalLayout_35 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_35.setContentsMargins(125, -1, -1, -1)
+        self.verticalLayout_35.setContentsMargins(115, -1, -1, -1)
         self.verticalLayout_35.setObjectName("verticalLayout_35")
         self.semester_icon = QtWidgets.QLabel(self.semester_frame)
         self.semester_icon.setMinimumSize(QtCore.QSize(31, 31))
@@ -682,7 +683,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_35.addWidget(self.semester_icon)
         self.verticalLayout_38.addLayout(self.verticalLayout_35)
         self.verticalLayout_36 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_36.setContentsMargins(60, -1, -1, -1)
+        self.verticalLayout_36.setContentsMargins(50, -1, -1, -1)
         self.verticalLayout_36.setObjectName("verticalLayout_36")
         self.semester_choice = QtWidgets.QComboBox(self.semester_frame)
         self.semester_choice.setMinimumSize(QtCore.QSize(101, 31))
@@ -698,33 +699,46 @@ class Ui_MainWindow(object):
         self.semester_choice.addItem("")
         self.verticalLayout_36.addWidget(self.semester_choice)
         self.verticalLayout_38.addLayout(self.verticalLayout_36)
-        self.verticalLayout_37 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_37.setContentsMargins(125, -1, -1, -1)
-        self.verticalLayout_37.setObjectName("verticalLayout_37")
-        self.semester_sync_frame = QtWidgets.QFrame(self.semester_frame)
-        self.semester_sync_frame.setMinimumSize(QtCore.QSize(31, 31))
-        self.semester_sync_frame.setMaximumSize(QtCore.QSize(31, 31))
-        self.semester_sync_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.semester_sync_frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.semester_sync_frame.setObjectName("semester_sync_frame")
-        self.semester_sync_icon = QtWidgets.QLabel(self.semester_sync_frame)
-        self.semester_sync_icon.setGeometry(QtCore.QRect(0, 0, 31, 31))
-        self.semester_sync_icon.setMinimumSize(QtCore.QSize(31, 31))
-        self.semester_sync_icon.setMaximumSize(QtCore.QSize(31, 31))
-        self.semester_sync_icon.setText("")
-        self.semester_sync_icon.setPixmap(QtGui.QPixmap("../icons/synchronization.png"))
-        self.semester_sync_icon.setScaledContents(True)
-        self.semester_sync_icon.setObjectName("semester_sync_icon")
-        self.semester_sync = QtWidgets.QPushButton(self.semester_sync_frame)
-        self.semester_sync.setGeometry(QtCore.QRect(0, 0, 31, 31))
-        self.semester_sync.setMinimumSize(QtCore.QSize(31, 31))
-        self.semester_sync.setMaximumSize(QtCore.QSize(31, 31))
-        self.semester_sync.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.semester_sync.setText("")
-        self.semester_sync.setObjectName("semester_sync")
-        self.verticalLayout_37.addWidget(self.semester_sync_frame)
-        self.verticalLayout_38.addLayout(self.verticalLayout_37)
+        spacerItem3 = QtWidgets.QSpacerItem(53, 53, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        self.verticalLayout_38.addItem(spacerItem3)
         self.horizontalLayout_11.addWidget(self.semester_frame)
+        self.frame_14 = QtWidgets.QFrame(self.choice_frame)
+        self.frame_14.setMinimumSize(QtCore.QSize(53, 160))
+        self.frame_14.setMaximumSize(QtCore.QSize(53, 189))
+        self.frame_14.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.frame_14.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.frame_14.setObjectName("frame_14")
+        self.verticalLayout_33 = QtWidgets.QVBoxLayout(self.frame_14)
+        self.verticalLayout_33.setObjectName("verticalLayout_33")
+        spacerItem4 = QtWidgets.QSpacerItem(30, 110, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        self.verticalLayout_33.addItem(spacerItem4)
+        self.verticalLayout_37 = QtWidgets.QVBoxLayout()
+        self.verticalLayout_37.setContentsMargins(0, -1, -1, -1)
+        self.verticalLayout_37.setObjectName("verticalLayout_37")
+        self.semester_subject_sync_frame = QtWidgets.QFrame(self.frame_14)
+        self.semester_subject_sync_frame.setMinimumSize(QtCore.QSize(31, 31))
+        self.semester_subject_sync_frame.setMaximumSize(QtCore.QSize(31, 31))
+        self.semester_subject_sync_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
+        self.semester_subject_sync_frame.setFrameShadow(QtWidgets.QFrame.Raised)
+        self.semester_subject_sync_frame.setObjectName("semester_subject_sync_frame")
+        self.sem_sub_sync_icon = QtWidgets.QLabel(self.semester_subject_sync_frame)
+        self.sem_sub_sync_icon.setGeometry(QtCore.QRect(0, 0, 31, 31))
+        self.sem_sub_sync_icon.setMinimumSize(QtCore.QSize(31, 31))
+        self.sem_sub_sync_icon.setMaximumSize(QtCore.QSize(31, 31))
+        self.sem_sub_sync_icon.setText("")
+        self.sem_sub_sync_icon.setPixmap(QtGui.QPixmap("../icons/synchronization.png"))
+        self.sem_sub_sync_icon.setScaledContents(True)
+        self.sem_sub_sync_icon.setObjectName("sem_sub_sync_icon")
+        self.sem_sub_sync = QtWidgets.QPushButton(self.semester_subject_sync_frame)
+        self.sem_sub_sync.setGeometry(QtCore.QRect(0, 0, 31, 31))
+        self.sem_sub_sync.setMinimumSize(QtCore.QSize(31, 31))
+        self.sem_sub_sync.setMaximumSize(QtCore.QSize(31, 31))
+        self.sem_sub_sync.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.sem_sub_sync.setText("")
+        self.sem_sub_sync.setObjectName("sem_sub_sync")
+        self.verticalLayout_37.addWidget(self.semester_subject_sync_frame)
+        self.verticalLayout_33.addLayout(self.verticalLayout_37)
+        self.horizontalLayout_11.addWidget(self.frame_14)
         self.subject_frame = QtWidgets.QFrame(self.choice_frame)
         self.subject_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.subject_frame.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -732,7 +746,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_34 = QtWidgets.QVBoxLayout(self.subject_frame)
         self.verticalLayout_34.setObjectName("verticalLayout_34")
         self.verticalLayout_31 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_31.setContentsMargins(124, -1, 0, -1)
+        self.verticalLayout_31.setContentsMargins(115, -1, 0, -1)
         self.verticalLayout_31.setObjectName("verticalLayout_31")
         self.subject_icon = QtWidgets.QLabel(self.subject_frame)
         self.subject_icon.setMinimumSize(QtCore.QSize(31, 31))
@@ -751,7 +765,7 @@ class Ui_MainWindow(object):
         self.verticalLayout_31.addWidget(self.subject_icon)
         self.verticalLayout_34.addLayout(self.verticalLayout_31)
         self.verticalLayout_32 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_32.setContentsMargins(34, -1, -1, -1)
+        self.verticalLayout_32.setContentsMargins(24, -1, -1, -1)
         self.verticalLayout_32.setObjectName("verticalLayout_32")
         self.subject_choice = QtWidgets.QComboBox(self.subject_frame)
         self.subject_choice.setMinimumSize(QtCore.QSize(101, 31))
@@ -768,32 +782,8 @@ class Ui_MainWindow(object):
         self.subject_choice.addItem("")
         self.verticalLayout_32.addWidget(self.subject_choice)
         self.verticalLayout_34.addLayout(self.verticalLayout_32)
-        self.verticalLayout_33 = QtWidgets.QVBoxLayout()
-        self.verticalLayout_33.setContentsMargins(124, -1, -1, -1)
-        self.verticalLayout_33.setObjectName("verticalLayout_33")
-        self.subject_sync_frame = QtWidgets.QFrame(self.subject_frame)
-        self.subject_sync_frame.setMinimumSize(QtCore.QSize(31, 31))
-        self.subject_sync_frame.setMaximumSize(QtCore.QSize(31, 31))
-        self.subject_sync_frame.setFrameShape(QtWidgets.QFrame.StyledPanel)
-        self.subject_sync_frame.setFrameShadow(QtWidgets.QFrame.Raised)
-        self.subject_sync_frame.setObjectName("subject_sync_frame")
-        self.subject_sync_icon = QtWidgets.QLabel(self.subject_sync_frame)
-        self.subject_sync_icon.setGeometry(QtCore.QRect(0, 0, 31, 31))
-        self.subject_sync_icon.setMinimumSize(QtCore.QSize(31, 31))
-        self.subject_sync_icon.setMaximumSize(QtCore.QSize(31, 31))
-        self.subject_sync_icon.setText("")
-        self.subject_sync_icon.setPixmap(QtGui.QPixmap("../icons/synchronization.png"))
-        self.subject_sync_icon.setScaledContents(True)
-        self.subject_sync_icon.setObjectName("subject_sync_icon")
-        self.subject_sync = QtWidgets.QPushButton(self.subject_sync_frame)
-        self.subject_sync.setGeometry(QtCore.QRect(0, 0, 31, 31))
-        self.subject_sync.setMinimumSize(QtCore.QSize(31, 31))
-        self.subject_sync.setMaximumSize(QtCore.QSize(31, 31))
-        self.subject_sync.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
-        self.subject_sync.setText("")
-        self.subject_sync.setObjectName("subject_sync")
-        self.verticalLayout_33.addWidget(self.subject_sync_frame)
-        self.verticalLayout_34.addLayout(self.verticalLayout_33)
+        spacerItem5 = QtWidgets.QSpacerItem(53, 53, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        self.verticalLayout_34.addItem(spacerItem5)
         self.horizontalLayout_11.addWidget(self.subject_frame)
         self.verticalLayout_44.addWidget(self.choice_frame)
         self.verticalLayout_43 = QtWidgets.QVBoxLayout()
@@ -839,8 +829,8 @@ class Ui_MainWindow(object):
         self.settings_user_subtitle.setObjectName("settings_user_subtitle")
         self.verticalLayout_21.addWidget(self.settings_user_subtitle)
         self.verticalLayout_22.addLayout(self.verticalLayout_21)
-        spacerItem3 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_22.addItem(spacerItem3)
+        spacerItem6 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_22.addItem(spacerItem6)
         self.frame_4 = QtWidgets.QFrame(self.change_page)
         self.frame_4.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_4.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -848,8 +838,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_9 = QtWidgets.QHBoxLayout(self.frame_4)
         self.horizontalLayout_9.setContentsMargins(-1, 0, 27, 18)
         self.horizontalLayout_9.setObjectName("horizontalLayout_9")
-        spacerItem4 = QtWidgets.QSpacerItem(15, 0, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_9.addItem(spacerItem4)
+        spacerItem7 = QtWidgets.QSpacerItem(15, 0, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_9.addItem(spacerItem7)
         self.change_object = QtWidgets.QFrame(self.frame_4)
         self.change_object.setMinimumSize(QtCore.QSize(931, 231))
         self.change_object.setMaximumSize(QtCore.QSize(941, 231))
@@ -908,8 +898,8 @@ class Ui_MainWindow(object):
         self.verticalLayout_24.addWidget(self.email_change)
         self.verticalLayout_25.addLayout(self.verticalLayout_24)
         self.horizontalLayout_10.addWidget(self.frame_5)
-        spacerItem5 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_10.addItem(spacerItem5)
+        spacerItem8 = QtWidgets.QSpacerItem(40, 20, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_10.addItem(spacerItem8)
         self.frame_6 = QtWidgets.QFrame(self.change_object)
         self.frame_6.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_6.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -990,8 +980,8 @@ class Ui_MainWindow(object):
         self.settings_program_subtitle.setObjectName("settings_program_subtitle")
         self.verticalLayout_46.addWidget(self.settings_program_subtitle)
         self.verticalLayout_51.addLayout(self.verticalLayout_46)
-        spacerItem6 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_51.addItem(spacerItem6)
+        spacerItem9 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_51.addItem(spacerItem9)
         self.frame_8 = QtWidgets.QFrame(self.settings_page)
         self.frame_8.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_8.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -999,8 +989,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_12 = QtWidgets.QHBoxLayout(self.frame_8)
         self.horizontalLayout_12.setContentsMargins(0, 0, 0, 15)
         self.horizontalLayout_12.setObjectName("horizontalLayout_12")
-        spacerItem7 = QtWidgets.QSpacerItem(10, 0, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_12.addItem(spacerItem7)
+        spacerItem10 = QtWidgets.QSpacerItem(10, 0, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_12.addItem(spacerItem10)
         self.settings_program_frame = QtWidgets.QFrame(self.frame_8)
         self.settings_program_frame.setMinimumSize(QtCore.QSize(931, 261))
         self.settings_program_frame.setMaximumSize(QtCore.QSize(941, 261))
@@ -1079,8 +1069,8 @@ class Ui_MainWindow(object):
         self.about_program_subtitle.setObjectName("about_program_subtitle")
         self.verticalLayout_54.addWidget(self.about_program_subtitle)
         self.verticalLayout_64.addLayout(self.verticalLayout_54)
-        spacerItem8 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
-        self.verticalLayout_64.addItem(spacerItem8)
+        spacerItem11 = QtWidgets.QSpacerItem(20, 40, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Expanding)
+        self.verticalLayout_64.addItem(spacerItem11)
         self.frame_9 = QtWidgets.QFrame(self.help_page)
         self.frame_9.setFrameShape(QtWidgets.QFrame.StyledPanel)
         self.frame_9.setFrameShadow(QtWidgets.QFrame.Raised)
@@ -1088,8 +1078,8 @@ class Ui_MainWindow(object):
         self.horizontalLayout_13 = QtWidgets.QHBoxLayout(self.frame_9)
         self.horizontalLayout_13.setContentsMargins(0, 0, 0, 9)
         self.horizontalLayout_13.setObjectName("horizontalLayout_13")
-        spacerItem9 = QtWidgets.QSpacerItem(10, 0, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
-        self.horizontalLayout_13.addItem(spacerItem9)
+        spacerItem12 = QtWidgets.QSpacerItem(10, 0, QtWidgets.QSizePolicy.Fixed, QtWidgets.QSizePolicy.Minimum)
+        self.horizontalLayout_13.addItem(spacerItem12)
         self.about_program_frame = QtWidgets.QFrame(self.frame_9)
         self.about_program_frame.setMinimumSize(QtCore.QSize(941, 271))
         self.about_program_frame.setMaximumSize(QtCore.QSize(951, 271))
@@ -1178,8 +1168,8 @@ class Ui_MainWindow(object):
         self.frame_12.setObjectName("frame_12")
         self.verticalLayout_62 = QtWidgets.QVBoxLayout(self.frame_12)
         self.verticalLayout_62.setObjectName("verticalLayout_62")
-        spacerItem10 = QtWidgets.QSpacerItem(18, 85, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
-        self.verticalLayout_62.addItem(spacerItem10)
+        spacerItem13 = QtWidgets.QSpacerItem(18, 85, QtWidgets.QSizePolicy.Minimum, QtWidgets.QSizePolicy.Fixed)
+        self.verticalLayout_62.addItem(spacerItem13)
         self.verticalLayout_63.addWidget(self.frame_12)
         self.horizontalLayout_14.addWidget(self.frame_13)
         self.horizontalLayout_13.addWidget(self.about_program_frame)
@@ -1227,22 +1217,19 @@ class Ui_MainWindow(object):
         self.password_entry.setPlaceholderText(_translate("MainWindow", "Введите новый пароль"))
         self.password_change.setText(_translate("MainWindow", "Изменить"))
         self.settings_program_title.setText(_translate("MainWindow", "Настройки программы"))
-        self.settings_program_subtitle.setText(
-            _translate("MainWindow", "Изменение настроек в соответствии с нуждами пользователя"))
+        self.settings_program_subtitle.setText(_translate("MainWindow", "Изменение настроек в соответствии с нуждами пользователя"))
         self.path_db_line.setPlaceholderText(_translate("MainWindow", "Полный путь до БД"))
         self.path_db_button.setText(_translate("MainWindow", "Выбрать файл"))
         self.about_program_title.setText(_translate("MainWindow", "О программе"))
         self.about_program_subtitle.setText(_translate("MainWindow", "Краткая информация о программе"))
         self.description_program_title.setText(_translate("MainWindow", "Описание программы"))
-        self.description_program.setText(_translate("MainWindow",
-                                                    "------------------------------------------------------------------------------------------------------------------------------------------"))
+        self.description_program.setText(_translate("MainWindow", "------------------------------------------------------------------------------------------------------------------------------------------"))
         self.program_version.setText(_translate("MainWindow", "Версия программы: alpha"))
         self.developers_name.setText(_translate("MainWindow", "modern."))
 
 
 if __name__ == "__main__":
     import sys
-
     app = QtWidgets.QApplication(sys.argv)
     MainWindow = QtWidgets.QMainWindow()
     ui = Ui_MainWindow()
