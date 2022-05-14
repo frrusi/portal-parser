@@ -1,4 +1,4 @@
-from PyQt5 import QtGui, QtWidgets, QtCore
+from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QFileDialog
 from sqlalchemy import select
@@ -7,26 +7,9 @@ from database import models
 from gui.connection.journal_connection import JournalWindow
 from gui.connection.main_connection import MainWindow
 from gui.connection.recovery_connection import RecoveryWindow
+from gui.pyqt.roundpixmapstyle import RoundPixmapStyle
 from gui.windows import login_window
 from parser.parser import Parser
-
-
-class RoundPixmapStyle(QtWidgets.QProxyStyle):
-    def __init__(self, radius=10, *args, **kwargs):
-        super(RoundPixmapStyle, self).__init__(*args, **kwargs)
-        self._radius = radius
-
-    def drawItemPixmap(self, painter, rectangle, alignment, pixmap):
-        painter.save()
-        pix = QtGui.QPixmap(pixmap.size())
-        pix.fill(QtCore.Qt.transparent)
-        p = QtGui.QPainter(pix)
-        p.setBrush(QtGui.QBrush(pixmap))
-        p.setPen(QtCore.Qt.NoPen)
-        p.drawRoundedRect(pixmap.rect(), self._radius, self._radius)
-        p.end()
-        super(RoundPixmapStyle, self).drawItemPixmap(painter, rectangle, alignment, pix)
-        painter.restore()
 
 
 class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
@@ -45,8 +28,8 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
 
         self.setupUi(self)
 
-        self.MainWindow = MainWindow()
-        self.JournalWindow = JournalWindow(database)
+        self.MainWindow = MainWindow(config)
+        self.JournalWindow = JournalWindow(database, config)
         self.RecoveryWindow = RecoveryWindow(config, database, exceptions, parser_utils,
                                              security_utils, secondary_utils)
 
@@ -76,7 +59,6 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
 
         self.MainWindow.group_sync.clicked.connect(self.synchronization_group)
         self.MainWindow.sem_sub_sync.clicked.connect(self.synchronization_subjects_and_semesters)
-        # self.MainWindow.subject_sync.clicked.connect()
 
     def show_password(self):
         if not self.toggleBool:
@@ -94,14 +76,6 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
     def synchronization_subjects_and_semesters(self):
         group = self.MainWindow.group_choice.currentText()
         self.parser.get_journal(group, True)
-
-    def synchronization_marks(self):
-        # ДОДЕЛАТЬ
-        group = self.MainWindow.group_choice.currentText()
-        semester = self.MainWindow.semester_choice.currentText()
-        subject = self.MainWindow.subject_choice.currentText()
-
-        self.database.synchronization_marks(self.parser.get_marks(group, int(semester), subject, True))
 
     def change_page(self, window):
         windows = {
@@ -147,7 +121,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.MainWindow.email_entry.setText(f"{information[10]}")
 
     def change_image_profile(self):
-        file_path = QFileDialog.getOpenFileName(self, "Выбор фотографии", "./", "Image(*.png *.jpg *.jpeg *.gif *.bmp)")[0]
+        file_path = QFileDialog.getOpenFileName(self, "Выбор фотографии", "./", self.config.file_extensions)[0]
 
         if file_path:
             self.parser.change_avatar(file_path)
@@ -156,10 +130,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
                 old_file.write(new_file.read())
 
             if file_extension == 'gif':
-                path = r'data/user_avatar.gif'
-                gif = QtGui.QMovie(path)
-                self.MainWindow.image.setMovie(gif)
-                gif.start()
+                self.scnt.set_and_start_gif(self.MainWindow)
             else:
                 self.MainWindow.image.setPixmap(self.MainWindow.circleImage(rf'data/user_avatar.{file_extension}'))
 
@@ -172,7 +143,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.parser.change_password(password)
 
         self.MainWindow.password_entry.clear()
-        self.MainWindow.password_entry.setPlaceholderText('Успешно')
+        self.MainWindow.password_entry.setPlaceholderText(self.config.successful)
         pal = self.MainWindow.password_entry.palette()
         text_color = QtGui.QColor("green")
 
@@ -183,7 +154,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         get_all_group = self.database.get_all_groups()
 
         self.MainWindow.group_choice.clear()
-        self.MainWindow.group_choice.addItems(['Выберите группу'] + get_all_group)
+        self.MainWindow.group_choice.addItems([self.config.select_group_message] + get_all_group)
 
         self.MainWindow.group_choice.currentIndexChanged.connect(self.fill_combobox_semester)
 
@@ -197,7 +168,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
 
         get_all_semester = self.database.get_all_semesters(group)
 
-        self.MainWindow.semester_choice.addItems(['Выберите семестр'] + get_all_semester)
+        self.MainWindow.semester_choice.addItems([self.config.select_semester_message] + get_all_semester)
 
         self.MainWindow.semester_choice.currentIndexChanged.connect(self.fill_combobox_subject)
 
@@ -208,7 +179,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
 
         get_all_subject = self.database.get_all_subjects(group, int(semester), 'text')
 
-        self.MainWindow.subject_choice.addItems(['Выберите предмет'] + get_all_subject)
+        self.MainWindow.subject_choice.addItems([self.config.select_subject_message] + get_all_subject)
 
     def fill_journal(self):
         group = self.MainWindow.group_choice.currentText()
@@ -233,13 +204,14 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         if CODE != self.config.successful_code:
             msg = QtWidgets.QMessageBox()
             msg.setIcon(QtWidgets.QMessageBox.Warning)
-            msg.setWindowTitle("Error")
+            msg.setWindowTitle(self.config.error_message)
             msg.setText(self.config.auth_error)
 
             msg.exec_()
         else:
             self.parser.get_user_id()
             self.parser.get_csrf()
+
             if self.database.select_query(select(models.Group), 2) is None:
                 self.parser.get_groups()
 
@@ -254,10 +226,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
             if file_extension == 'gif':
                 proxy_style = RoundPixmapStyle(radius=65, style=self.MainWindow.image.style())
                 self.MainWindow.image.setStyle(proxy_style)
-                path = r'data/user_avatar.gif'
-                gif = QtGui.QMovie(path)
-                self.MainWindow.image.setMovie(gif)
-                gif.start()
+                self.scnt.set_and_start_gif(self.MainWindow)
             else:
                 self.MainWindow.image.setPixmap(self.MainWindow.circleImage(rf'data\user_avatar.{file_extension}'))
 
