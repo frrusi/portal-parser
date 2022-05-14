@@ -1,6 +1,7 @@
 import os
 
 import requests
+from PyQt5 import QtGui
 
 
 class SecondaryUtils:
@@ -28,3 +29,10 @@ class SecondaryUtils:
     @staticmethod
     def get_file_extension(file):
         return file[file.rfind('.') + 1:]
+
+    @staticmethod
+    def set_and_start_gif(class_object):
+        path = r'data/user_avatar.gif'
+        gif = QtGui.QMovie(path)
+        class_object.image.setMovie(gif)
+        gif.start()
