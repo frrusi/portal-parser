@@ -9,6 +9,8 @@
 
 
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtCore import QRegExp
+from PyQt5.QtGui import QRegExpValidator
 
 
 class Ui_MainWindow(object):
@@ -883,6 +885,9 @@ class Ui_MainWindow(object):
         font.setFamily("Bahnschrift Light")
         self.email_entry.setFont(font)
         self.email_entry.setObjectName("email_entry")
+        regex = QRegExp(r"^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$")
+        input_validator = QRegExpValidator(regex, self.email_entry)
+        self.email_entry.setValidator(input_validator)
         self.verticalLayout_26.addWidget(self.email_entry)
         self.verticalLayout_25.addLayout(self.verticalLayout_26)
         self.verticalLayout_24 = QtWidgets.QVBoxLayout()
@@ -935,6 +940,9 @@ class Ui_MainWindow(object):
         font.setFamily("Bahnschrift Light")
         self.password_entry.setFont(font)
         self.password_entry.setObjectName("password_entry")
+        regex = QRegExp(r"^[A-Za-z\d@$!%*?&]{8,128}$")
+        input_validator = QRegExpValidator(regex, self.password_entry)
+        self.password_entry.setValidator(input_validator)
         self.verticalLayout_28.addWidget(self.password_entry)
         self.verticalLayout_30.addLayout(self.verticalLayout_28)
         self.verticalLayout_29 = QtWidgets.QVBoxLayout()
