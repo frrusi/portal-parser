@@ -1,4 +1,7 @@
+import re
+
 from PyQt5 import QtGui, QtWidgets
+from PyQt5.QtCore import QEvent
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QFileDialog
 from sqlalchemy import select
@@ -58,7 +61,76 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.MainWindow.journal_open.clicked.connect(self.fill_journal)
 
         self.MainWindow.group_sync.clicked.connect(self.synchronization_group)
-        self.MainWindow.sem_sub_sync.clicked.connect(self.synchronization_subjects_and_semesters)
+        self.MainWindow.se_gr_sync.clicked.connect(self.synchronization_subjects_and_semesters)
+
+        self.MainWindow.help_password.installEventFilter(self)
+        self.MainWindow.password_entry.textChanged.connect(self.check_password)
+
+        self.completed_requirements = [False, False, False, False, False]
+
+    def eventFilter(self, object, event):
+        if event.type() == QEvent.Enter:
+            self.MainWindow.password_help.show()
+        elif event.type() == QEvent.Leave:
+            self.MainWindow.password_help.hide()
+        return False
+
+    def check_password(self):
+        current_password = self.MainWindow.password_entry.text()
+
+        if len(current_password) >= 8:
+            self.completed_requirements[0] = True
+            self.MainWindow.size_text.setStyleSheet("color: green;")
+            self.MainWindow.size_text.setText("✓ Не менее 8 символов")
+        else:
+            self.completed_requirements[0] = False
+            self.MainWindow.size_text.setStyleSheet("color: red;")
+            self.MainWindow.size_text.setText("× Не менее 8 символов")
+
+        if len(re.sub(r'[^A-Z]+', '', current_password)) > 0:
+            self.completed_requirements[1] = True
+            self.MainWindow.capital_text.setStyleSheet("color: green;")
+            self.MainWindow.capital_text.setText("✓ Минимум одна заглавная буква")
+        else:
+            self.completed_requirements[1] = False
+            self.MainWindow.capital_text.setStyleSheet("color: red;")
+            self.MainWindow.capital_text.setText("× Минимум одна заглавная буква")
+
+        if len(re.sub(r'[^a-z]+', '', current_password)) > 0:
+            self.completed_requirements[2] = True
+            self.MainWindow.lower_text.setStyleSheet("color: green;")
+            self.MainWindow.lower_text.setText("✓ Минимум одна строчная буква")
+        else:
+            self.completed_requirements[2] = False
+            self.MainWindow.lower_text.setStyleSheet("color: red;")
+            self.MainWindow.lower_text.setText("× Минимум одна строчная буква")
+
+        if len(re.sub(r'\D+', '', current_password)) > 0:
+            self.completed_requirements[3] = True
+            self.MainWindow.number_text.setStyleSheet("color: green;")
+            self.MainWindow.number_text.setText("✓ Минимум одна цифра")
+        else:
+            self.completed_requirements[3] = False
+            self.MainWindow.number_text.setStyleSheet("color: red;")
+            self.MainWindow.number_text.setText("× Минимум одна цифра")
+
+        if len(re.sub(r'[^!@#$%^&*]+', '', current_password)) > 0:
+            self.completed_requirements[4] = True
+            self.MainWindow.special_text.setStyleSheet("color: green;")
+            self.MainWindow.special_text.setText("✓ Минимум один спецсимвол")
+        else:
+            self.completed_requirements[4] = False
+            self.MainWindow.special_text.setStyleSheet("color: red;")
+            self.MainWindow.special_text.setText("× Минимум один спецсимвол")
+
+        self.MainWindow.password_check.setValue(sum(self.completed_requirements) * 20)
+
+        if self.MainWindow.password_check.value() == 100:
+            self.MainWindow.password_check.setStyleSheet("QProgressBar::chunk:horizontal { background-color: green; }")
+        elif self.MainWindow.password_check.value() > 50:
+            self.MainWindow.password_check.setStyleSheet("QProgressBar::chunk:horizontal { background-color: yellow; }")
+        else:
+            self.MainWindow.password_check.setStyleSheet("QProgressBar::chunk:horizontal { background-color: red; }")
 
     def show_password(self):
         if not self.toggleBool:
@@ -140,15 +212,17 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
 
     def change_password(self):
         password = self.MainWindow.password_entry.text()
+
+        if not all(self.completed_requirements):
+            msg = QtWidgets.QMessageBox()
+            msg.setIcon(QtWidgets.QMessageBox.Warning)
+            msg.setWindowTitle("Ошибка")
+            msg.setText("Пароль не соответствует требованиям")
+            msg.exec_()
+            return None
+
         self.parser.change_password(password)
-
         self.MainWindow.password_entry.clear()
-        self.MainWindow.password_entry.setPlaceholderText(self.config.successful)
-        pal = self.MainWindow.password_entry.palette()
-        text_color = QtGui.QColor("green")
-
-        pal.setColor(QtGui.QPalette.PlaceholderText, text_color)
-        self.MainWindow.password_entry.setPalette(pal)
 
     def fill_combobox_group(self):
         get_all_group = self.database.get_all_groups()
