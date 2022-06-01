@@ -14,7 +14,9 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 class Ui_JournalWindow(object):
     def setupUi(self, JournalWindow):
         JournalWindow.setObjectName("JournalWindow")
-        JournalWindow.resize(1212, 707)
+        JournalWindow.resize(1600, 487)
+        JournalWindow.setStyleSheet("QWidget[objectName=\"centralwidget\"] { background-color: white; }\n"
+"QTableWidget[objectName=\"table\"] { border: 1px solid black; }")
         self.centralwidget = QtWidgets.QWidget(JournalWindow)
         self.centralwidget.setObjectName("centralwidget")
         self.horizontalLayout = QtWidgets.QHBoxLayout(self.centralwidget)

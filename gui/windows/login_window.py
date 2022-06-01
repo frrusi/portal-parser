@@ -114,6 +114,7 @@ class Ui_Authorization(object):
 "    font-family: Montserrat Medium;\n"
 "    font-size: 15px;\n"
 "    padding-left: 1em;\n"
+"    padding-right: 1em;\n"
 "}")
         self.password.setText("")
         self.password.setEchoMode(QtWidgets.QLineEdit.PasswordEchoOnEdit)

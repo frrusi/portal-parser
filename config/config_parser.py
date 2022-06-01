@@ -1,6 +1,6 @@
 from configparser import SafeConfigParser
 
-section_names = 'urls', 'codes', 'messages', 'errors', 'headers'
+section_names = 'urls', 'codes', 'messages', 'errors', 'values', 'paths', 'headers'
 
 
 class ConfigParser:

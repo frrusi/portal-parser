@@ -3,10 +3,12 @@ from itertools import chain
 from typing import Union
 
 import sqlalchemy.engine
-from sqlalchemy import create_engine, MetaData, select, delete, insert, update
+from sqlalchemy import create_engine, MetaData, select, insert, update
+from sqlalchemy import dialects
 from sqlalchemy.sql.functions import coalesce
 
 from database import models
+from utils.parser_utils import ParserUtils
 
 
 class DataBase:
@@ -55,7 +57,7 @@ class DataBase:
     def get_last_index(self, query):
         with self.engine.connect() as connection:
             try:
-                index = int(connection.execute(query).fetchall()[-1][0]) + 1
+                index = int(sorted([index[0] for index in connection.execute(query).fetchall()])[-1]) + 1
             except IndexError:
                 index = 0
         return index
@@ -131,3 +133,82 @@ class DataBase:
         return list(chain.from_iterable(self.select_query(select(models.Marks.mark
                                                                  ).where(models.Marks.subject == subject_id,
                                                                          models.Marks.semester == semester), 1)))
+
+    def get_student_id(self, name, surname, patronymic=None):
+        return self.select_query(select(models.Students.id).where(models.Students.name == name,
+                                                                  models.Students.surname == surname,
+                                                                  models.Students.patronymic == patronymic), 2)[0]
+
+    def synchronization_groups(self, new_groups):
+        date, time = ParserUtils.get_datetime_now()
+
+        for group in new_groups:
+            index = self.select_query(select(models.Group.id).where(models.Group.group == group), 2)
+
+            if index is None:
+                index = self.get_last_index(select(models.Group.id))
+                print(index)
+            else:
+                index = index[0]
+
+            stmt = dialects.sqlite.insert(models.Group
+                                          ).values(id=index,
+                                                   group=str(group),
+                                                   date=str(date),
+                                                   time=str(time)
+                                                   ).on_conflict_do_update(index_elements=[models.Group.id],
+                                                                           set_=dict(date=date, time=time))
+
+            self.engine_connect(stmt)
+
+    def synchronization_subjects_and_semesters(self, *args):
+        date, time = ParserUtils.get_datetime_now()
+        for subject in args[0]:
+            group = self.get_group(int(subject[1]))
+            subject_id = self.get_subject((models.Subject.id,), subject[2], subject[0], group)[0]
+
+            if subject_id is None:
+                subject_id = self.get_last_index(select(models.Subject.id))
+
+            stmt = dialects.sqlite.insert(models.Subject).values(
+                id=subject_id,
+                semester=subject[0],
+                group=subject[1],
+                subject=subject[2],
+                url=subject[3],
+                date=str(date),
+                time=str(time)
+            )
+
+            stmt = stmt.on_conflict_do_update(index_elements=[models.Subject.id],
+                                              set_=dict(url=stmt.excluded.url, date=date, time=time))
+
+            self.engine_connect(stmt)
+
+        for student in args[1]:
+            group_id = args[0][1]
+
+            if len(student) == 2:
+                student_id = self.get_student_id(student[0], student[1])
+            elif len(student) == 3:
+                student_id = self.get_student_id(student[0], student[1], student[2])
+
+            if student_id is None:
+                student_id = self.get_last_index(select(models.Students.id))
+
+            patronymic = None if len(student) == 2 else student[2]
+
+            stmt = dialects.sqlite.insert(models.Students).values(
+                id=student_id,
+                group=group_id,
+                name=student[0],
+                surname=student[1],
+                patronymic=patronymic,
+                date=str(date),
+                time=str(time)
+            )
+
+            stmt = stmt.on_conflict_do_update(index_elements=[models.Students.id],
+                                              set_=dict(date=date, time=time))
+
+            self.engine_connect(stmt)
