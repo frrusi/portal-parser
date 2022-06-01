@@ -21,7 +21,7 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.password_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/change_password.png"))
 
         self.group_sync_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/synchronization.png"))
-        self.sem_sub_sync_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/synchronization.png"))
+        self.sem_gr_sync_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/synchronization.png"))
 
         self.semester_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/journal_semester.png"))
         self.subject_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/journal_subject.png"))
@@ -29,6 +29,8 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
         self.db_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/sql-server.png"))
         self.developers_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/mammoth_icon.png"))
+
+        self.help_password.setPixmap(QtGui.QPixmap(f"{config.icons_path}/question.svg"))
 
     @staticmethod
     def circleImage(imagePath):
