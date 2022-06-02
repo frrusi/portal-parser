@@ -22,15 +22,11 @@ class DataBase:
         self.security_utils = security_utils
         self.exceptions = exceptions
 
-    def delete_database(self):
-        if os.path.exists(self.name):
-            os.remove(self.name)
-
     def create_all_tables(self):
         if not os.path.exists(self.name):
             models.Base.metadata.create_all(self.engine)
 
-    def engine_connect(self, query, isReturn=False) -> sqlalchemy.engine.ResultProxy | None:
+    def engine_connect(self, query, isReturn=False) -> sqlalchemy.engine.CursorResult | None:
         with self.engine.connect() as connection:
             if isReturn:
                 return connection.execute(query)
@@ -188,10 +184,13 @@ class DataBase:
         for student in args[1]:
             group_id = args[0][1]
 
-            if len(student) == 2:
-                student_id = self.get_student_id(student[0], student[1])
-            elif len(student) == 3:
-                student_id = self.get_student_id(student[0], student[1], student[2])
+            match(len(student)):
+                case 2:
+                    student_id = self.get_student_id(student[0], student[1])
+                case 3:
+                    student_id = self.get_student_id(student[0], student[1], student[2])
+                case _:
+                    student_id = None
 
             if student_id is None:
                 student_id = self.get_last_index(select(models.Students.id))
