@@ -1,7 +1,8 @@
+import pandas as pd
 from PyQt5 import QtWidgets
-from PyQt5.QtCore import Qt
-from PyQt5.QtWidgets import QTableWidgetItem
+from PyQt5.QtWidgets import QHeaderView
 
+from gui.pyqt.tablemodel import TableModel
 from gui.windows import journal_window
 
 
@@ -18,31 +19,21 @@ class JournalWindow(QtWidgets.QMainWindow, journal_window.Ui_JournalWindow):
         get_all_student = self.database.get_all_students(group, 'text')
         get_all_marks = self.database.get_marks(subject, semester)
 
-        self.table.setColumnCount(len(get_all_date) + 1)
-        self.table.setRowCount(len(get_all_student))
-        self.table.setColumnWidth(0, 200)
+        #
+        # for i in range(1, len(get_all_date) + 1):
+        #     self.table.setColumnWidth(i, 50)
 
-        for i in range(1, len(get_all_date) + 1):
-            self.table.setColumnWidth(i, 50)
-
-        self.table.horizontalHeader().setStretchLastSection(True)
+        # self.table.horizontalHeader().setStretchLastSection(True)
 
         self.table.setStyleSheet(
             'QWidget { background-color: #ffffff; } QHeaderView::section { background-color: #ffffff; }'
-            'QTableWidget QTableCornerButton::section {background-color: #ffffff;}')
+            'QTableView QTableCornerButton::section {background-color: #ffffff;}')
         self.table.setStyleSheet('selection-background-color: #ffffe0; selection-color: #000000')
 
-        self.table.setHorizontalHeaderLabels([self.config.group_list_message] + get_all_date)
+        dates_length = len(get_all_date)
+        data = pd.DataFrame(
+            [[full_name, *get_all_marks[index * dates_length:(index + 1) * dates_length]] for index, full_name in
+             enumerate(get_all_student)], columns=[''] + get_all_date)
 
-        for index, value in enumerate(get_all_student):
-            item = QTableWidgetItem(value)
-            item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
-            self.table.setItem(index, 0, item)
-            self.table.resizeColumnsToContents()
-
-        for index, value in enumerate(get_all_marks):
-            item = QTableWidgetItem(value)
-            item.setFlags(Qt.ItemIsSelectable | Qt.ItemIsEnabled)
-            item.setTextAlignment(Qt.AlignHCenter | Qt.AlignVCenter)
-            self.table.setItem(index // len(get_all_date), index % len(get_all_date) + 1, item)
-            self.table.resizeColumnsToContents()
+        model = TableModel(data)
+        self.table.setModel(model)
