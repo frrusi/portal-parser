@@ -55,3 +55,13 @@ class Config:
             'offset': '0', 'str': f'!{group}',
             'type': '0', 'online': '0'
         }
+
+    @staticmethod
+    def get_page_index():
+        return {
+            'profile': 0,
+            'journal': 1,
+            'change': 2,
+            'settings': 3,
+            'about': 4
+        }
