@@ -17,9 +17,7 @@ def main():
     exceptions = Exceptions(config)
 
     database = DataBase("database.sqlite3", config, parser_utils, security_utils, exceptions)
-
-    # database.delete_database()
-    # database.create_all_tables()
+    database.create_all_tables()
 
     app = QtWidgets.QApplication(sys.argv)
     window = AuthWindow(config, database, exceptions, parser_utils, security_utils, secondary_utils)
