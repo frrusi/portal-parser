@@ -6,6 +6,7 @@ from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QFileDialog
 from sqlalchemy import select
 
+from config.config import Config
 from database import models
 from gui.connection.journal_connection import JournalWindow
 from gui.connection.main_connection import MainWindow
@@ -80,47 +81,47 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
 
         if len(current_password) >= 8:
             self.completed_requirements[0] = True
-            self.MainWindow.size_text.setStyleSheet("color: green;")
+            self.MainWindow.size_text.setStyleSheet(self.config.green_color)
             self.MainWindow.size_text.setText("✓ Не менее 8 символов")
         else:
             self.completed_requirements[0] = False
-            self.MainWindow.size_text.setStyleSheet("color: red;")
+            self.MainWindow.size_text.setStyleSheet(self.config.red_color)
             self.MainWindow.size_text.setText("× Не менее 8 символов")
 
         if len(re.sub(r'[^A-Z]+', '', current_password)) > 0:
             self.completed_requirements[1] = True
-            self.MainWindow.capital_text.setStyleSheet("color: green;")
+            self.MainWindow.capital_text.setStyleSheet(self.config.green_color)
             self.MainWindow.capital_text.setText("✓ Минимум одна заглавная буква")
         else:
             self.completed_requirements[1] = False
-            self.MainWindow.capital_text.setStyleSheet("color: red;")
+            self.MainWindow.capital_text.setStyleSheet(self.config.red_color)
             self.MainWindow.capital_text.setText("× Минимум одна заглавная буква")
 
         if len(re.sub(r'[^a-z]+', '', current_password)) > 0:
             self.completed_requirements[2] = True
-            self.MainWindow.lower_text.setStyleSheet("color: green;")
+            self.MainWindow.lower_text.setStyleSheet(self.config.green_color)
             self.MainWindow.lower_text.setText("✓ Минимум одна строчная буква")
         else:
             self.completed_requirements[2] = False
-            self.MainWindow.lower_text.setStyleSheet("color: red;")
+            self.MainWindow.lower_text.setStyleSheet(self.config.red_color)
             self.MainWindow.lower_text.setText("× Минимум одна строчная буква")
 
         if len(re.sub(r'\D+', '', current_password)) > 0:
             self.completed_requirements[3] = True
-            self.MainWindow.number_text.setStyleSheet("color: green;")
+            self.MainWindow.number_text.setStyleSheet(self.config.green_color)
             self.MainWindow.number_text.setText("✓ Минимум одна цифра")
         else:
             self.completed_requirements[3] = False
-            self.MainWindow.number_text.setStyleSheet("color: red;")
+            self.MainWindow.number_text.setStyleSheet(self.config.red_color)
             self.MainWindow.number_text.setText("× Минимум одна цифра")
 
         if len(re.sub(r'[^!@#$%^&*]+', '', current_password)) > 0:
             self.completed_requirements[4] = True
-            self.MainWindow.special_text.setStyleSheet("color: green;")
+            self.MainWindow.special_text.setStyleSheet(self.config.green_color)
             self.MainWindow.special_text.setText("✓ Минимум один спецсимвол")
         else:
             self.completed_requirements[4] = False
-            self.MainWindow.special_text.setStyleSheet("color: red;")
+            self.MainWindow.special_text.setStyleSheet(self.config.red_color)
             self.MainWindow.special_text.setText("× Минимум один спецсимвол")
 
         self.MainWindow.password_check.setValue(sum(self.completed_requirements) * 20)
@@ -150,15 +151,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.parser.get_journal(group, True)
 
     def change_page(self, window):
-        windows = {
-            'profile': 0,
-            'journal': 1,
-            'change': 2,
-            'settings': 3,
-            'about': 4
-        }
-
-        self.MainWindow.stackedWidget.setCurrentIndex(windows[window])
+        self.MainWindow.stackedWidget.setCurrentIndex(Config.get_page_index()[window])
 
     def show_recovery_window(self):
         self.parser.get_csrf()
