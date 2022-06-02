@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>1600</width>
-    <height>487</height>
+    <width>835</width>
+    <height>409</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -20,11 +20,7 @@ QTableWidget[objectName=&quot;table&quot;] { border: 1px solid black; }</string>
   <widget class="QWidget" name="centralwidget">
    <layout class="QHBoxLayout" name="horizontalLayout">
     <item>
-     <widget class="QTableWidget" name="table">
-      <property name="sizeAdjustPolicy">
-       <enum>QAbstractScrollArea::AdjustToContents</enum>
-      </property>
-     </widget>
+     <widget class="QTableView" name="table"/>
     </item>
    </layout>
   </widget>
