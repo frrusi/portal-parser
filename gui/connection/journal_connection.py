@@ -1,6 +1,5 @@
 import pandas as pd
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QHeaderView
 
 from gui.pyqt.tablemodel import TableModel
 from gui.windows import journal_window
@@ -18,12 +17,6 @@ class JournalWindow(QtWidgets.QMainWindow, journal_window.Ui_JournalWindow):
         get_all_date = self.database.get_data(subject, semester)
         get_all_student = self.database.get_all_students(group, 'text')
         get_all_marks = self.database.get_marks(subject, semester)
-
-        #
-        # for i in range(1, len(get_all_date) + 1):
-        #     self.table.setColumnWidth(i, 50)
-
-        # self.table.horizontalHeader().setStretchLastSection(True)
 
         self.table.setStyleSheet(
             'QWidget { background-color: #ffffff; } QHeaderView::section { background-color: #ffffff; }'
