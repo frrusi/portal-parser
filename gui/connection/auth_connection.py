@@ -1,4 +1,4 @@
-from PyQt5 import QtGui, QtWidgets
+from PyQt5 import QtWidgets, QtGui
 from PyQt5.QtCore import QEvent
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QFileDialog
@@ -38,7 +38,6 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
 
         self.icon.setPixmap(QtGui.QPixmap("gui/icons/logo.png"))
         self.visibleIcon = QIcon("gui/icons/visible_icon.svg")
-        self.hiddenIcon = QIcon("gui/icons/hidden_icon.svg")
 
         self.password.setEchoMode(QtWidgets.QLineEdit.Password)
         self.toggleShowPassword = self.password.addAction(self.visibleIcon, QtWidgets.QLineEdit.TrailingPosition)
@@ -69,6 +68,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
     def eventFilter(self, object, event):
         if event.type() == QEvent.Enter:
             self.MainWindow.password_help.show()
+            return True
         elif event.type() == QEvent.Leave:
             self.MainWindow.password_help.hide()
         return False
@@ -111,32 +111,11 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.RecoveryWindow.show()
 
     def fill_about_user(self, information):
-        self.MainWindow.name.clear()
-        self.MainWindow.name.setText(f"<b>{information[0]} {information[1]}</b>")
+        user_information = Config.get_user_information(self.MainWindow, information)
 
-        self.MainWindow.date.clear()
-        self.MainWindow.date.setText(f"{information[3]}")
-
-        self.MainWindow.group.clear()
-        self.MainWindow.group.setText(f"{information[7]}")
-
-        self.MainWindow.institute_about.clear()
-        self.MainWindow.institute_about.setText(f"{information[4]}")
-
-        self.MainWindow.specialization_about.clear()
-        self.MainWindow.specialization_about.setText(f"{information[5]}")
-
-        self.MainWindow.training_about.clear()
-        self.MainWindow.training_about.setText(f"{information[9]}")
-
-        self.MainWindow.profile_about.clear()
-        self.MainWindow.profile_about.setText(f"{information[6]}")
-
-        self.MainWindow.year_about.clear()
-        self.MainWindow.year_about.setText(f"{information[8]}")
-
-        self.MainWindow.email_entry.clear()
-        self.MainWindow.email_entry.setText(f"{information[10]}")
+        for key, value in user_information.items():
+            key.clear()
+            key.setText(value)
 
     def change_image_profile(self):
         file_path = QFileDialog.getOpenFileName(self, "Выбор фотографии", "./", self.config.file_extensions)[0]
