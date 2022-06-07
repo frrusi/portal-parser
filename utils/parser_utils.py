@@ -12,7 +12,7 @@ class ParserUtils:
 
     @staticmethod
     def get_datetime_now() -> List[str]:
-        """Функция получения текущих даты и времени
+        """Метод получения текущих даты и времени
 
         Returns:
             Список с текущими датой и временем
@@ -26,7 +26,7 @@ class ParserUtils:
         return datetime_now[:datetime_now.rfind(':')].split()
 
     def get_auth_code(self, response: models.Response) -> int:
-        """Функция проверки попытки аутентификации
+        """Метод проверки попытки аутентификации
 
         Args:
             response: Ответ от POST-запроса
@@ -40,7 +40,7 @@ class ParserUtils:
 
     @staticmethod
     def get_tree(session: sessions.Session, url: str) -> html.HtmlElement:
-        """Функция получения HTML-дерева
+        """Метод получения HTML-дерева
 
         Args:
             session: Объект сессии модуля requests
@@ -51,7 +51,7 @@ class ParserUtils:
         return html.fromstring(html_document.text)
 
     def get_datetime_and_tree(self, session: sessions.Session, url: str) -> Tuple[str, str, html.HtmlElement]:
-        """Функция получения дерева и даты, времени
+        """Метод получения дерева и даты, времени
 
         Args:
             session: Объект сессии модуля requests
@@ -63,7 +63,7 @@ class ParserUtils:
         return date, time, tree
 
     def get_reset_password_message(self, session: sessions.Session) -> str:
-        """Функция получения сообщения во время восстановления пароля
+        """Метод получения сообщения во время восстановления пароля
 
         Args:
             session: Объект сессии модуля requests
@@ -74,7 +74,7 @@ class ParserUtils:
 
     @staticmethod
     def check_reset_password_message(message_from_site: str, check_message: str, error_message: str) -> str | None:
-        """Функция проверки введенных данных во время восстановления пароля
+        """Метод проверки введенных данных во время восстановления пароля
 
         Args:
             message_from_site: Сообщение, полученное от сайта
@@ -88,7 +88,7 @@ class ParserUtils:
 
     @staticmethod
     def life_loop_thread(function, join: bool, *args) -> Union[None, threading.Thread]:
-        """Функция создания и поддержки жизненного цикла потока
+        """Метод создания и поддержки жизненного цикла потока
 
         Args:
             function: Указатель на функцию, запускаемую в потоке
