@@ -1,3 +1,4 @@
+from PyQt5 import QtWidgets
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QLineEdit
 
@@ -37,3 +38,11 @@ class GuiUtils:
                 obj.setStyleSheet("QProgressBar::chunk:horizontal { background-color: yellow; }")
             case _:
                 obj.setStyleSheet("QProgressBar::chunk:horizontal { background-color: red; }")
+
+    @staticmethod
+    def create_message_box(icon, title, text):
+        msg = QtWidgets.QMessageBox()
+        msg.setIcon(icon)
+        msg.setWindowTitle(title)
+        msg.setText(text)
+        return msg
