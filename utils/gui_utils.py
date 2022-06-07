@@ -1,3 +1,7 @@
+from PyQt5.QtGui import QIcon
+from PyQt5.QtWidgets import QLineEdit
+
+
 class GuiUtils:
     def __init__(self):
         pass
@@ -10,6 +14,19 @@ class GuiUtils:
         else:
             obj.setStyleSheet(config.red_color)
             obj.setText(f"× {message}")
+
+    @staticmethod
+    def get_password_visibility_settings(password_obj, icon_obj, visibility: bool):
+        visible_icon = QIcon("gui/icons/visible_icon.svg")
+        hidden_icon = QIcon("gui/icons/hidden_icon.svg")
+
+        match visibility:
+            case True:
+                password_obj.setEchoMode(QLineEdit.Password)
+                icon_obj.setIcon(visible_icon)
+            case _:
+                password_obj.setEchoMode(QLineEdit.Normal)
+                icon_obj.setIcon(hidden_icon)
 
     @staticmethod
     def set_color_bar(obj):
