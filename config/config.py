@@ -77,3 +77,14 @@ class Config:
                 window_object.profile_about: f"{information[6]}",
                 window_object.year_about: f"{information[8]}",
                 window_object.email_entry: f"{information[10]}"}
+
+    @staticmethod
+    def get_password_requirements(config):
+        return [config.password_length_message, config.password_uppercase_message,
+                config.password_lowercase_message, config.password_digit_message,
+                config.password_symbol_message]
+    
+    @staticmethod
+    def get_objects_password_requirements(window_object):
+        return [window_object.size_text, window_object.capital_text, window_object.lower_text,
+                window_object.number_text, window_object.special_text]
