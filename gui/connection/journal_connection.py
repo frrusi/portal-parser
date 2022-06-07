@@ -14,14 +14,14 @@ class JournalWindow(QtWidgets.QMainWindow, journal_window.Ui_JournalWindow):
         self.config = config
 
     def initialization(self, group, semester, subject):
+        self.table.setStyleSheet(
+            'QWidget { background-color: #ffffff; } QHeaderView::section { background-color: #ffffff; }'
+            'QTableView QTableCornerButton::section {background-color: #ffffff;}'
+            'selection-background-color: #ffffe0; selection-color: #000000')
+
         get_all_date = self.database.get_data(subject, semester)
         get_all_student = self.database.get_all_students(group, 'text')
         get_all_marks = self.database.get_marks(subject, semester)
-
-        self.table.setStyleSheet(
-            'QWidget { background-color: #ffffff; } QHeaderView::section { background-color: #ffffff; }'
-            'QTableView QTableCornerButton::section {background-color: #ffffff;}')
-        self.table.setStyleSheet('selection-background-color: #ffffe0; selection-color: #000000')
 
         dates_length = len(get_all_date)
         data = pd.DataFrame(
