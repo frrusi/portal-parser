@@ -93,7 +93,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.gt.set_color_bar(self.MainWindow.password_check)
 
     def show_password(self):
-        Config.get_password_visibility_settings(self.password, self.toggleShowPassword, self.toggleBool)
+        self.gt.get_password_visibility_settings(self.password, self.toggleShowPassword, self.toggleBool)
         self.toggleBool = not self.toggleBool
 
     def synchronization_group(self):
