@@ -65,6 +65,8 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.MainWindow.help_password.installEventFilter(self)
         self.MainWindow.password_entry.textChanged.connect(self.check_password)
 
+        self.completed_requirements = []
+
     def eventFilter(self, object, event):
         if event.type() == QEvent.Enter:
             self.MainWindow.password_help.show()
@@ -83,13 +85,13 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
 
         current_password = self.MainWindow.password_entry.text()
 
-        completed_requirements = {key: value for key, value in
-                                  zip(keys, list(self.scrt.check_password_steps(current_password).values()))}
+        self.completed_requirements = {key: value for key, value in
+                                       zip(keys, list(self.scrt.check_password_steps(current_password).values()))}
 
-        for index, (key, value) in enumerate(completed_requirements.items()):
+        for index, (key, value) in enumerate(self.completed_requirements.items()):
             self.gt.set_color_and_text(key, messages[index], self.config, value)
 
-        self.MainWindow.password_check.setValue(sum(completed_requirements.values()) * 20)
+        self.MainWindow.password_check.setValue(sum(self.completed_requirements.values()) * 20)
         self.gt.set_color_bar(self.MainWindow.password_check)
 
     def show_password(self):
@@ -138,11 +140,9 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
     def change_password(self):
         password = self.MainWindow.password_entry.text()
 
-        if not all(self.completed_requirements):
-            msg = QtWidgets.QMessageBox()
-            msg.setIcon(QtWidgets.QMessageBox.Warning)
-            msg.setWindowTitle("Ошибка")
-            msg.setText("Пароль не соответствует требованиям")
+        if all(self.completed_requirements):
+            msg = self.gt.create_message_box(QtWidgets.QMessageBox.Warning,
+                                             self.config.error_message, self.config.change_password_error)
             msg.exec_()
             return None
 
@@ -201,11 +201,8 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         CODE = self.parser.auth(LOGIN, PASSWORD)
 
         if CODE != self.config.successful_code:
-            msg = QtWidgets.QMessageBox()
-            msg.setIcon(QtWidgets.QMessageBox.Warning)
-            msg.setWindowTitle(self.config.error_message)
-            msg.setText(self.config.auth_error)
-
+            msg = self.gt.create_message_box(QtWidgets.QMessageBox.Warning,
+                                             self.config.error_message, self.config.auth_error)
             msg.exec_()
         else:
             self.parser.get_user_id()
