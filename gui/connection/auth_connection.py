@@ -1,5 +1,3 @@
-import re
-
 from PyQt5 import QtGui, QtWidgets
 from PyQt5.QtCore import QEvent
 from PyQt5.QtGui import QIcon
@@ -17,7 +15,7 @@ from parser.parser import Parser
 
 
 class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
-    def __init__(self, config, database, exceptions, parser_utils, security_utils, secondary_utils):
+    def __init__(self, config, database, exceptions, parser_utils, security_utils, secondary_utils, gui_utils):
         super(AuthWindow, self).__init__()
 
         self.config = config
@@ -27,6 +25,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.pt = parser_utils
         self.scrt = security_utils
         self.scnt = secondary_utils
+        self.gt = gui_utils
 
         self.parser = Parser(database, config, exceptions, parser_utils, security_utils, secondary_utils)
 
@@ -67,8 +66,6 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.MainWindow.help_password.installEventFilter(self)
         self.MainWindow.password_entry.textChanged.connect(self.check_password)
 
-        self.completed_requirements = [False, False, False, False, False]
-
     def eventFilter(self, object, event):
         if event.type() == QEvent.Enter:
             self.MainWindow.password_help.show()
@@ -77,71 +74,27 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         return False
 
     def check_password(self):
+        keys = [self.MainWindow.size_text, self.MainWindow.capital_text, self.MainWindow.lower_text,
+                self.MainWindow.number_text, self.MainWindow.special_text]
+
+        messages = [self.config.password_length_message, self.config.password_uppercase_message,
+                    self.config.password_lowercase_message, self.config.password_digit_message,
+                    self.config.password_symbol_message]
+
         current_password = self.MainWindow.password_entry.text()
 
-        if len(current_password) >= 8:
-            self.completed_requirements[0] = True
-            self.MainWindow.size_text.setStyleSheet(self.config.green_color)
-            self.MainWindow.size_text.setText("✓ Не менее 8 символов")
-        else:
-            self.completed_requirements[0] = False
-            self.MainWindow.size_text.setStyleSheet(self.config.red_color)
-            self.MainWindow.size_text.setText("× Не менее 8 символов")
+        completed_requirements = {key: value for key, value in
+                                  zip(keys, list(self.scrt.check_password_steps(current_password).values()))}
 
-        if len(re.sub(r'[^A-Z]+', '', current_password)) > 0:
-            self.completed_requirements[1] = True
-            self.MainWindow.capital_text.setStyleSheet(self.config.green_color)
-            self.MainWindow.capital_text.setText("✓ Минимум одна заглавная буква")
-        else:
-            self.completed_requirements[1] = False
-            self.MainWindow.capital_text.setStyleSheet(self.config.red_color)
-            self.MainWindow.capital_text.setText("× Минимум одна заглавная буква")
+        for index, (key, value) in enumerate(completed_requirements.items()):
+            self.gt.set_color_and_text(key, messages[index], self.config, value)
 
-        if len(re.sub(r'[^a-z]+', '', current_password)) > 0:
-            self.completed_requirements[2] = True
-            self.MainWindow.lower_text.setStyleSheet(self.config.green_color)
-            self.MainWindow.lower_text.setText("✓ Минимум одна строчная буква")
-        else:
-            self.completed_requirements[2] = False
-            self.MainWindow.lower_text.setStyleSheet(self.config.red_color)
-            self.MainWindow.lower_text.setText("× Минимум одна строчная буква")
-
-        if len(re.sub(r'\D+', '', current_password)) > 0:
-            self.completed_requirements[3] = True
-            self.MainWindow.number_text.setStyleSheet(self.config.green_color)
-            self.MainWindow.number_text.setText("✓ Минимум одна цифра")
-        else:
-            self.completed_requirements[3] = False
-            self.MainWindow.number_text.setStyleSheet(self.config.red_color)
-            self.MainWindow.number_text.setText("× Минимум одна цифра")
-
-        if len(re.sub(r'[^!@#$%^&*]+', '', current_password)) > 0:
-            self.completed_requirements[4] = True
-            self.MainWindow.special_text.setStyleSheet(self.config.green_color)
-            self.MainWindow.special_text.setText("✓ Минимум один спецсимвол")
-        else:
-            self.completed_requirements[4] = False
-            self.MainWindow.special_text.setStyleSheet(self.config.red_color)
-            self.MainWindow.special_text.setText("× Минимум один спецсимвол")
-
-        self.MainWindow.password_check.setValue(sum(self.completed_requirements) * 20)
-
-        if self.MainWindow.password_check.value() == 100:
-            self.MainWindow.password_check.setStyleSheet("QProgressBar::chunk:horizontal { background-color: green; }")
-        elif self.MainWindow.password_check.value() > 50:
-            self.MainWindow.password_check.setStyleSheet("QProgressBar::chunk:horizontal { background-color: yellow; }")
-        else:
-            self.MainWindow.password_check.setStyleSheet("QProgressBar::chunk:horizontal { background-color: red; }")
+        self.MainWindow.password_check.setValue(sum(completed_requirements.values()) * 20)
+        self.gt.set_color_bar(self.MainWindow.password_check)
 
     def show_password(self):
-        if not self.toggleBool:
-            self.password.setEchoMode(QtWidgets.QLineEdit.Normal)
-            self.toggleBool = True
-            self.toggleShowPassword.setIcon(self.hiddenIcon)
-        else:
-            self.password.setEchoMode(QtWidgets.QLineEdit.Password)
-            self.toggleBool = False
-            self.toggleShowPassword.setIcon(self.visibleIcon)
+        Config.get_password_visibility_settings(self.password, self.toggleShowPassword, self.toggleBool)
+        self.toggleBool = not self.toggleBool
 
     def synchronization_group(self):
         self.database.synchronization_groups(self.parser.get_groups(True))
