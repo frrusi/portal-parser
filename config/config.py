@@ -65,3 +65,15 @@ class Config:
             'settings': 3,
             'about': 4
         }
+
+    @staticmethod
+    def get_user_information(window_object, information):
+        return {window_object.name: f"<b>{information[0]} {information[1]}</b>",
+                window_object.date: f"{information[3]}",
+                window_object.group: f"{information[7]}",
+                window_object.institute_about: f"{information[4]}",
+                window_object.specialization_about: f"{information[5]}",
+                window_object.training_about: f"{information[9]}",
+                window_object.profile_about: f"{information[6]}",
+                window_object.year_about: f"{information[8]}",
+                window_object.email_entry: f"{information[10]}"}
