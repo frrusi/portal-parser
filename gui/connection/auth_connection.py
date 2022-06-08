@@ -87,13 +87,8 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         return False
 
     def check_password(self):
-        keys = [self.MainWindow.size_text, self.MainWindow.capital_text, self.MainWindow.lower_text,
-                self.MainWindow.number_text, self.MainWindow.special_text]
-
-        messages = [self.config.password_length_message, self.config.password_uppercase_message,
-                    self.config.password_lowercase_message, self.config.password_digit_message,
-                    self.config.password_symbol_message]
-
+        keys = Config.get_objects_password_requirements(self.MainWindow)
+        messages = Config.get_password_requirements(self.config)
         current_password = self.MainWindow.password_entry.text()
 
         self.completed_requirements = {key: value for key, value in
@@ -136,6 +131,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         if file_path:
             self.parser.change_avatar(file_path)
             file_extension = self.scnt.get_file_extension(file_path)
+
             with open(file_path, "rb") as new_file, open(rf'data\user_avatar.{file_extension}', 'wb') as old_file:
                 old_file.write(new_file.read())
 
@@ -179,16 +175,14 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         get_all_semester = self.database.get_all_semesters(group)
 
         self.MainWindow.semester_choice.addItems([self.config.select_semester_message] + get_all_semester)
-
         self.MainWindow.semester_choice.currentIndexChanged.connect(self.fill_combobox_subject)
 
     def fill_combobox_subject(self):
-        self.MainWindow.subject_choice.clear()
         group = self.MainWindow.group_choice.currentText()
         semester = self.MainWindow.semester_choice.currentText()
-
         get_all_subject = self.database.get_all_subjects(group, int(semester), 'text')
 
+        self.MainWindow.subject_choice.clear()
         self.MainWindow.subject_choice.addItems([self.config.select_subject_message] + get_all_subject)
 
     def fill_journal(self):
@@ -202,8 +196,8 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
                                                                  models.Marks.semester == int(semester),
                                                                  models.Marks.subject == subject_id), 2) is None:
             self.parser.get_marks(group, int(semester), subject)
-        self.JournalWindow.initialization(group, semester, subject)
 
+        self.JournalWindow.initialization(group, semester, subject)
         self.JournalWindow.show()
 
     def auth(self):

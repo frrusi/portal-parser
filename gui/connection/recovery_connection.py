@@ -9,14 +9,6 @@ class RecoveryWindow(QtWidgets.QMainWindow, recovery_window.Ui_RecoveryWindow):
     def __init__(self, config, database, exceptions, parser_utils, security_utils, secondary_utils):
         super(RecoveryWindow, self).__init__()
 
-        self.config = config
-        self.database = database
-        self.exceptions = exceptions
-
-        self.pt = parser_utils
-        self.scrt = security_utils
-        self.scnt = secondary_utils
-
         self.parser = Parser(database, config, exceptions, parser_utils, security_utils, secondary_utils)
 
         self.setupUi(self)
