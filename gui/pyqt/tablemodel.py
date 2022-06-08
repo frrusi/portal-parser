@@ -12,7 +12,7 @@ class TableModel(QtCore.QAbstractTableModel):
             value = self._data.iloc[args[0].row(), args[0].column()]
             return str(value)
         elif args[1] == Qt.TextAlignmentRole:
-            return QtCore.Qt.AlignCenter
+            return Qt.AlignCenter
 
     def rowCount(self, *args, **kwargs):
         return self._data.shape[0]
