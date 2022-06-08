@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtGui
-from PyQt5.QtCore import QEvent
+from PyQt5.QtCore import QEvent, Qt
 from PyQt5.QtGui import QIcon
 from PyQt5.QtWidgets import QFileDialog
 from sqlalchemy import select
@@ -63,16 +63,27 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.MainWindow.se_gr_sync.clicked.connect(self.synchronization_subjects_and_semesters)
 
         self.MainWindow.help_password.installEventFilter(self)
+        self.login.installEventFilter(self)
+        self.password.installEventFilter(self)
+
         self.MainWindow.password_entry.textChanged.connect(self.check_password)
 
         self.completed_requirements = []
 
-    def eventFilter(self, object, event):
-        if event.type() == QEvent.Enter:
-            self.MainWindow.password_help.show()
+    def eventFilter(self, source, event):
+        if source is self.login and event.type() == QEvent.KeyPress and event.key() == Qt.Key_Down:
+            self.password.setFocus()
             return True
-        elif event.type() == QEvent.Leave:
-            self.MainWindow.password_help.hide()
+        elif source is self.password and event.type() == QEvent.KeyPress and event.key() == Qt.Key_Up:
+            self.login.setFocus()
+            return True
+
+        elif source is self.MainWindow.help_password:
+            if event.type() == QEvent.Enter:
+                self.MainWindow.password_help.show()
+                return True
+            elif event.type() == QEvent.Leave:
+                self.MainWindow.password_help.hide()
         return False
 
     def check_password(self):
