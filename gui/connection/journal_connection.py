@@ -21,7 +21,11 @@ class JournalWindow(QtWidgets.QMainWindow, journal_window.Ui_JournalWindow):
         dates_length = len(get_all_date)
         data = pd.DataFrame(
             [[full_name, *get_all_marks[index * dates_length:(index + 1) * dates_length]] for index, full_name in
-             enumerate(get_all_student)], columns=[''] + get_all_date)
+             enumerate(get_all_student)], columns=['Список группы'] + get_all_date)
 
         model = TableModel(data)
         self.table.setModel(model)
+
+        self.table.setColumnWidth(0, 200)
+        for i in range(1, len(get_all_date) + 1):
+            self.table.setColumnWidth(i, 50)
