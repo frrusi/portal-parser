@@ -1,6 +1,5 @@
 from sqlalchemy import String, Column, ForeignKey, Integer
 from sqlalchemy.ext.declarative import declarative_base
-from sqlalchemy.orm import relationship
 
 Base = declarative_base()
 
@@ -32,11 +31,6 @@ class Students(Base):
     id = Column(Integer, primary_key=True)
 
     group = Column(String, ForeignKey(Group.id, ondelete="CASCADE"))
-    groups = relationship("Group",
-                          back_populates="students",
-                          cascade="all , delete",
-                          passive_deletes=True, )
-
     name = Column(String, nullable=False)
     surname = Column(String, nullable=False)
     patronymic = Column(String)
