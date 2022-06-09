@@ -5,6 +5,8 @@ from typing import Union
 import sqlalchemy.engine
 from sqlalchemy import create_engine, MetaData, select, insert, update
 from sqlalchemy import dialects
+from sqlalchemy import event
+from sqlalchemy.engine import Engine
 from sqlalchemy.sql.functions import coalesce
 
 from database import models
@@ -21,6 +23,13 @@ class DataBase:
         self.parser_utils = parser_utils
         self.security_utils = security_utils
         self.exceptions = exceptions
+
+    @staticmethod
+    @event.listens_for(Engine, "connect")
+    def set_sqlite_pragma(dbapi_connection, connection_record):
+        cursor = dbapi_connection.cursor()
+        cursor.execute("PRAGMA foreign_keys=ON")
+        cursor.close()
 
     def create_all_tables(self):
         if not os.path.exists(self.name):
@@ -135,28 +144,6 @@ class DataBase:
                                                                   models.Students.surname == surname,
                                                                   models.Students.patronymic == patronymic), 2)[0]
 
-    def synchronization_groups(self, new_groups):
-        date, time = ParserUtils.get_datetime_now()
-
-        for group in new_groups:
-            index = self.select_query(select(models.Group.id).where(models.Group.group == group), 2)
-
-            if index is None:
-                index = self.get_last_index(select(models.Group.id))
-                print(index)
-            else:
-                index = index[0]
-
-            stmt = dialects.sqlite.insert(models.Group
-                                          ).values(id=index,
-                                                   group=str(group),
-                                                   date=str(date),
-                                                   time=str(time)
-                                                   ).on_conflict_do_update(index_elements=[models.Group.id],
-                                                                           set_=dict(date=date, time=time))
-
-            self.engine_connect(stmt)
-
     def synchronization_subjects_and_semesters(self, *args):
         date, time = ParserUtils.get_datetime_now()
         for subject in args[0]:
@@ -184,7 +171,7 @@ class DataBase:
         for student in args[1]:
             group_id = args[0][1]
 
-            match(len(student)):
+            match (len(student)):
                 case 2:
                     student_id = self.get_student_id(student[0], student[1])
                 case 3:
