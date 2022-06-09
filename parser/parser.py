@@ -10,6 +10,7 @@ from parser._parser_user_settings import ParserUserSettings
 from parser.parser_meta import ParserMeta
 
 
+# TODO: изменить логику работы парсера
 class Parser(ParserUserSettings, metaclass=ParserMeta):
     def __init__(self, database, config, exceptions, parser_utils, security_utils, secondary_utils):
         super().__init__(database, config, exceptions, parser_utils, security_utils, secondary_utils)
@@ -39,11 +40,12 @@ class Parser(ParserUserSettings, metaclass=ParserMeta):
         last_course = int(tree.xpath('//select[@name="k"]/option[last()]/text()')[0])
         groups = set()
 
-        for course in range(1, last_course + 1):
+        for course in np.arange(1, last_course + 1):
             tree = self.pt.get_tree(self.session, self.config.groups_url.format(course=course))
 
-            groups.update(set(tuple([group, date, time]
-                                    ) for group in tree.xpath('//table/tr[position() > 1]/td[1]/text()')))
+            groups.update(set(tuple([group,
+                                     date,
+                                     time]) for group in tree.xpath('//table/tr[position() > 1]/td[1]/text()')))
 
         groups = pd.DataFrame(groups, columns=['group', 'date', 'time'])
 
@@ -53,16 +55,15 @@ class Parser(ParserUserSettings, metaclass=ParserMeta):
         self.database.to_sql_query(groups, 'groups')
 
     def get_journal(self, group: str, isReturn=False):
-        response = self.session.post(self.config.all_users_url, Config.get_search_data(group))
+        response = self.session.post(self.config.all_users_url, Config.get_search_data(0, group))
 
         url_journals = self.config.journals_url.format(id=response.json()["list"][0]["id"])
         group_id = self.database.select_query(select(models.Group.id).where(models.Group.group == group), 2)[0]
 
         self.pt.life_loop_thread(self.get_subjects, True, url_journals, group_id, isReturn)
 
-    def get_subjects(self, journal_url, group_id, isReturn=False):
+    def get_subjects(self, journal_url, group_id):
         date, time, tree = self.pt.get_datetime_and_tree(self.session, journal_url)
-        first_journal_url = self.config.url + tree.xpath('//table/tr[2]/td[position() = last() - 1]/a')[0].get('href')
 
         subjects = tree.xpath('//table/tr[position() > 1]/td[position() = 1 or position() = 2]/text()')
         urls = tree.xpath('//table/tr[position() > 1]/td[position() = 6]/a')
@@ -72,37 +73,28 @@ class Parser(ParserUserSettings, metaclass=ParserMeta):
         subjects = np.unique(np.array([[subjects[index], group_id, subjects[index + 1].rstrip('.'),
                                         self.config.url + urls[index - index // 2].get('href'), date, time] for index in
                                        range(0, len(subjects), 2)]), axis=0)
-        if isReturn:
-            thread_students = self.pt.life_loop_thread(self.get_students, False, first_journal_url,
-                                                       group_id, subjects, isReturn)
-        else:
-            thread_students = self.pt.life_loop_thread(self.get_students, False, first_journal_url,
-                                                       group_id, subjects)
 
-            subjects = pd.DataFrame(subjects, columns=['semester', 'group', 'subject', 'url', 'date', 'time'],
-                                    index=range(index, index + len(subjects)))
+        subjects = pd.DataFrame(subjects, columns=['semester', 'group', 'subject', 'url', 'date', 'time'],
+                                index=range(index, index + len(subjects)))
 
-            self.database.to_sql_query(subjects, 'subjects', '')
-        thread_students.join()
+        self.database.to_sql_query(subjects, 'subjects', '')
 
-    def get_students(self, url, group_id, subjects, isReturn=False):
-        date, time, tree = self.pt.get_datetime_and_tree(self.session, url)
+    def get_students(self, group):
+        response = self.session.post(self.config.all_users_url, Config.get_search_data(0, group)).json()
+        students = [[student['id'], *student['fio'].strip().split()[:3]] for student in response['list']]
 
-        students = [name.split()[1:4] for name in tree.xpath(
-            '(//span[@class="j_filter_by_fio"]/text() | //span[@class="j_filter_by_fio"]/strong/text())')]
+        total_students = response['total']
+        for offset in np.arange(30, total_students, 30):
+            response = self.session.post(self.config.all_users_url, Config.get_search_data(offset, group)).json()
+            students += [[student['id'], *student['fio'].strip().split()[:3]] for student in response['list']]
 
-        if isReturn:
-            self.database.synchronization_subjects_and_semesters(subjects, students)
-            return None
+        students = pd.DataFrame(students, columns=['id', 'name', 'surname', 'patronymic'])
+        students.insert(0, 'group', self.database.get_group(group))
 
-        index = self.database.get_last_index(select(models.Students.id))
-
-        students = pd.DataFrame(students, columns=['name', 'surname', 'patronymic'],
-                                index=range(index, index + len(students)))
-        students.insert(0, 'group', group_id)
+        date, time = self.pt.get_datetime_now()
         students['date'], students['time'] = date, time
 
-        self.database.to_sql_query(students, 'students', '')
+        self.database.to_sql_query(students, 'students')
 
     def get_marks(self, group: str, semester: int, subject: str, isReturn=False):
         group_id = int(self.database.get_group(group))
