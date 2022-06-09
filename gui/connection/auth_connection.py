@@ -32,7 +32,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.setupUi(self)
 
         self.MainWindow = MainWindow(config)
-        self.JournalWindow = JournalWindow(database, config)
+        self.JournalWindow = JournalWindow(database, config, gui_utils)
         self.RecoveryWindow = RecoveryWindow(config, database, exceptions, parser_utils,
                                              security_utils, secondary_utils)
 
@@ -49,7 +49,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
 
         self.MainWindow.profile_menu.clicked.connect(lambda: self.change_page('profile'))
         self.MainWindow.journal_menu.clicked.connect(lambda: self.change_page('journal'))
-        self.MainWindow.settings_menu.clicked.connect(lambda: self.change_page('settings'))
+        self.MainWindow.settings_menu.clicked.connect(self.developed_page)
         self.MainWindow.help_menu.clicked.connect(lambda: self.change_page('about'))
         self.MainWindow.settings.clicked.connect(lambda: self.change_page('change'))
 
@@ -69,6 +69,11 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.MainWindow.password_entry.textChanged.connect(self.check_password)
 
         self.completed_requirements = []
+
+    def developed_page(self):
+        msg = self.gt.create_message_box(QtWidgets.QMessageBox.Information,
+                                             "Разработка", "Данное окно находится на стадии разработки")
+        msg.exec_()
 
     def eventFilter(self, source, event):
         if source is self.login and event.type() == QEvent.KeyPress and event.key() == Qt.Key_Down:
@@ -197,8 +202,14 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
                                                                  models.Marks.subject == subject_id), 2) is None:
             self.parser.get_marks(group, int(semester), subject)
 
-        self.JournalWindow.initialization(group, semester, subject)
-        self.JournalWindow.show()
+        self.JournalWindow.journal_info.setText(f"Группа: <b>{group}</b>; Дисциплина: <b>{subject}</b>; Семестр: <b>{semester}</b>;")
+        self.JournalWindow.journal_teacher.setText(f"Преподаватели: <font color='blue'> Юренская </font>")
+        answer = self.JournalWindow.initialization(group, semester, subject)
+
+        if isinstance(answer, QtWidgets.QMessageBox):
+            answer.exec_()
+        else:
+            self.JournalWindow.show()
 
     def auth(self):
         LOGIN = self.login.text()
