@@ -26,7 +26,8 @@
    <string>MainWindow</string>
   </property>
   <property name="styleSheet">
-   <string notr="true">QWidget[objectName=&quot;profile_page&quot;],
+   <string notr="true">QWidget[objectName=&quot;centralwidget&quot;],
+QWidget[objectName=&quot;profile_page&quot;],
 QWidget[objectName=&quot;journal_page&quot;],
 QWidget[objectName=&quot;settings_page&quot;],
 QWidget[objectName=&quot;help_page&quot;],
