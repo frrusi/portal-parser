@@ -110,7 +110,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.toggleBool = not self.toggleBool
 
     def synchronization_group(self):
-        self.database.synchronization_groups(self.parser.get_groups(True))
+        self.parser.get_groups(True)
 
     def synchronization_subjects_and_semesters(self):
         group = self.MainWindow.group_choice.currentText()
