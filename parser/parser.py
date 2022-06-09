@@ -2,7 +2,7 @@ import re
 
 import numpy as np
 import pandas as pd
-from sqlalchemy import select
+from sqlalchemy import select, delete
 
 from config.config import Config
 from database import models
@@ -34,7 +34,7 @@ class Parser(ParserUserSettings, metaclass=ParserMeta):
         csrf = str(tree.xpath('//script[contains(text(),"csrf")]/text()'))
         self.csrf = re.search(r'csrf.*,', csrf).group(0)[:-1].split()[-1].replace("'", '')
 
-    def get_groups(self, isReturn=False):
+    def get_groups(self, is_sync=False):
         date, time, tree = self.pt.get_datetime_and_tree(self.session, self.config.groups_url.format(course='0'))
         last_course = int(tree.xpath('//select[@name="k"]/option[last()]/text()')[0])
         groups = set()
@@ -42,17 +42,14 @@ class Parser(ParserUserSettings, metaclass=ParserMeta):
         for course in range(1, last_course + 1):
             tree = self.pt.get_tree(self.session, self.config.groups_url.format(course=course))
 
-            if isReturn:
-                groups.update(set(group for group in tree.xpath('//table/tr[position() > 1]/td[1]/text()')))
-            else:
-                groups.update(set(tuple([group,
-                                         date,
-                                         time]) for group in tree.xpath('//table/tr[position() > 1]/td[1]/text()')))
-
-        if isReturn:
-            return groups
+            groups.update(set(tuple([group, date, time]
+                                    ) for group in tree.xpath('//table/tr[position() > 1]/td[1]/text()')))
 
         groups = pd.DataFrame(groups, columns=['group', 'date', 'time'])
+
+        if is_sync:
+            self.database.engine_connect(delete(models.Group))
+
         self.database.to_sql_query(groups, 'groups')
 
     def get_journal(self, group: str, isReturn=False):
