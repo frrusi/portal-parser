@@ -72,7 +72,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
 
     def developed_page(self):
         msg = self.gt.create_message_box(QtWidgets.QMessageBox.Information,
-                                             "Разработка", "Данное окно находится на стадии разработки")
+                                         "Разработка", "Данное окно находится на стадии разработки")
         msg.exec_()
 
     def eventFilter(self, source, event):
@@ -202,7 +202,8 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
                                                                  models.Marks.subject == subject_id), 2) is None:
             self.parser.get_marks(group, int(semester), subject)
 
-        self.JournalWindow.journal_info.setText(f"Группа: <b>{group}</b>; Дисциплина: <b>{subject}</b>; Семестр: <b>{semester}</b>;")
+        self.JournalWindow.journal_info.setText(
+            f"Группа: <b>{group}</b>; Дисциплина: <b>{subject}</b>; Семестр: <b>{semester}</b>;")
         self.JournalWindow.journal_teacher.setText(f"Преподаватели: <font color='blue'> Юренская </font>")
         answer = self.JournalWindow.initialization(group, semester, subject)
 
