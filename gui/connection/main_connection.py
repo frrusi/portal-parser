@@ -11,24 +11,24 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
 
         self.config = config
 
-        self.profile_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/navbar_profile.png"))
-        self.journal_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/navbar_journal.png"))
-        self.settings_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/navbar_settings.png"))
-        self.help_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/navbar_help.png"))
+        self.profile_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/navbar_profile.svg"))
+        self.journal_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/navbar_journal.svg"))
+        self.settings_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/navbar_settings.svg"))
+        self.help_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/navbar_help.svg"))
 
-        self.image_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/change_image.png"))
-        self.email_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/change_mail.png"))
-        self.password_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/change_password.png"))
+        self.image_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/change_image.svg"))
+        self.email_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/change_mail.svg"))
+        self.password_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/change_password.svg"))
 
-        self.group_sync_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/synchronization.png"))
-        self.sem_gr_sync_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/synchronization.png"))
+        self.group_sync_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/synchronization.svg"))
+        self.sem_gr_sync_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/synchronization.svg"))
 
-        self.semester_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/journal_semester.png"))
-        self.subject_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/journal_subject.png"))
-        self.group_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/journal_group.png"))
+        self.semester_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/journal_semester.svg"))
+        self.subject_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/journal_subject.svg"))
+        self.group_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/journal_group.svg"))
 
-        self.db_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/sql-server.png"))
-        self.developers_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/mammoth_icon.png"))
+        self.db_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/sql-server.svg"))
+        self.developers_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/mammoth_icon.svg"))
 
         self.help_password.setPixmap(QtGui.QPixmap(f"{config.icons_path}/question.svg"))
 

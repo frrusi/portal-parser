@@ -178,7 +178,7 @@ class Ui_MainWindow(object):
                                  "\n"
                                  "QComboBox::down-arrow {\n"
                                  "    padding: 0px 5px 0px 0px;\n"
-                                 "    image: url(D:/portal-parser/gui/icons/down-arrow.png);\n"
+                                 "    image: url(gui/icons/down_arrow.svg);\n"
                                  "}\n"
                                  "\n"
                                  "QComboBox::down-arrow:on {\n"
