@@ -57,7 +57,8 @@ QPushButton[objectName=&quot;settings_menu&quot;],
 QPushButton[objectName=&quot;help_menu&quot;],
 QPushButton[objectName=&quot;image_change&quot;],
 QPushButton[objectName=&quot;group_sync&quot;],
-QPushButton[objectName=&quot;se_gr_sync&quot;] { background: transparent; }
+QPushButton[objectName=&quot;semester_sync&quot;],
+QPushButton[objectName=&quot;subject_sync&quot;] { background: transparent; }
 
 
 QPushButton[objectName=&quot;settings&quot;] {
@@ -319,7 +320,7 @@ QProgressBar::chunk:horizontal {
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../icons/navbar_profile.png</pixmap>
+        <pixmap>../icons/navbar_profile.svg</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -341,7 +342,7 @@ QProgressBar::chunk:horizontal {
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../icons/navbar_journal.png</pixmap>
+        <pixmap>../icons/navbar_journal.svg</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -366,7 +367,7 @@ QProgressBar::chunk:horizontal {
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../icons/navbar_settings.png</pixmap>
+        <pixmap>../icons/navbar_settings.svg</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -388,7 +389,7 @@ QProgressBar::chunk:horizontal {
         <string/>
        </property>
        <property name="pixmap">
-        <pixmap>../icons/navbar_help.png</pixmap>
+        <pixmap>../icons/navbar_help.svg</pixmap>
        </property>
        <property name="scaledContents">
         <bool>true</bool>
@@ -586,7 +587,7 @@ QProgressBar::chunk:horizontal {
                         <string/>
                        </property>
                        <property name="pixmap">
-                        <pixmap>../icons/change_image.png</pixmap>
+                        <pixmap>../icons/change_image.svg</pixmap>
                        </property>
                        <property name="scaledContents">
                         <bool>true</bool>
@@ -633,7 +634,7 @@ QProgressBar::chunk:horizontal {
                    <item>
                     <widget class="QLabel" name="image">
                      <property name="styleSheet">
-                      <string notr="true">background-color: black;</string>
+                      <string notr="true"/>
                      </property>
                      <property name="text">
                       <string/>
@@ -1280,7 +1281,7 @@ QProgressBar::chunk:horizontal {
                       <string/>
                      </property>
                      <property name="pixmap">
-                      <pixmap>../icons/journal_group.png</pixmap>
+                      <pixmap>../icons/journal_group.svg</pixmap>
                      </property>
                      <property name="scaledContents">
                       <bool>true</bool>
@@ -1342,22 +1343,22 @@ QProgressBar::chunk:horizontal {
                   </layout>
                  </item>
                  <item>
-                  <layout class="QVBoxLayout" name="verticalLayout_12">
+                  <layout class="QVBoxLayout" name="verticalLayout_8">
                    <property name="leftMargin">
                     <number>106</number>
                    </property>
                    <item>
-                    <widget class="QFrame" name="frame_7">
+                    <widget class="QFrame" name="frame_8">
                      <property name="minimumSize">
                       <size>
-                       <width>31</width>
-                       <height>31</height>
+                       <width>25</width>
+                       <height>25</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>31</width>
-                       <height>31</height>
+                       <width>25</width>
+                       <height>25</height>
                       </size>
                      </property>
                      <property name="frameShape">
@@ -1366,32 +1367,13 @@ QProgressBar::chunk:horizontal {
                      <property name="frameShadow">
                       <enum>QFrame::Raised</enum>
                      </property>
-                     <widget class="QLabel" name="group_sync_icon">
-                      <property name="geometry">
-                       <rect>
-                        <x>0</x>
-                        <y>0</y>
-                        <width>31</width>
-                        <height>31</height>
-                       </rect>
-                      </property>
-                      <property name="text">
-                       <string/>
-                      </property>
-                      <property name="pixmap">
-                       <pixmap>../icons/synchronization.png</pixmap>
-                      </property>
-                      <property name="scaledContents">
-                       <bool>true</bool>
-                      </property>
-                     </widget>
                      <widget class="QPushButton" name="group_sync">
                       <property name="geometry">
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>31</width>
-                        <height>31</height>
+                        <width>25</width>
+                        <height>25</height>
                        </rect>
                       </property>
                       <property name="cursor">
@@ -1399,6 +1381,25 @@ QProgressBar::chunk:horizontal {
                       </property>
                       <property name="text">
                        <string/>
+                      </property>
+                     </widget>
+                     <widget class="QLabel" name="group_sync_icon">
+                      <property name="geometry">
+                       <rect>
+                        <x>0</x>
+                        <y>0</y>
+                        <width>25</width>
+                        <height>25</height>
+                       </rect>
+                      </property>
+                      <property name="text">
+                       <string/>
+                      </property>
+                      <property name="pixmap">
+                       <pixmap>../icons/synchronization.svg</pixmap>
+                      </property>
+                      <property name="scaledContents">
+                       <bool>true</bool>
                       </property>
                      </widget>
                     </widget>
@@ -1424,16 +1425,16 @@ QProgressBar::chunk:horizontal {
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_7">
                  <property name="spacing">
-                  <number>1</number>
+                  <number>6</number>
                  </property>
                  <property name="leftMargin">
-                  <number>0</number>
+                  <number>9</number>
                  </property>
                  <property name="topMargin">
-                  <number>0</number>
+                  <number>9</number>
                  </property>
                  <property name="rightMargin">
-                  <number>0</number>
+                  <number>9</number>
                  </property>
                  <property name="bottomMargin">
                   <number>9</number>
@@ -1441,7 +1442,7 @@ QProgressBar::chunk:horizontal {
                  <item>
                   <layout class="QVBoxLayout" name="verticalLayout_13">
                    <property name="leftMargin">
-                    <number>99</number>
+                    <number>90</number>
                    </property>
                    <item>
                     <widget class="QLabel" name="semester_icon">
@@ -1471,7 +1472,7 @@ QProgressBar::chunk:horizontal {
                       <string/>
                      </property>
                      <property name="pixmap">
-                      <pixmap>../icons/journal_semester.png</pixmap>
+                      <pixmap>../icons/journal_semester.svg</pixmap>
                      </property>
                      <property name="scaledContents">
                       <bool>true</bool>
@@ -1515,78 +1516,22 @@ QProgressBar::chunk:horizontal {
                   </layout>
                  </item>
                  <item>
-                  <spacer name="verticalSpacer_2">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
-                   </property>
-                   <property name="sizeType">
-                    <enum>QSizePolicy::Fixed</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>41</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                </layout>
-               </widget>
-              </item>
-              <item>
-               <widget class="QFrame" name="frame_11">
-                <property name="minimumSize">
-                 <size>
-                  <width>54</width>
-                  <height>169</height>
-                 </size>
-                </property>
-                <property name="maximumSize">
-                 <size>
-                  <width>54</width>
-                  <height>169</height>
-                 </size>
-                </property>
-                <property name="frameShape">
-                 <enum>QFrame::StyledPanel</enum>
-                </property>
-                <property name="frameShadow">
-                 <enum>QFrame::Raised</enum>
-                </property>
-                <layout class="QVBoxLayout" name="verticalLayout_8">
-                 <property name="bottomMargin">
-                  <number>15</number>
-                 </property>
-                 <item>
-                  <spacer name="verticalSpacer_3">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
-                   </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>40</height>
-                    </size>
-                   </property>
-                  </spacer>
-                 </item>
-                 <item>
-                  <layout class="QVBoxLayout" name="verticalLayout_15">
+                  <layout class="QVBoxLayout" name="verticalLayout_12">
                    <property name="leftMargin">
-                    <number>0</number>
+                    <number>90</number>
                    </property>
                    <item>
-                    <widget class="QFrame" name="frame_8">
+                    <widget class="QFrame" name="frame_7">
                      <property name="minimumSize">
                       <size>
-                       <width>31</width>
-                       <height>31</height>
+                       <width>25</width>
+                       <height>25</height>
                       </size>
                      </property>
                      <property name="maximumSize">
                       <size>
-                       <width>31</width>
-                       <height>31</height>
+                       <width>25</width>
+                       <height>25</height>
                       </size>
                      </property>
                      <property name="frameShape">
@@ -1595,32 +1540,32 @@ QProgressBar::chunk:horizontal {
                      <property name="frameShadow">
                       <enum>QFrame::Raised</enum>
                      </property>
-                     <widget class="QLabel" name="sem_gr_sync_icon">
+                     <widget class="QLabel" name="semester_sync_icon">
                       <property name="geometry">
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>31</width>
-                        <height>31</height>
+                        <width>25</width>
+                        <height>25</height>
                        </rect>
                       </property>
                       <property name="text">
                        <string/>
                       </property>
                       <property name="pixmap">
-                       <pixmap>../icons/synchronization.png</pixmap>
+                       <pixmap>../icons/synchronization.svg</pixmap>
                       </property>
                       <property name="scaledContents">
                        <bool>true</bool>
                       </property>
                      </widget>
-                     <widget class="QPushButton" name="se_gr_sync">
+                     <widget class="QPushButton" name="semester_sync">
                       <property name="geometry">
                        <rect>
                         <x>0</x>
                         <y>0</y>
-                        <width>31</width>
-                        <height>31</height>
+                        <width>25</width>
+                        <height>25</height>
                        </rect>
                       </property>
                       <property name="cursor">
@@ -1659,10 +1604,19 @@ QProgressBar::chunk:horizontal {
                 </property>
                 <layout class="QVBoxLayout" name="verticalLayout_9">
                  <property name="spacing">
-                  <number>4</number>
+                  <number>6</number>
                  </property>
                  <property name="sizeConstraint">
-                  <enum>QLayout::SetMinimumSize</enum>
+                  <enum>QLayout::SetDefaultConstraint</enum>
+                 </property>
+                 <property name="leftMargin">
+                  <number>9</number>
+                 </property>
+                 <property name="rightMargin">
+                  <number>9</number>
+                 </property>
+                 <property name="bottomMargin">
+                  <number>9</number>
                  </property>
                  <item>
                   <widget class="QFrame" name="frame_15">
@@ -1703,13 +1657,13 @@ QProgressBar::chunk:horizontal {
                     <item>
                      <layout class="QVBoxLayout" name="verticalLayout_16">
                       <property name="spacing">
-                       <number>10</number>
+                       <number>6</number>
                       </property>
                       <property name="leftMargin">
                        <number>0</number>
                       </property>
                       <property name="bottomMargin">
-                       <number>3</number>
+                       <number>0</number>
                       </property>
                       <item>
                        <widget class="QLabel" name="subject_icon">
@@ -1739,7 +1693,7 @@ QProgressBar::chunk:horizontal {
                          <string/>
                         </property>
                         <property name="pixmap">
-                         <pixmap>../icons/journal_subject.png</pixmap>
+                         <pixmap>../icons/journal_subject.svg</pixmap>
                         </property>
                         <property name="scaledContents">
                          <bool>true</bool>
@@ -1756,6 +1710,12 @@ QProgressBar::chunk:horizontal {
                  </item>
                  <item>
                   <layout class="QVBoxLayout" name="verticalLayout_17">
+                   <property name="spacing">
+                    <number>6</number>
+                   </property>
+                   <property name="bottomMargin">
+                    <number>0</number>
+                   </property>
                    <item>
                     <widget class="QComboBox" name="subject_choice">
                      <property name="minimumSize">
@@ -1791,20 +1751,106 @@ QProgressBar::chunk:horizontal {
                   </layout>
                  </item>
                  <item>
-                  <spacer name="verticalSpacer_4">
-                   <property name="orientation">
-                    <enum>Qt::Vertical</enum>
+                  <widget class="QFrame" name="frame_31">
+                   <property name="frameShape">
+                    <enum>QFrame::StyledPanel</enum>
                    </property>
-                   <property name="sizeType">
-                    <enum>QSizePolicy::Fixed</enum>
+                   <property name="frameShadow">
+                    <enum>QFrame::Raised</enum>
                    </property>
-                   <property name="sizeHint" stdset="0">
-                    <size>
-                     <width>20</width>
-                     <height>60</height>
-                    </size>
-                   </property>
-                  </spacer>
+                   <layout class="QHBoxLayout" name="horizontalLayout_41">
+                    <property name="spacing">
+                     <number>30</number>
+                    </property>
+                    <property name="leftMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="topMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="rightMargin">
+                     <number>0</number>
+                    </property>
+                    <property name="bottomMargin">
+                     <number>0</number>
+                    </property>
+                    <item>
+                     <layout class="QVBoxLayout" name="verticalLayout_15">
+                      <property name="leftMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="topMargin">
+                       <number>0</number>
+                      </property>
+                      <property name="bottomMargin">
+                       <number>3</number>
+                      </property>
+                      <item>
+                       <widget class="QFrame" name="frame_11">
+                        <property name="minimumSize">
+                         <size>
+                          <width>25</width>
+                          <height>25</height>
+                         </size>
+                        </property>
+                        <property name="maximumSize">
+                         <size>
+                          <width>25</width>
+                          <height>25</height>
+                         </size>
+                        </property>
+                        <property name="frameShape">
+                         <enum>QFrame::StyledPanel</enum>
+                        </property>
+                        <property name="frameShadow">
+                         <enum>QFrame::Raised</enum>
+                        </property>
+                        <widget class="QPushButton" name="subject_sync">
+                         <property name="geometry">
+                          <rect>
+                           <x>0</x>
+                           <y>0</y>
+                           <width>25</width>
+                           <height>25</height>
+                          </rect>
+                         </property>
+                         <property name="cursor">
+                          <cursorShape>PointingHandCursor</cursorShape>
+                         </property>
+                         <property name="text">
+                          <string/>
+                         </property>
+                        </widget>
+                        <widget class="QLabel" name="subject_sync_icon">
+                         <property name="geometry">
+                          <rect>
+                           <x>0</x>
+                           <y>0</y>
+                           <width>25</width>
+                           <height>25</height>
+                          </rect>
+                         </property>
+                         <property name="text">
+                          <string/>
+                         </property>
+                         <property name="pixmap">
+                          <pixmap>../icons/synchronization.svg</pixmap>
+                         </property>
+                         <property name="scaledContents">
+                          <bool>true</bool>
+                         </property>
+                         <property name="alignment">
+                          <set>Qt::AlignCenter</set>
+                         </property>
+                        </widget>
+                        <zorder>subject_sync_icon</zorder>
+                        <zorder>subject_sync</zorder>
+                       </widget>
+                      </item>
+                     </layout>
+                    </item>
+                   </layout>
+                  </widget>
                  </item>
                 </layout>
                </widget>
@@ -2021,7 +2067,7 @@ QProgressBar::chunk:horizontal {
                       <string/>
                      </property>
                      <property name="pixmap">
-                      <pixmap>../icons/change_mail.png</pixmap>
+                      <pixmap>../icons/change_mail.svg</pixmap>
                      </property>
                      <property name="scaledContents">
                       <bool>true</bool>
@@ -2196,7 +2242,7 @@ QProgressBar::chunk:horizontal {
                         <string/>
                        </property>
                        <property name="pixmap">
-                        <pixmap>../icons/key-chain.png</pixmap>
+                        <pixmap>../icons/change_password.svg</pixmap>
                        </property>
                        <property name="scaledContents">
                         <bool>true</bool>
@@ -2255,7 +2301,7 @@ QProgressBar::chunk:horizontal {
                     </widget>
                    </item>
                    <item>
-                    <widget class="QLabel" name="label">
+                    <widget class="QLabel" name="help_password">
                      <property name="minimumSize">
                       <size>
                        <width>20</width>
@@ -2340,25 +2386,6 @@ QProgressBar::chunk:horizontal {
                      </property>
                      <property name="textVisible">
                       <bool>false</bool>
-                     </property>
-                    </widget>
-                   </item>
-                   <item>
-                    <widget class="QLabel" name="fake_label">
-                     <property name="minimumSize">
-                      <size>
-                       <width>20</width>
-                       <height>20</height>
-                      </size>
-                     </property>
-                     <property name="maximumSize">
-                      <size>
-                       <width>20</width>
-                       <height>20</height>
-                      </size>
-                     </property>
-                     <property name="text">
-                      <string/>
                      </property>
                     </widget>
                    </item>
@@ -2561,7 +2588,7 @@ QProgressBar::chunk:horizontal {
                       <string/>
                      </property>
                      <property name="pixmap">
-                      <pixmap>../icons/sql-server.png</pixmap>
+                      <pixmap>../icons/sql-server.svg</pixmap>
                      </property>
                      <property name="scaledContents">
                       <bool>true</bool>
@@ -2891,7 +2918,7 @@ QProgressBar::chunk:horizontal {
                       <string/>
                      </property>
                      <property name="pixmap">
-                      <pixmap>../icons/mammoth_icon.png</pixmap>
+                      <pixmap>../icons/mammoth_icon.svg</pixmap>
                      </property>
                      <property name="scaledContents">
                       <bool>true</bool>
