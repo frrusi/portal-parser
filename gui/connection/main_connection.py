@@ -1,5 +1,5 @@
 from PyQt5 import QtWidgets, QtGui
-from PyQt5.QtCore import Qt, QRect
+from PyQt5.QtCore import Qt, QRect, QEvent
 
 from gui.windows import main_window
 
@@ -31,6 +31,25 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.developers_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/mammoth_icon.svg"))
 
         self.help_password.setPixmap(QtGui.QPixmap(f"{config.icons_path}/question.svg"))
+
+        self.group_choice.installEventFilter(self)
+        self.semester_choice.installEventFilter(self)
+        self.subject_choice.installEventFilter(self)
+
+    def eventFilter(self, source, event):
+        if source is self.group_choice and event.type() == QEvent.KeyPress and event.key() == Qt.Key_Right:
+            self.semester_choice.setFocus()
+            return True
+        elif source is self.semester_choice and event.type() == QEvent.KeyPress and event.key() == Qt.Key_Left:
+            self.group_choice.setFocus()
+            return True
+        elif source is self.semester_choice and event.type() == QEvent.KeyPress and event.key() == Qt.Key_Right:
+            self.subject_choice.setFocus()
+            return True
+        elif source is self.subject_choice and event.type() == QEvent.KeyPress and event.key() == Qt.Key_Left:
+            self.semester_choice.setFocus()
+            return True
+        return False
 
     @staticmethod
     def circleImage(imagePath):
