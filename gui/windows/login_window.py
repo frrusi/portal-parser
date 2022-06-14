@@ -51,7 +51,7 @@ class Ui_Authorization(object):
 "    min-width: 181px;\n"
 "    max-width: 181px;")
         self.icon.setText("")
-        self.icon.setPixmap(QtGui.QPixmap("../icons/logo.png"))
+        self.icon.setPixmap(QtGui.QPixmap("../icons/logo.svg"))
         self.icon.setScaledContents(True)
         self.icon.setObjectName("icon")
         self.horizontalLayout.addWidget(self.icon)

@@ -178,7 +178,7 @@ class Ui_MainWindow(object):
                                  "\n"
                                  "QComboBox::down-arrow {\n"
                                  "    padding: 0px 5px 0px 0px;\n"
-                                 "    image: url(D:/portal-parser/gui/icons/down-arrow.png);\n"
+                                 "    image: url(gui/icons/down_arrow.svg);\n"
                                  "}\n"
                                  "\n"
                                  "QComboBox::down-arrow:on {\n"
@@ -666,13 +666,13 @@ class Ui_MainWindow(object):
         self.frame_7.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_7.setObjectName("frame_7")
         self.group_sync_icon = QtWidgets.QLabel(self.frame_7)
-        self.group_sync_icon.setGeometry(QtCore.QRect(0, 0, 31, 31))
+        self.group_sync_icon.setGeometry(QtCore.QRect(0, 0, 25, 25))
         self.group_sync_icon.setText("")
         self.group_sync_icon.setPixmap(QtGui.QPixmap("../icons/synchronization.png"))
         self.group_sync_icon.setScaledContents(True)
         self.group_sync_icon.setObjectName("group_sync_icon")
         self.group_sync = QtWidgets.QPushButton(self.frame_7)
-        self.group_sync.setGeometry(QtCore.QRect(0, 0, 31, 31))
+        self.group_sync.setGeometry(QtCore.QRect(0, 0, 25, 25))
         self.group_sync.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.group_sync.setText("")
         self.group_sync.setObjectName("group_sync")
@@ -742,13 +742,13 @@ class Ui_MainWindow(object):
         self.frame_8.setFrameShadow(QtWidgets.QFrame.Raised)
         self.frame_8.setObjectName("frame_8")
         self.sem_gr_sync_icon = QtWidgets.QLabel(self.frame_8)
-        self.sem_gr_sync_icon.setGeometry(QtCore.QRect(0, 0, 31, 31))
+        self.sem_gr_sync_icon.setGeometry(QtCore.QRect(0, 0, 25, 25))
         self.sem_gr_sync_icon.setText("")
         self.sem_gr_sync_icon.setPixmap(QtGui.QPixmap("../icons/synchronization.png"))
         self.sem_gr_sync_icon.setScaledContents(True)
         self.sem_gr_sync_icon.setObjectName("sem_gr_sync_icon")
         self.se_gr_sync = QtWidgets.QPushButton(self.frame_8)
-        self.se_gr_sync.setGeometry(QtCore.QRect(0, 0, 31, 31))
+        self.se_gr_sync.setGeometry(QtCore.QRect(0, 0, 25, 25))
         self.se_gr_sync.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.se_gr_sync.setText("")
         self.se_gr_sync.setObjectName("se_gr_sync")
