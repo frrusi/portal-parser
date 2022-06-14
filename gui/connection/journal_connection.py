@@ -20,7 +20,7 @@ class JournalWindow(QtWidgets.QMainWindow, journal_window.Ui_JournalWindow):
         self.MainWindow = MainWindow(config)
 
     def initialization(self, group, semester, subject):
-        get_all_date = self.database.get_data(subject, semester)
+        get_all_date = self.database.get_data(subject, semester, group)
         dates_length = len(get_all_date)
 
         if not dates_length:
