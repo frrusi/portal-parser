@@ -139,6 +139,10 @@ class DataBase:
                                                                  ).where(models.Marks.subject == subject_id,
                                                                          models.Marks.semester == semester), 1)))
 
+    def get_student_id_by_group(self, group_id):
+        return self.select_query(select(models.Students.id).where(models.Students.group == group_id), 2)[0]
+
+
     def get_student_id(self, name, surname, patronymic=None):
         return self.select_query(select(models.Students.id).where(models.Students.name == name,
                                                                   models.Students.surname == surname,
