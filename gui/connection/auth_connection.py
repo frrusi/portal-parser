@@ -114,7 +114,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
 
     def synchronization_subjects_and_semesters(self):
         group = self.MainWindow.group_choice.currentText()
-        self.parser.get_journal(group, True)
+        self.parser.get_subjects(group, True)
 
     def change_page(self, window):
         self.MainWindow.stackedWidget.setCurrentIndex(Config.get_page_index()[window])
@@ -162,20 +162,23 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.MainWindow.password_entry.clear()
 
     def fill_combobox_group(self):
-        get_all_group = self.database.get_all_groups()
+        get_all_groups = self.database.get_all_groups()
 
         self.MainWindow.group_choice.clear()
-        self.MainWindow.group_choice.addItems([self.config.select_group_message] + get_all_group)
+        self.MainWindow.group_choice.addItems([self.config.select_group_message] + get_all_groups)
 
         self.MainWindow.group_choice.currentIndexChanged.connect(self.fill_combobox_semester)
 
     def fill_combobox_semester(self):
         self.MainWindow.semester_choice.clear()
         group = self.MainWindow.group_choice.currentText()
-
         group_id = self.database.get_group(group)
+
+        if self.database.select_query(select(models.Students).where(models.Students.group == group_id), 2) is None:
+            self.parser.get_students(group)
+
         if self.database.select_query(select(models.Subject).where(models.Subject.group == group_id), 2) is None:
-            self.parser.get_journal(group)
+            self.parser.get_subjects(group)
 
         get_all_semester = self.database.get_all_semesters(group)
 
@@ -204,7 +207,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
 
         self.JournalWindow.journal_info.setText(
             f"Группа: <b>{group}</b>; Дисциплина: <b>{subject}</b>; Семестр: <b>{semester}</b>;")
-        self.JournalWindow.journal_teacher.setText(f"Преподаватели: <font color='blue'> Юренская </font>")
+        # self.JournalWindow.journal_teacher.setText(f"Преподаватели: <font color='blue'> Юренская </font>")
         answer = self.JournalWindow.initialization(group, semester, subject)
 
         if isinstance(answer, QtWidgets.QMessageBox):
