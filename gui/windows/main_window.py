@@ -38,16 +38,6 @@ class Ui_MainWindow(object):
                                  "QFrame[objectName=\"navigation_bar\"] { background-color: #19202e }\n"
                                  "\n"
                                  "\n"
-                                 "QFrame[objectName=\"password_help\"] { background-color: #eaedf5; border: 1px solid #b8c9ff; border-radius: 25px; }\n"
-                                 "\n"
-                                 "\n"
-                                 "QLabel[objectName=\"size_text\"],\n"
-                                 "QLabel[objectName=\"capital_text\"],\n"
-                                 "QLabel[objectName=\"lower_text\"],\n"
-                                 "QLabel[objectName=\"number_text\"],\n"
-                                 "QLabel[objectName=\"special_text\"] { color: red; }\n"
-                                 "\n"
-                                 "\n"
                                  "QFrame[objectName=\"about_me_secondary\" ] {\n"
                                  "    border-top: 1px solid #f7f7f7;\n"
                                  "    border-bottom: 1px solid #f7f7f7;\n"
@@ -62,6 +52,16 @@ class Ui_MainWindow(object):
                                  "QPushButton[objectName=\"group_sync\"],\n"
                                  "QPushButton[objectName=\"semester_sync\"],\n"
                                  "QPushButton[objectName=\"subject_sync\"] { background: transparent; }\n"
+                                 "\n"
+                                 "\n"
+                                 "QFrame[objectName=\"password_help\"] { background-color: #eaedf5; border: 1px solid #b8c9ff; border-radius: 25px; }\n"
+                                 "\n"
+                                 "\n"
+                                 "QLabel[objectName=\"size_text\"],\n"
+                                 "QLabel[objectName=\"capital_text\"],\n"
+                                 "QLabel[objectName=\"lower_text\"],\n"
+                                 "QLabel[objectName=\"number_text\"],\n"
+                                 "QLabel[objectName=\"special_text\"] { color: red; }"
                                  "\n"
                                  "\n"
                                  "QPushButton[objectName=\"settings\"] {\n"
@@ -682,6 +682,8 @@ class Ui_MainWindow(object):
         self.group_sync_icon.setPixmap(QtGui.QPixmap("../icons/synchronization.svg"))
         self.group_sync_icon.setScaledContents(True)
         self.group_sync_icon.setObjectName("group_sync_icon")
+        self.group_sync_icon.raise_()
+        self.group_sync.raise_()
         self.verticalLayout_8.addWidget(self.frame_8)
         self.verticalLayout_5.addLayout(self.verticalLayout_8)
         self.horizontalLayout_22.addWidget(self.frame_9)
@@ -1026,7 +1028,7 @@ class Ui_MainWindow(object):
         self.password_check = QtWidgets.QProgressBar(self.frame_30)
         self.password_check.setMinimumSize(QtCore.QSize(401, 1))
         self.password_check.setMaximumSize(QtCore.QSize(16777215, 1))
-        self.password_check.setProperty("value", 100)
+        self.password_check.setProperty("value", 0)
         self.password_check.setAlignment(QtCore.Qt.AlignCenter)
         self.password_check.setTextVisible(False)
         self.password_check.setObjectName("password_check")
@@ -1278,22 +1280,6 @@ class Ui_MainWindow(object):
         self.stackedWidget.addWidget(self.help_page)
         self.horizontalLayout_19.addWidget(self.stackedWidget)
 
-        self.group_choice.setEditable(True)
-        self.group_choice.setInsertPolicy(QtWidgets.QComboBox.NoInsert)
-        self.group_choice.completer().setCompletionMode(QtWidgets.QCompleter.PopupCompletion)
-
-        self.semester_choice.setEditable(True)
-        self.semester_choice.setInsertPolicy(QtWidgets.QComboBox.NoInsert)
-        self.semester_choice.completer().setCompletionMode(QtWidgets.QCompleter.PopupCompletion)
-
-        self.subject_choice.setEditable(True)
-        self.subject_choice.setInsertPolicy(QtWidgets.QComboBox.NoInsert)
-        self.subject_choice.completer().setCompletionMode(QtWidgets.QCompleter.PopupCompletion)
-
-        regex = QRegExp("[A-Za-z0-9!@#$%^&*]{8,128}")
-        input_validator = QRegExpValidator(regex, self.password_entry)
-        self.password_entry.setValidator(input_validator)
-
         self.password_help = QtWidgets.QFrame(self.change_object)
         self.password_help.setGeometry(QtCore.QRect(540, 10, 311, 151))
         self.password_help.setMinimumSize(QtCore.QSize(311, 151))
@@ -1350,6 +1336,22 @@ class Ui_MainWindow(object):
         self.verticalLayout.addLayout(self.horizontalLayout_5)
         self.password_help.hide()
 
+        self.group_choice.setEditable(True)
+        self.group_choice.setInsertPolicy(QtWidgets.QComboBox.NoInsert)
+        self.group_choice.completer().setCompletionMode(QtWidgets.QCompleter.PopupCompletion)
+
+        self.semester_choice.setEditable(True)
+        self.semester_choice.setInsertPolicy(QtWidgets.QComboBox.NoInsert)
+        self.semester_choice.completer().setCompletionMode(QtWidgets.QCompleter.PopupCompletion)
+
+        self.subject_choice.setEditable(True)
+        self.subject_choice.setInsertPolicy(QtWidgets.QComboBox.NoInsert)
+        self.subject_choice.completer().setCompletionMode(QtWidgets.QCompleter.PopupCompletion)
+
+        regex = QRegExp("[A-Za-z0-9!@#$%^&*]{8,128}")
+        input_validator = QRegExpValidator(regex, self.password_entry)
+        self.password_entry.setValidator(input_validator)
+
         MainWindow.setCentralWidget(self.centralwidget)
 
         self.retranslateUi(MainWindow)
@@ -1359,6 +1361,11 @@ class Ui_MainWindow(object):
     def retranslateUi(self, MainWindow):
         _translate = QtCore.QCoreApplication.translate
         MainWindow.setWindowTitle(_translate("MainWindow", "MainWindow"))
+        self.size_text.setText(_translate("MainWindow", "× Не менее 8 символов"))
+        self.capital_text.setText(_translate("MainWindow", "× Минимум одна заглавная буква"))
+        self.lower_text.setText(_translate("MainWindow", "× Минимум одна строчная буква"))
+        self.number_text.setText(_translate("MainWindow", "× Минимум одна цифра"))
+        self.special_text.setText(_translate("MainWindow", "× Минимум один спецсимвол"))
         self.name.setText(_translate("MainWindow", "Башков Денис"))
         self.date.setText(_translate("MainWindow", "23.09.2003"))
         self.group.setText(_translate("MainWindow", "П2-19"))

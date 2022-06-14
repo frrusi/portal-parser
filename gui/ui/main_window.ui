@@ -1402,6 +1402,8 @@ QProgressBar::chunk:horizontal {
                        <bool>true</bool>
                       </property>
                      </widget>
+                     <zorder>group_sync_icon</zorder>
+                     <zorder>group_sync</zorder>
                     </widget>
                    </item>
                   </layout>
