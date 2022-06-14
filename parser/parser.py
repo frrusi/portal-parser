@@ -2,7 +2,7 @@ import re
 
 import numpy as np
 import pandas as pd
-from sqlalchemy import select
+from sqlalchemy import select, delete
 
 from config.config import Config
 from database import models
@@ -10,6 +10,7 @@ from parser._parser_user_settings import ParserUserSettings
 from parser.parser_meta import ParserMeta
 
 
+# TODO: изменить логику работы парсера
 class Parser(ParserUserSettings, metaclass=ParserMeta):
     def __init__(self, database, config, exceptions, parser_utils, security_utils, secondary_utils):
         super().__init__(database, config, exceptions, parser_utils, security_utils, secondary_utils)
@@ -34,82 +35,78 @@ class Parser(ParserUserSettings, metaclass=ParserMeta):
         csrf = str(tree.xpath('//script[contains(text(),"csrf")]/text()'))
         self.csrf = re.search(r'csrf.*,', csrf).group(0)[:-1].split()[-1].replace("'", '')
 
-    def get_groups(self, isReturn=False):
+    def get_groups(self, is_sync=False):
         date, time, tree = self.pt.get_datetime_and_tree(self.session, self.config.groups_url.format(course='0'))
         last_course = int(tree.xpath('//select[@name="k"]/option[last()]/text()')[0])
         groups = set()
 
-        for course in range(1, last_course + 1):
+        for course in np.arange(1, last_course + 1):
             tree = self.pt.get_tree(self.session, self.config.groups_url.format(course=course))
 
-            if isReturn:
-                groups.update(set(group for group in tree.xpath('//table/tr[position() > 1]/td[1]/text()')))
-            else:
-                groups.update(set(tuple([group,
-                                         date,
-                                         time]) for group in tree.xpath('//table/tr[position() > 1]/td[1]/text()')))
-
-        if isReturn:
-            return groups
+            groups.update(set(tuple([group,
+                                     date,
+                                     time]) for group in tree.xpath('//table/tr[position() > 1]/td[1]/text()')))
 
         groups = pd.DataFrame(groups, columns=['group', 'date', 'time'])
+
+        if is_sync:
+            self.database.engine_connect(delete(models.Group))
+
         self.database.to_sql_query(groups, 'groups')
 
-    def get_journal(self, group: str, isReturn=False):
-        response = self.session.post(self.config.all_users_url, Config.get_search_data(group))
+    def get_subjects(self, group: str, is_sync=False):
+        group_id = self.database.get_group(group)
 
-        url_journals = self.config.journals_url.format(id=response.json()["list"][0]["id"])
-        group_id = self.database.select_query(select(models.Group.id).where(models.Group.group == group), 2)[0]
+        if is_sync:
+            self.database.engine_connect(delete(models.Subject).where(models.Subject.group == group_id))
 
-        self.pt.life_loop_thread(self.get_subjects, True, url_journals, group_id, isReturn)
+        student_id = self.database.get_student_id_by_group(group_id)
+        journals_url = self.config.journals_url.format(id=student_id)
 
-    def get_subjects(self, journal_url, group_id, isReturn=False):
-        date, time, tree = self.pt.get_datetime_and_tree(self.session, journal_url)
-        first_journal_url = self.config.url + tree.xpath('//table/tr[2]/td[position() = last() - 1]/a')[0].get('href')
+        date, time, tree = self.pt.get_datetime_and_tree(self.session, journals_url)
 
-        subjects = tree.xpath('//table/tr[position() > 1]/td[position() = 1 or position() = 2]/text()')
+        subjects = tree.xpath('//table/tr[position() > 1]/td[position() = 2]/text()')
+        semesters = tree.xpath('//table/tr[position() > 1]/td[position() = 1]/text()')
         urls = tree.xpath('//table/tr[position() > 1]/td[position() = 6]/a')
 
+        subjects = np.unique(np.array([[semesters[index], group_id, subjects[index].rstrip('.'),
+                                        self.config.url + urls[index].get('href'), date, time
+                                        ] for index in np.arange(0, len(subjects))]), axis=0)
+
         index = self.database.get_last_index(select(models.Subject.id))
+        subjects = pd.DataFrame(subjects, columns=['semester', 'group', 'subject', 'url', 'date', 'time'],
+                                index=np.arange(index, index + len(subjects)))
 
-        subjects = np.unique(np.array([[subjects[index], group_id, subjects[index + 1].rstrip('.'),
-                                        self.config.url + urls[index - index // 2].get('href'), date, time] for index in
-                                       range(0, len(subjects), 2)]), axis=0)
-        if isReturn:
-            thread_students = self.pt.life_loop_thread(self.get_students, False, first_journal_url,
-                                                       group_id, subjects, isReturn)
-        else:
-            thread_students = self.pt.life_loop_thread(self.get_students, False, first_journal_url,
-                                                       group_id, subjects)
+        self.database.to_sql_query(subjects, 'subjects', '')
 
-            subjects = pd.DataFrame(subjects, columns=['semester', 'group', 'subject', 'url', 'date', 'time'],
-                                    index=range(index, index + len(subjects)))
+    def get_students(self, group, is_sync=False):
+        if is_sync:
+            self.database.engine_connect(delete(models.Students
+                                                ).where(models.Students.group == self.database.get_group(group)))
 
-            self.database.to_sql_query(subjects, 'subjects', '')
-        thread_students.join()
+        response = self.session.post(self.config.all_users_url, Config.get_search_data(0, group)).json()
+        students = [[student['id'], *student['fio'].strip().split()[:3]] for student in response['list']]
 
-    def get_students(self, url, group_id, subjects, isReturn=False):
-        date, time, tree = self.pt.get_datetime_and_tree(self.session, url)
+        total_students = response['total']
+        for offset in np.arange(30, total_students, 30):
+            response = self.session.post(self.config.all_users_url, Config.get_search_data(offset, group)).json()
+            students += [[student['id'], *student['fio'].strip().split()[:3]] for student in response['list']]
 
-        students = [name.split()[1:4] for name in tree.xpath(
-            '(//span[@class="j_filter_by_fio"]/text() | //span[@class="j_filter_by_fio"]/strong/text())')]
+        students = pd.DataFrame(students, columns=['id', 'name', 'surname', 'patronymic'])
+        students.insert(0, 'group', self.database.get_group(group))
 
-        if isReturn:
-            self.database.synchronization_subjects_and_semesters(subjects, students)
-            return None
-
-        index = self.database.get_last_index(select(models.Students.id))
-
-        students = pd.DataFrame(students, columns=['name', 'surname', 'patronymic'],
-                                index=range(index, index + len(students)))
-        students.insert(0, 'group', group_id)
+        date, time = self.pt.get_datetime_now()
         students['date'], students['time'] = date, time
 
-        self.database.to_sql_query(students, 'students', '')
+        self.database.to_sql_query(students, 'students')
 
-    def get_marks(self, group: str, semester: int, subject: str, isReturn=False):
+    def get_marks(self, group: str, semester: int, subject: str, is_sync=False):
         group_id = int(self.database.get_group(group))
         subject_id, url = self.database.get_subject((models.Subject.id, models.Subject.url,), subject, semester, group)
+
+        if is_sync:
+            self.database.engine_connect(delete(models.Marks).where(models.Marks.group == group_id,
+                                                                    models.Marks.subject == subject_id))
 
         date, time, tree = self.pt.get_datetime_and_tree(self.session, url)
         students = self.database.get_all_students(group)
@@ -126,10 +123,8 @@ class Parser(ParserUserSettings, metaclass=ParserMeta):
                                mark, dates[index % length_dates], date, time] for index, mark in
                               enumerate(marks, index)])
 
-            if isReturn:
-                return marks
-
             marks = pd.DataFrame(marks, columns=['id', 'group', 'student', 'subject', 'semester', 'mark',
-                                                 'lesson_date', 'date', 'time'], index=range(index, index + len(marks)))
+                                                 'lesson_date', 'date', 'time'],
+                                 index=np.arange(index, index + len(marks)))
 
             self.database.to_sql_query(marks, 'marks')

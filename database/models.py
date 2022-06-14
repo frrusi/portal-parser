@@ -18,7 +18,7 @@ class Subject(Base):
 
     id = Column(Integer, primary_key=True)
     semester = Column(String, nullable=False)
-    group = Column(String, ForeignKey(Group.id, ondelete='cascade'))
+    group = Column(String, ForeignKey(Group.id, ondelete="CASCADE"))
     subject = Column(String, nullable=False)
     url = Column(String, nullable=False)
     date = Column(String, nullable=False)
@@ -29,7 +29,7 @@ class Students(Base):
     __tablename__ = 'students'
 
     id = Column(Integer, primary_key=True)
-    group = Column(String, ForeignKey(Group.id, ondelete='cascade'))
+    group = Column(String, ForeignKey(Group.id, ondelete="CASCADE"))
     name = Column(String, nullable=False)
     surname = Column(String, nullable=False)
     patronymic = Column(String)
@@ -41,9 +41,9 @@ class Marks(Base):
     __tablename__ = 'marks'
 
     id = Column(Integer, primary_key=True)
-    group = Column(String, ForeignKey(Group.id, ondelete='cascade'))
-    student = Column(String, ForeignKey(Students.id, ondelete='cascade'))
-    subject = Column(String, ForeignKey(Subject.id, ondelete='cascade'))
+    group = Column(String, ForeignKey(Group.id, ondelete="CASCADE"))
+    student = Column(String, ForeignKey(Students.id, ondelete="CASCADE"))
+    subject = Column(String, ForeignKey(Subject.id, ondelete="CASCADE"))
     semester = Column(String, nullable=False)
     mark = Column(String, nullable=False)
     lesson_date = Column(String, nullable=False)

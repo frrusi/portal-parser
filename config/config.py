@@ -49,10 +49,10 @@ class Config:
         }
 
     @staticmethod
-    def get_search_data(group):
+    def get_search_data(offset, group):
         return {
             'searchPeople': '1', 'limit': '30',
-            'offset': '0', 'str': f'!{group}',
+            'offset': f'{offset}', 'str': f'!{group}',
             'type': '0', 'online': '0'
         }
 

@@ -1,10 +1,11 @@
 import os
 from itertools import chain
-from typing import Union
 
 import sqlalchemy.engine
 from sqlalchemy import create_engine, MetaData, select, insert, update
 from sqlalchemy import dialects
+from sqlalchemy import event
+from sqlalchemy.engine import Engine
 from sqlalchemy.sql.functions import coalesce
 
 from database import models
@@ -21,6 +22,13 @@ class DataBase:
         self.parser_utils = parser_utils
         self.security_utils = security_utils
         self.exceptions = exceptions
+
+    @staticmethod
+    @event.listens_for(Engine, "connect")
+    def set_sqlite_pragma(dbapi_connection, connection_record):
+        cursor = dbapi_connection.cursor()
+        cursor.execute("PRAGMA foreign_keys=ON")
+        cursor.close()
 
     def create_all_tables(self):
         if not os.path.exists(self.name):
@@ -84,12 +92,12 @@ class DataBase:
         return list(chain.from_iterable(self.select_query(select(models.Students.id
                                                                  ).where(models.Students.group == group_id), 1)))
 
-    def get_group(self, group: Union[str, int]):
+    def get_group(self, group: str | int):
         if isinstance(group, int):
             select_query, where_query = models.Group.group, models.Group.id
         else:
             select_query, where_query = models.Group.id, models.Group.group
-        return self.select_query(select(select_query).where(where_query == group), 1)[0][0]
+        return self.select_query(select(select_query).where(where_query == group), 2)[0]
 
     def get_subject(self, select_query: tuple, subject: str, semester, group):
         return self.select_query(select(*select_query).where(models.Subject.semester == semester,
@@ -114,14 +122,18 @@ class DataBase:
                                                                              time=time))
         return code
 
-    def get_data(self, subject: str, semester: str):
+    def get_student_id_by_group(self, group_id: int):
+        return self.select_query(select(models.Students.id).where(models.Students.group == group_id), 2)[0]
+
+    def get_data(self, subject: str, semester: str, group: str):
         subject_id = self.select_query(select(models.Subject.id).where(models.Subject.subject == subject,
                                                                        models.Subject.semester == semester), 2)[0]
+        student_id = self.get_student_id_by_group(self.get_group(group))
 
         return list(chain.from_iterable(self.select_query(select(models.Marks.lesson_date
                                                                  ).where(models.Marks.subject == subject_id,
                                                                          models.Marks.semester == semester,
-                                                                         models.Marks.student == '0'), 1)))
+                                                                         models.Marks.student == student_id), 1)))
 
     def get_marks(self, subject: str, semester: str):
         subject_id = self.select_query(select(models.Subject.id).where(models.Subject.subject == subject,
@@ -134,28 +146,6 @@ class DataBase:
         return self.select_query(select(models.Students.id).where(models.Students.name == name,
                                                                   models.Students.surname == surname,
                                                                   models.Students.patronymic == patronymic), 2)[0]
-
-    def synchronization_groups(self, new_groups):
-        date, time = ParserUtils.get_datetime_now()
-
-        for group in new_groups:
-            index = self.select_query(select(models.Group.id).where(models.Group.group == group), 2)
-
-            if index is None:
-                index = self.get_last_index(select(models.Group.id))
-                print(index)
-            else:
-                index = index[0]
-
-            stmt = dialects.sqlite.insert(models.Group
-                                          ).values(id=index,
-                                                   group=str(group),
-                                                   date=str(date),
-                                                   time=str(time)
-                                                   ).on_conflict_do_update(index_elements=[models.Group.id],
-                                                                           set_=dict(date=date, time=time))
-
-            self.engine_connect(stmt)
 
     def synchronization_subjects_and_semesters(self, *args):
         date, time = ParserUtils.get_datetime_now()
@@ -184,7 +174,7 @@ class DataBase:
         for student in args[1]:
             group_id = args[0][1]
 
-            match(len(student)):
+            match (len(student)):
                 case 2:
                     student_id = self.get_student_id(student[0], student[1])
                 case 3:
