@@ -60,7 +60,7 @@ class AuthWindow(QtWidgets.QDialog, login_window.Ui_Authorization):
         self.MainWindow.journal_open.clicked.connect(self.fill_journal)
 
         self.MainWindow.group_sync.clicked.connect(self.synchronization_group)
-        self.MainWindow.se_gr_sync.clicked.connect(self.synchronization_subjects_and_semesters)
+        self.MainWindow.semester_sync.clicked.connect(self.synchronization_subjects_and_semesters)
 
         self.MainWindow.help_password.installEventFilter(self)
         self.login.installEventFilter(self)
