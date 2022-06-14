@@ -54,17 +54,12 @@ class Parser(ParserUserSettings, metaclass=ParserMeta):
 
         self.database.to_sql_query(groups, 'groups')
 
-    def get_journal(self, group: str, isReturn=False):
-        response = self.session.post(self.config.all_users_url, Config.get_search_data(0, group))
+    def get_subjects(self, group: str, is_sync=False):
+        group_id = self.database.get_group(group)
+        student_id = self.database.get_student_id_by_group(group_id)
+        journals_url = self.config.journals_url.format(id=student_id)
 
-        url_journals = self.config.journals_url.format(id=response.json()["list"][0]["id"])
-        group_id = self.database.select_query(select(models.Group.id).where(models.Group.group == group), 2)[0]
-
-        self.pt.life_loop_thread(self.get_subjects, True, url_journals, group_id, isReturn)
-
-    def get_subjects(self, journal_url, group_id):
-        date, time, tree = self.pt.get_datetime_and_tree(self.session, journal_url)
-
+        date, time, tree = self.pt.get_datetime_and_tree(self.session, journals_url)
         subjects = tree.xpath('//table/tr[position() > 1]/td[position() = 1 or position() = 2]/text()')
         urls = tree.xpath('//table/tr[position() > 1]/td[position() = 6]/a')
 
@@ -76,6 +71,9 @@ class Parser(ParserUserSettings, metaclass=ParserMeta):
 
         subjects = pd.DataFrame(subjects, columns=['semester', 'group', 'subject', 'url', 'date', 'time'],
                                 index=range(index, index + len(subjects)))
+
+        if is_sync:
+            self.database.engine_connect(delete(models.Subject).where(models.Subject.group == group_id))
 
         self.database.to_sql_query(subjects, 'subjects', '')
 
