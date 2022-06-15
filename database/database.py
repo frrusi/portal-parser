@@ -139,8 +139,3 @@ class DataBase:
         return list(chain.from_iterable(self.select_query(select(models.Marks.mark
                                                                  ).where(models.Marks.subject == subject_id,
                                                                          models.Marks.semester == semester), 1)))
-
-    def get_student_id(self, name, surname, patronymic=None):
-        return self.select_query(select(models.Students.id).where(models.Students.name == name,
-                                                                  models.Students.surname == surname,
-                                                                  models.Students.patronymic == patronymic), 2)[0]
