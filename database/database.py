@@ -3,13 +3,11 @@ from itertools import chain
 
 import sqlalchemy.engine
 from sqlalchemy import create_engine, MetaData, select, insert, update
-from sqlalchemy import dialects
 from sqlalchemy import event
 from sqlalchemy.engine import Engine
 from sqlalchemy.sql.functions import coalesce
 
 from database import models
-from utils.parser_utils import ParserUtils
 
 
 class DataBase:
@@ -34,9 +32,9 @@ class DataBase:
         if not os.path.exists(self.name):
             models.Base.metadata.create_all(self.engine)
 
-    def engine_connect(self, query, isReturn=False) -> sqlalchemy.engine.CursorResult | None:
+    def engine_connect(self, query, is_return=False) -> sqlalchemy.engine.CursorResult | None:
         with self.engine.connect() as connection:
-            if isReturn:
+            if is_return:
                 return connection.execute(query)
             connection.execute(query)
 
@@ -146,58 +144,3 @@ class DataBase:
         return self.select_query(select(models.Students.id).where(models.Students.name == name,
                                                                   models.Students.surname == surname,
                                                                   models.Students.patronymic == patronymic), 2)[0]
-
-    def synchronization_subjects_and_semesters(self, *args):
-        date, time = ParserUtils.get_datetime_now()
-        for subject in args[0]:
-            group = self.get_group(int(subject[1]))
-            subject_id = self.get_subject((models.Subject.id,), subject[2], subject[0], group)[0]
-
-            if subject_id is None:
-                subject_id = self.get_last_index(select(models.Subject.id))
-
-            stmt = dialects.sqlite.insert(models.Subject).values(
-                id=subject_id,
-                semester=subject[0],
-                group=subject[1],
-                subject=subject[2],
-                url=subject[3],
-                date=str(date),
-                time=str(time)
-            )
-
-            stmt = stmt.on_conflict_do_update(index_elements=[models.Subject.id],
-                                              set_=dict(url=stmt.excluded.url, date=date, time=time))
-
-            self.engine_connect(stmt)
-
-        for student in args[1]:
-            group_id = args[0][1]
-
-            match (len(student)):
-                case 2:
-                    student_id = self.get_student_id(student[0], student[1])
-                case 3:
-                    student_id = self.get_student_id(student[0], student[1], student[2])
-                case _:
-                    student_id = None
-
-            if student_id is None:
-                student_id = self.get_last_index(select(models.Students.id))
-
-            patronymic = None if len(student) == 2 else student[2]
-
-            stmt = dialects.sqlite.insert(models.Students).values(
-                id=student_id,
-                group=group_id,
-                name=student[0],
-                surname=student[1],
-                patronymic=patronymic,
-                date=str(date),
-                time=str(time)
-            )
-
-            stmt = stmt.on_conflict_do_update(index_elements=[models.Students.id],
-                                              set_=dict(date=date, time=time))
-
-            self.engine_connect(stmt)
