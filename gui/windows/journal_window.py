@@ -41,6 +41,7 @@ class Ui_JournalWindow(object):
         font.setFamily("Arial")
         font.setPointSize(11)
         self.journal_teacher.setFont(font)
+        self.journal_teacher.setText("")
         self.journal_teacher.setAlignment(QtCore.Qt.AlignCenter)
         self.journal_teacher.setObjectName("journal_teacher")
         self.horizontalLayout_2.addWidget(self.journal_teacher)
@@ -72,7 +73,6 @@ class Ui_JournalWindow(object):
         JournalWindow.setWindowTitle(_translate("JournalWindow", "MainWindow"))
         self.journal_info.setText(
             _translate("JournalWindow", "Группа: П2-19; Дисциплина: Иностарнный язык; Семестр: 6"))
-        self.journal_teacher.setText(_translate("JournalWindow", "Преподаватель: Юренская Светлана Алексеевна"))
 
 
 if __name__ == "__main__":
