@@ -1,3 +1,5 @@
+"""Модуль, хранящий в себе методы, использующиеся в сборщике данных"""
+
 import threading
 from datetime import datetime
 from typing import List, Tuple, Union
@@ -7,6 +9,8 @@ from requests import models, sessions
 
 
 class ParserUtils:
+    """Класс, хранящий в себе методы, использующиеся в сборщике данных"""
+
     def __init__(self, config):
         self.config = config
 

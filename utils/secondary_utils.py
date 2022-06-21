@@ -1,3 +1,5 @@
+"""Модуль, хранящий в себе вспомогательные методы"""
+
 import os
 
 import requests
@@ -5,11 +7,13 @@ from PyQt5 import QtGui
 
 
 class SecondaryUtils:
+    """Класс, хранящий в себе вспомогательные методы"""
+
     def __init__(self):
         pass
 
     @staticmethod
-    def check_internet_by_url(url) -> bool:
+    def check_internet_by_url(url: str) -> bool:
         """Метод проверки подключения к Интернету
 
         Args:
@@ -24,7 +28,7 @@ class SecondaryUtils:
         except requests.ConnectionError:
             return False
 
-    def get_image(self, url) -> None:
+    def get_image(self, url: str) -> None:
         """Метод получения фотографии пользователя с портала
 
         Args:
@@ -47,7 +51,7 @@ class SecondaryUtils:
             os.mkdir(dir_path)
 
     @staticmethod
-    def get_file_extension(filename) -> str:
+    def get_file_extension(filename: str) -> str:
         """Метод получения расширения файла
 
         Args:

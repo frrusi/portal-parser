@@ -1,3 +1,6 @@
+from PyQt5 import QtWidgets
+
+
 class Config:
     @staticmethod
     def get_auth_data(login, password):
@@ -83,8 +86,8 @@ class Config:
         return [config.password_length_message, config.password_uppercase_message,
                 config.password_lowercase_message, config.password_digit_message,
                 config.password_symbol_message]
-    
+
     @staticmethod
-    def get_objects_password_requirements(window_object):
+    def get_objects_password_requirements(window_object: QtWidgets):
         return [window_object.size_text, window_object.capital_text, window_object.lower_text,
                 window_object.number_text, window_object.special_text]
