@@ -21,7 +21,6 @@ class MainWindow(QtWidgets.QMainWindow, main_window.Ui_MainWindow):
         self.password_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/change_password.svg"))
 
         self.group_sync_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/synchronization.svg"))
-        self.semester_sync_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/synchronization.svg"))
         self.subject_sync_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/synchronization.svg"))
 
         self.semester_icon.setPixmap(QtGui.QPixmap(f"{config.icons_path}/journal_semester.svg"))
